@@ -1,12 +1,13 @@
 package com.carpentersblocks.util.handler;
 
-import java.lang.reflect.Method;
-import net.minecraft.block.Block;
-import net.minecraft.world.IBlockAccess;
-import org.apache.logging.log4j.Level;
 import com.carpentersblocks.util.ModLogger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
+import net.minecraft.world.IBlockAccess;
+import org.apache.logging.log4j.Level;
+
+import java.lang.reflect.Method;
 
 @SideOnly(Side.CLIENT)
 public class OptifineHandler {

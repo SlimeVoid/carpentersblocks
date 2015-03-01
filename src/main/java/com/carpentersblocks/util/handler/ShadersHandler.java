@@ -1,10 +1,11 @@
 package com.carpentersblocks.util.handler;
 
-import java.lang.reflect.Field;
-import org.apache.logging.log4j.Level;
 import com.carpentersblocks.util.ModLogger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
+
+import java.lang.reflect.Field;
 
 @SideOnly(Side.CLIENT)
 public class ShadersHandler {

@@ -1,10 +1,11 @@
 package com.carpentersblocks.util.handler;
 
-import java.util.HashMap;
-import java.util.Map;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DyeHandler {
 

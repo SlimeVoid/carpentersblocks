@@ -1,12 +1,12 @@
 package com.carpentersblocks.util.slope;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import com.carpentersblocks.block.BlockCarpentersSlope;
 import com.carpentersblocks.data.Slope;
 import com.carpentersblocks.data.Slope.Face;
 import com.carpentersblocks.data.Slope.Type;
 import com.carpentersblocks.tileentity.TEBase;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class SlopeTransform {
 

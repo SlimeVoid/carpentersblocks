@@ -1,9 +1,9 @@
 package com.carpentersblocks.renderer;
 
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerHinged extends BlockHandlerBase {

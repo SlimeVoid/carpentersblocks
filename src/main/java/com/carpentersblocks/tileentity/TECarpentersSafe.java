@@ -1,12 +1,12 @@
 package com.carpentersblocks.tileentity;
 
+import com.carpentersblocks.data.Safe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import com.carpentersblocks.data.Safe;
 
 public class TECarpentersSafe extends TEBase implements ISidedInventory {
 

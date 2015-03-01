@@ -1,16 +1,13 @@
 package com.carpentersblocks.data;
 
-import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraftforge.common.util.ForgeDirection;
 import com.carpentersblocks.util.slope.SlopeType;
 import com.carpentersblocks.util.slope.SlopeTypeFactory;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static net.minecraftforge.common.util.ForgeDirection.*;
 
 public class Slope {
 

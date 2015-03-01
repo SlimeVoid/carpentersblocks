@@ -1,8 +1,8 @@
 package com.carpentersblocks.data;
 
+import com.carpentersblocks.tileentity.TEBase;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import com.carpentersblocks.tileentity.TEBase;
 
 public class Torch implements ISided {
 

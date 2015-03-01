@@ -1,13 +1,13 @@
 package com.carpentersblocks.renderer;
 
+import com.carpentersblocks.data.GarageDoor;
+import com.carpentersblocks.util.registry.IconRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import com.carpentersblocks.data.GarageDoor;
-import com.carpentersblocks.util.registry.IconRegistry;
 
 public class BlockHandlerCarpentersGarageDoor extends BlockHandlerBase {
 

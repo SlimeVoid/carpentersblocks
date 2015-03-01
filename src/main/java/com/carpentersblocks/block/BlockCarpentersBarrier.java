@@ -1,22 +1,25 @@
 package com.carpentersblocks.block;
 
-import java.util.List;
+import com.carpentersblocks.data.Barrier;
+import com.carpentersblocks.data.Gate;
+import com.carpentersblocks.tileentity.TEBase;
+import com.carpentersblocks.util.registry.BlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import com.carpentersblocks.data.Barrier;
-import com.carpentersblocks.data.Gate;
-import com.carpentersblocks.tileentity.TEBase;
-import com.carpentersblocks.util.registry.BlockRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockCarpentersBarrier extends BlockCoverable {
 
@@ -77,17 +80,17 @@ public class BlockCarpentersBarrier extends BlockCoverable {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityLiving, ItemStack itemStack)
     {
-        super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
+        super.onBlockPlacedBy(world, pos, state, entityLiving, itemStack);
 
-        TEBase TE = getTileEntity(world, x, y, z);
+        TEBase TE = getTileEntity(world, pos);
 
         if (TE != null) {
 
             /* Match block type with adjacent type if possible. */
 
-            TEBase[] TE_list = getAdjacentTileEntities(world, x, y, z);
+            TEBase[] TE_list = getAdjacentTileEntities(world, pos);
 
             for (TEBase TE_current : TE_list) {
 
@@ -111,14 +114,14 @@ public class BlockCarpentersBarrier extends BlockCoverable {
     @Override
     /**
      * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
-     * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
+     * mask.) Parameters: World, pos, mask, list, colliding entity
      */
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisAlignedBB, List list, Entity entity)
+    public void addCollisionBoxesToList(World world, BlockPos pos, IBlockState state, AxisAlignedBB axisAlignedBB, List list, Entity entity)
     {
-        boolean connect_ZN = canConnectBarrierTo(world, x, y, z - 1, ForgeDirection.SOUTH);
-        boolean connect_ZP = canConnectBarrierTo(world, x, y, z + 1, ForgeDirection.NORTH);
-        boolean connect_XN = canConnectBarrierTo(world, x - 1, y, z, ForgeDirection.EAST);
-        boolean connect_XP = canConnectBarrierTo(world, x + 1, y, z, ForgeDirection.WEST);
+        boolean connect_ZN = canConnectBarrierTo(world, pos.add( 0, 0,-1), EnumFacing.SOUTH);
+        boolean connect_ZP = canConnectBarrierTo(world, pos.add( 0, 0, 1), EnumFacing.NORTH);
+        boolean connect_XN = canConnectBarrierTo(world, pos.add(-1, 0, 0), EnumFacing.EAST);
+        boolean connect_XP = canConnectBarrierTo(world, pos.add( 1, 0, 0), EnumFacing.WEST);
 
         float x_Low = 0.375F;
         float x_High = 0.625F;
@@ -136,7 +139,7 @@ public class BlockCarpentersBarrier extends BlockCoverable {
         if (connect_ZN || connect_ZP)
         {
             setBlockBounds(x_Low, 0.0F, z_Low, x_High, 1.5F, z_High);
-            super.addCollisionBoxesToList(world, x, y, z, axisAlignedBB, list, entity);
+            super.addCollisionBoxesToList(world, pos, state, axisAlignedBB, list, entity);
         }
 
         z_Low = 0.375F;
@@ -153,7 +156,7 @@ public class BlockCarpentersBarrier extends BlockCoverable {
         if (connect_XN || connect_XP || !connect_ZN && !connect_ZP)
         {
             setBlockBounds(x_Low, 0.0F, z_Low, x_High, 1.5F, z_High);
-            super.addCollisionBoxesToList(world, x, y, z, axisAlignedBB, list, entity);
+            super.addCollisionBoxesToList(world, pos, state, axisAlignedBB, list, entity);
         }
 
         if (connect_ZN) {
@@ -169,17 +172,17 @@ public class BlockCarpentersBarrier extends BlockCoverable {
 
     @Override
     /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
+     * Updates the blocks bounds based on its current state. Args: world, pos
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
-        TEBase TE = getTileEntity(blockAccess, x, y, z);
+        TEBase TE = getTileEntity(blockAccess, pos);
         int type = Barrier.getType(TE);
 
-        boolean connect_ZN = canConnectBarrierTo(blockAccess, x, y, z - 1, ForgeDirection.SOUTH);
-        boolean connect_ZP = canConnectBarrierTo(blockAccess, x, y, z + 1, ForgeDirection.NORTH);
-        boolean connect_XN = canConnectBarrierTo(blockAccess, x - 1, y, z, ForgeDirection.EAST);
-        boolean connect_XP = canConnectBarrierTo(blockAccess, x + 1, y, z, ForgeDirection.WEST);
+        boolean connect_ZN = canConnectBarrierTo(blockAccess, pos.add( 0, 0,-1), EnumFacing.SOUTH);
+        boolean connect_ZP = canConnectBarrierTo(blockAccess, pos.add( 0, 0, 1), EnumFacing.NORTH);
+        boolean connect_XN = canConnectBarrierTo(blockAccess, pos.add(-1, 0, 0), EnumFacing.EAST);
+        boolean connect_XP = canConnectBarrierTo(blockAccess, pos.add( 1, 0, 0), EnumFacing.WEST);
 
         float x_Low = 0.0F;
         float x_High = 1.0F;
@@ -248,14 +251,14 @@ public class BlockCarpentersBarrier extends BlockCoverable {
     /**
      * Returns true if block can connect to specified side of neighbor block.
      */
-    public boolean canConnectBarrierTo(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
+    public boolean canConnectBarrierTo(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        Block block = blockAccess.getBlock(x, y, z);
+        IBlockState state = blockAccess.getBlockState(pos);
 
-        if (block.equals(this) || block.equals(BlockRegistry.blockCarpentersGate)) {
+        if (state.getBlock().equals(this) || state.getBlock().equals(BlockRegistry.blockCarpentersGate)) {
             return true;
         } else {
-            return block.isSideSolid(blockAccess, x, y, z, side);
+            return state.getBlock().isSideSolid(blockAccess, pos, side);
         }
     }
 
@@ -263,23 +266,21 @@ public class BlockCarpentersBarrier extends BlockCoverable {
      * Checks if the block is a solid face on the given side, used by placement logic.
      *
      * @param blockAccess The current world
-     * @param x X Position
-     * @param y Y position
-     * @param z Z position
+     * @param pos the BlockPos
      * @param side The side to check
      * @return True if the block is solid on the specified side.
      */
     @Override
-    public boolean isSideSolid(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
+    public boolean isSideSolid(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return side.equals(ForgeDirection.UP);
+        return side.equals(EnumFacing.UP);
     }
 
     @Override
     /**
      * Determines if a torch can be placed on the top surface of this block.
      */
-    public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
+    public boolean canPlaceTorchOnTop(IBlockAccess world, BlockPos pos)
     {
         return true;
     }
@@ -288,9 +289,9 @@ public class BlockCarpentersBarrier extends BlockCoverable {
     @SideOnly(Side.CLIENT)
     /**
      * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: world, x, y, z, side
+     * coordinates.  Args: world, pos, side
      */
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }

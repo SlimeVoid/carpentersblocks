@@ -17,12 +17,23 @@ buildscript {
 
 apply plugin: 'forge'
 
+def mcversion = '1.8'
+def forge = '11.14.0.1285'
+def map = 'snapshot_20150110'
+def mc = mcversion + '-' + forge + '-' + mcversion
+
 version = "3.3.5"
 group= "com.carpentersblocks" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Carpenter's Blocks"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
+    version = mc
+    mappings = map
+    if  (file('../run').exists()) {
+        runDir = "../run/assets"
+    } else {
+        runDir = "assets"
+    }
 }
 
 dependencies {

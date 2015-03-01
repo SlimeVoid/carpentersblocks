@@ -1,7 +1,5 @@
 package com.carpentersblocks;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.config.Configuration;
 import com.carpentersblocks.proxy.CommonProxy;
 import com.carpentersblocks.util.CarpentersBlocksTab;
 import cpw.mods.fml.common.Mod;
@@ -12,6 +10,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.config.Configuration;
 
 @Mod(
         modid = CarpentersBlocks.MODID,

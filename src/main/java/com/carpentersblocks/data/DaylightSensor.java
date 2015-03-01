@@ -1,7 +1,7 @@
 package com.carpentersblocks.data;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import com.carpentersblocks.tileentity.TEBase;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class DaylightSensor implements ISided {
 

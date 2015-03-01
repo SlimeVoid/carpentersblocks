@@ -1,19 +1,5 @@
 package com.carpentersblocks.util.handler;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-import javax.imageio.ImageIO;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.Level;
 import com.carpentersblocks.CarpentersBlocks;
 import com.carpentersblocks.CarpentersBlocksCachedResources;
 import com.carpentersblocks.util.ModLogger;
@@ -24,6 +10,21 @@ import com.carpentersblocks.util.registry.ItemRegistry;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.Level;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 public class DesignHandler {
 

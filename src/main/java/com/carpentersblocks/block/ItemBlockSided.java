@@ -1,9 +1,12 @@
 package com.carpentersblocks.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class ItemBlockSided extends ItemBlock {
@@ -22,7 +25,7 @@ public class ItemBlockSided extends ItemBlock {
      * @param player The player who is placing the block. Can be null if the block is not being placed by a player.
      * @param side The side the player (or machine) right-clicked on.
      */
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState state)
     {
         /*
          * We need to use a flag that doesn't call for a block update ([flag & 1] updates).
@@ -35,13 +38,13 @@ public class ItemBlockSided extends ItemBlock {
          * onPostBlockPlaced().
          */
 
-        if (!world.setBlock(x, y, z, field_150939_a, metadata, 0)) {
+        if (!world.setBlockState(pos, state, 0)) {
             return false;
         }
 
-        if (world.getBlock(x, y, z) == field_150939_a) {
-            field_150939_a.onBlockPlacedBy(world, x, y, z, player, stack);
-            field_150939_a.onPostBlockPlaced(world, x, y, z, metadata);
+        if (world.getBlockState(pos).getBlock() == this.getBlock()) {
+            block.onBlockPlacedBy(world, pos, state, player, stack);
+            //block.onPostBlockPlaced(world, x, y, z, metadata);
         }
 
         return true;

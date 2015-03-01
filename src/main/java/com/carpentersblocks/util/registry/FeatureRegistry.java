@@ -1,9 +1,10 @@
 package com.carpentersblocks.util.registry;
 
-import java.util.ArrayList;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
+import java.util.ArrayList;
 
 public class FeatureRegistry {
 

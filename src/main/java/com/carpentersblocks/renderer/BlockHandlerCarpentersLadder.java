@@ -1,15 +1,15 @@
 package com.carpentersblocks.renderer;
 
+import com.carpentersblocks.data.Ladder;
+import com.carpentersblocks.tileentity.TEBase;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import com.carpentersblocks.data.Ladder;
-import com.carpentersblocks.tileentity.TEBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersLadder extends BlockHandlerBase {

@@ -1,18 +1,5 @@
 package com.carpentersblocks.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Block.SoundType;
-import net.minecraft.block.BlockBreakable;
-import net.minecraft.block.BlockPane;
-import net.minecraft.block.BlockQuartz;
-import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 import com.carpentersblocks.CarpentersBlocks;
 import com.carpentersblocks.api.IWrappableBlock;
 import com.carpentersblocks.block.BlockCoverable;
@@ -21,6 +8,16 @@ import com.carpentersblocks.util.handler.ChatHandler;
 import com.carpentersblocks.util.handler.DyeHandler;
 import com.carpentersblocks.util.handler.OverlayHandler;
 import com.carpentersblocks.util.registry.FeatureRegistry;
+import net.minecraft.block.*;
+import net.minecraft.block.Block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockProperties {
 
@@ -68,12 +65,25 @@ public class BlockProperties {
      * Takes an ItemStack and returns block, or air block if ItemStack
      * does not contain a block.
      */
-    public static Block toBlock(ItemStack itemStack)
+//    public static Block toBlock(ItemStack itemStack)
+//    {
+//        if (itemStack != null && itemStack.getItem() instanceof ItemBlock) {
+//            return Block.getBlockFromItem(itemStack.getItem());
+//        } else {
+//            return Blocks.air;
+//        }
+//    }
+
+    /**
+     * Takes an ItemStack and returns blockstate, or air blockstate if ItemStack
+     * does not contain a block.
+     */
+    public static IBlockState toBlockState(ItemStack itemStack)
     {
         if (itemStack != null && itemStack.getItem() instanceof ItemBlock) {
-            return Block.getBlockFromItem(itemStack.getItem());
+            return Block.getBlockFromItem(itemStack.getItem()).getStateFromMeta(itemStack.getMetadata());
         } else {
-            return Blocks.air;
+            return Blocks.air.getDefaultState();
         }
     }
 
@@ -112,7 +122,7 @@ public class BlockProperties {
      * Plays block sound.
      * Reduced volume is for damaging a block, versus full volume for placement or destruction.
      */
-    public static void playBlockSound(World world, ItemStack itemStack, int x, int y, int z, boolean reducedVolume)
+    public static void playBlockSound(World world, ItemStack itemStack, BlockPos pos, boolean reducedVolume)
     {
         if (itemStack != null) {
 
@@ -126,9 +136,9 @@ public class BlockProperties {
 
             SoundType soundType = block.stepSound;
             float volume = (soundType.getVolume() + 1.0F) / (reducedVolume ? 8.0F : 2.0F);
-            float pitch = soundType.getPitch() * 0.8F;
+            float pitch = soundType.getFrequency() * 0.8F;
 
-            world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, soundType.func_150496_b(), volume, pitch);
+            world.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, soundType.getStepSound(), volume, pitch);
 
         }
     }

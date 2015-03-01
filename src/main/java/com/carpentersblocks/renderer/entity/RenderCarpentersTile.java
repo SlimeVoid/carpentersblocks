@@ -1,5 +1,11 @@
 package com.carpentersblocks.renderer.entity;
 
+import com.carpentersblocks.entity.item.EntityCarpentersTile;
+import com.carpentersblocks.renderer.helper.LightingHelper;
+import com.carpentersblocks.renderer.helper.RenderHelper;
+import com.carpentersblocks.util.handler.DyeHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -8,12 +14,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import com.carpentersblocks.entity.item.EntityCarpentersTile;
-import com.carpentersblocks.renderer.helper.LightingHelper;
-import com.carpentersblocks.renderer.helper.RenderHelper;
-import com.carpentersblocks.util.handler.DyeHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderCarpentersTile extends Render {

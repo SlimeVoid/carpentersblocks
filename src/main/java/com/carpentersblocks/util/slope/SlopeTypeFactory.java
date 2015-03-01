@@ -1,18 +1,7 @@
 package com.carpentersblocks.util.slope;
 
 import com.carpentersblocks.data.Slope.Type;
-import com.carpentersblocks.util.slope.type.ObliqueExt;
-import com.carpentersblocks.util.slope.type.ObliqueInt;
-import com.carpentersblocks.util.slope.type.Prism;
-import com.carpentersblocks.util.slope.type.Prism1P;
-import com.carpentersblocks.util.slope.type.Prism2P;
-import com.carpentersblocks.util.slope.type.Prism3P;
-import com.carpentersblocks.util.slope.type.Prism4P;
-import com.carpentersblocks.util.slope.type.PrismWedge;
-import com.carpentersblocks.util.slope.type.Wedge;
-import com.carpentersblocks.util.slope.type.WedgeExt;
-import com.carpentersblocks.util.slope.type.WedgeInt;
-import com.carpentersblocks.util.slope.type.WedgeSide;
+import com.carpentersblocks.util.slope.type.*;
 
 public class SlopeTypeFactory {
 

@@ -1,11 +1,11 @@
 package com.carpentersblocks.util.stairs;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import com.carpentersblocks.block.BlockCarpentersStairs;
 import com.carpentersblocks.data.Stairs;
 import com.carpentersblocks.data.Stairs.Type;
 import com.carpentersblocks.tileentity.TEBase;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class StairsTransform {
 

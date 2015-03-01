@@ -1,11 +1,5 @@
 package com.carpentersblocks.renderer;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import com.carpentersblocks.block.BlockCoverable;
 import com.carpentersblocks.renderer.helper.RenderHelperFlowerPot;
 import com.carpentersblocks.util.BlockProperties;
@@ -15,6 +9,12 @@ import com.carpentersblocks.util.handler.DesignHandler;
 import com.carpentersblocks.util.registry.IconRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockCrops;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersFlowerPot extends BlockHandlerBase {

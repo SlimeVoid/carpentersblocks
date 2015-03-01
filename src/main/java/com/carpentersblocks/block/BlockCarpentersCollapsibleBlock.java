@@ -1,6 +1,11 @@
 package com.carpentersblocks.block;
 
-import java.util.List;
+import com.carpentersblocks.data.Collapsible;
+import com.carpentersblocks.tileentity.TEBase;
+import com.carpentersblocks.util.collapsible.CollapsibleUtil;
+import com.carpentersblocks.util.handler.EventHandler;
+import com.carpentersblocks.util.registry.BlockRegistry;
+import com.carpentersblocks.util.registry.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -13,12 +18,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import com.carpentersblocks.data.Collapsible;
-import com.carpentersblocks.tileentity.TEBase;
-import com.carpentersblocks.util.collapsible.CollapsibleUtil;
-import com.carpentersblocks.util.handler.EventHandler;
-import com.carpentersblocks.util.registry.BlockRegistry;
-import com.carpentersblocks.util.registry.ItemRegistry;
+
+import java.util.List;
 
 public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
 

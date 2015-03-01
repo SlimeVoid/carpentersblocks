@@ -1,7 +1,7 @@
 package com.carpentersblocks.data;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import com.carpentersblocks.tileentity.TEBase;
+import net.minecraft.util.EnumFacing;
 
 public interface ISided {
 
@@ -12,14 +12,14 @@ public interface ISided {
      * @param  side the side
      * @return nothing
      */
-    public void setDirection(TEBase TE, ForgeDirection dir);
+    public void setDirection(TEBase TE, EnumFacing dir);
 
     /**
      * Gets block direction.
      *
      * @param  TE the {@link TEBase}
-     * @return the {@link ForgeDirection}
+     * @return the {@link EnumFacing}
      */
-    public ForgeDirection getDirection(TEBase TE);
+    public EnumFacing getDirection(TEBase TE);
 
 }

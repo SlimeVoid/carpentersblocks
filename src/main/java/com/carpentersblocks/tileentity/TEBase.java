@@ -1,10 +1,9 @@
 package com.carpentersblocks.tileentity;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import com.carpentersblocks.block.BlockCoverable;
+import com.carpentersblocks.util.BlockProperties;
+import com.carpentersblocks.util.handler.DesignHandler;
+import com.carpentersblocks.util.protection.IProtected;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.item.Item;
@@ -16,10 +15,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import com.carpentersblocks.block.BlockCoverable;
-import com.carpentersblocks.util.BlockProperties;
-import com.carpentersblocks.util.handler.DesignHandler;
-import com.carpentersblocks.util.protection.IProtected;
+
+import java.util.*;
 
 public class TEBase extends TileEntity implements IProtected {
 

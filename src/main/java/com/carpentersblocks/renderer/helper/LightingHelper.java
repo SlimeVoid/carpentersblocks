@@ -1,20 +1,18 @@
 package com.carpentersblocks.renderer.helper;
 
-import static com.carpentersblocks.renderer.helper.VertexHelper.BOTTOM_LEFT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.BOTTOM_RIGHT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.TOP_LEFT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.TOP_RIGHT;
+import com.carpentersblocks.renderer.BlockHandlerBase;
+import com.carpentersblocks.util.BlockProperties;
+import com.carpentersblocks.util.handler.ShadersHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import com.carpentersblocks.renderer.BlockHandlerBase;
-import com.carpentersblocks.util.BlockProperties;
-import com.carpentersblocks.util.handler.ShadersHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import static com.carpentersblocks.renderer.helper.VertexHelper.*;
 
 @SideOnly(Side.CLIENT)
 public class LightingHelper {

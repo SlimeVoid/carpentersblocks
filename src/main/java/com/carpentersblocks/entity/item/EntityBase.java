@@ -1,10 +1,11 @@
 package com.carpentersblocks.entity.item;
 
-import java.util.UUID;
+import com.carpentersblocks.util.protection.IProtected;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import com.carpentersblocks.util.protection.IProtected;
+
+import java.util.UUID;
 
 public class EntityBase extends Entity implements IProtected {
 

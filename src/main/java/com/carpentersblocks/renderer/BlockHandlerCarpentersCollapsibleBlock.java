@@ -1,25 +1,19 @@
 package com.carpentersblocks.renderer;
 
-import static com.carpentersblocks.renderer.helper.VertexHelper.BOTTOM_LEFT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.BOTTOM_RIGHT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.NORTHEAST;
-import static com.carpentersblocks.renderer.helper.VertexHelper.NORTHWEST;
-import static com.carpentersblocks.renderer.helper.VertexHelper.SOUTHEAST;
-import static com.carpentersblocks.renderer.helper.VertexHelper.SOUTHWEST;
-import static com.carpentersblocks.renderer.helper.VertexHelper.TOP_LEFT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.TOP_RIGHT;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 import com.carpentersblocks.renderer.helper.RenderHelper;
 import com.carpentersblocks.renderer.helper.RenderHelperCollapsible;
 import com.carpentersblocks.renderer.helper.VertexHelper;
 import com.carpentersblocks.util.collapsible.CollapsibleUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+import org.lwjgl.opengl.GL11;
+
+import static com.carpentersblocks.renderer.helper.VertexHelper.*;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {

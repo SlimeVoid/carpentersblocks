@@ -1,10 +1,10 @@
 package com.carpentersblocks.tileentity;
 
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import com.carpentersblocks.data.Torch;
 import com.carpentersblocks.data.Torch.State;
 import com.carpentersblocks.renderer.helper.ParticleHelper;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 public class TECarpentersTorch extends TEBase {
 

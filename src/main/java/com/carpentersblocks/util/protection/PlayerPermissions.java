@@ -1,8 +1,10 @@
 package com.carpentersblocks.util.protection;
 
+import com.carpentersblocks.util.registry.FeatureRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import com.carpentersblocks.util.registry.FeatureRegistry;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 public class PlayerPermissions {
 
@@ -36,14 +38,14 @@ public class PlayerPermissions {
     /**
      * Returns whether player is allowed to make alterations to object.
      */
-    public static boolean canPlayerEdit(IProtected object, int x, int y, int z, EntityPlayer entityPlayer)
+    public static boolean canPlayerEdit(IProtected object, BlockPos pos, EntityPlayer entityPlayer)
     {
         if (isOp(entityPlayer)) {
             return true;
         } else if (FeatureRegistry.enableOwnership) {
             return isOwner(object, entityPlayer);
         } else {
-            return entityPlayer.canPlayerEdit(x, y, z, 0, entityPlayer.getHeldItem());
+            return entityPlayer.canPlayerEdit(pos, EnumFacing.getFront(0), entityPlayer.getHeldItem());
         }
     }
 

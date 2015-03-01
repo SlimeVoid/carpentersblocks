@@ -1,15 +1,17 @@
 package com.carpentersblocks.block;
 
+import com.carpentersblocks.data.ISided;
+import com.carpentersblocks.tileentity.TEBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import com.carpentersblocks.data.ISided;
-import com.carpentersblocks.tileentity.TEBase;
 
 public class BlockSided extends BlockCoverable {
 
@@ -26,21 +28,21 @@ public class BlockSided extends BlockCoverable {
      * cleared to be reused)
      */
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state)
     {
-        setBlockBoundsBasedOnState(world, x, y, z);
-        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+        setBlockBoundsBasedOnState(world, pos);
+        return super.getCollisionBoundingBox(world, pos, state);
     }
 
     @Override
     /**
      * Checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
      */
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
     {
         if (canAttachToSide(side)) {
-            ForgeDirection dir = ForgeDirection.getOrientation(side);
-            return world.getBlock(x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ).isSideSolid(world, x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ, dir);
+            BlockPos offsetPos = pos.add(-side.getFrontOffsetX(), -side.getFrontOffsetY(), -side.getFrontOffsetZ();
+            return world.getBlockState(offsetPos).getBlock().isSideSolid(world, offsetPos, side);
         } else {
             return false;
         }
@@ -48,25 +50,25 @@ public class BlockSided extends BlockCoverable {
 
     @Override
     /**
-     * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+     * Called when a block is placed using its ItemBlock. Args: World, pos, side, hitX, hitY, hitZ, block metadata
      */
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
+    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase entity)
     {
-        return side;
+        return this.getStateFromMeta(meta);
     }
 
     @Override
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityLiving, ItemStack itemStack)
     {
-        super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
+        super.onBlockPlacedBy(world, pos, state, entityLiving, itemStack);
 
-        TEBase TE = getTileEntity(world, x, y, z);
+        TEBase TE = getTileEntity(world, pos);
         if (TE != null) {
-            int meta = world.getBlockMetadata(x, y, z);
-            data.setDirection(TE, ForgeDirection.getOrientation(meta));
+            int meta = state.getBlock().getMetaFromState(state);
+            data.setDirection(TE, EnumFacing.getFront(meta));
         }
     }
 
@@ -74,14 +76,14 @@ public class BlockSided extends BlockCoverable {
      * Called after a block is placed
      */
     @Override
-    public void onPostBlockPlaced(World world, int x, int y, int z, int metadata)
+    public void onPostBlockPlaced(World world, BlockPos pos, int metadata)
     {
         /*
          * Part of world.setBlock() involves updating neighbors.  Since we
          * prevent this in ItemBlockSided, we'll invoke it here.
          */
 
-        world.notifyBlocksOfNeighborChange(x, y, z, this);
+        world.notifyNeighborsOfStateChange(pos, this);
     }
 
     @Override
@@ -96,16 +98,16 @@ public class BlockSided extends BlockCoverable {
     @Override
     /**
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
+     * their own) Args: pos, neighbor blockID
      */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World world, BlockPos pos, Block block)
     {
-        super.onNeighborBlockChange(world, x, y, z, block);
+        super.onNeighborBlockChange(world, pos, block);
 
         if (!world.isRemote) {
-            TEBase TE = getTileEntity(world, x, y, z);
-            if (TE != null && !canPlaceBlockOnSide(world, x, y, z, data.getDirection(TE).ordinal())) {
-                destroyBlock(world, x, y, z, true);
+            TEBase TE = getTileEntity(world, pos);
+            if (TE != null && !canPlaceBlockOnSide(world, pos, data.getDirection(TE).ordinal())) {
+                destroyBlock(world, pos, true);
             }
         }
     }
@@ -119,16 +121,16 @@ public class BlockSided extends BlockCoverable {
      * @param  z
      * @return nothing
      */
-    public void notifyBlocksOfPowerChange(World world, int x, int y, int z)
+    public void notifyBlocksOfPowerChange(World world, BlockPos pos)
     {
         /* Notify strong power change. */
 
-        world.notifyBlockChange(x, y, z, this);
+        world.notifyBlockChange(pos, this);
 
         /* Notify weak power change. */
 
         if (canProvidePower()) {
-            TEBase TE = getTileEntity(world, x, y, z);
+            TEBase TE = getTileEntity(world, pos);
             if (TE != null) {
                 ForgeDirection dir = data.getDirection(TE);
                 world.notifyBlocksOfNeighborChange(x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ, this);
@@ -150,12 +152,12 @@ public class BlockSided extends BlockCoverable {
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingWeakPower(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public int isProvidingWeakPower(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        int power = super.isProvidingWeakPower(blockAccess, x, y, z, side);
+        int power = super.isProvidingWeakPower(blockAccess, pos, side);
 
         if (canProvidePower()) {
-            TEBase TE = getTileEntity(blockAccess, x, y, z);
+            TEBase TE = getTileEntity(blockAccess, pos);
             if (TE != null) {
                 int tempPower = getPowerOutput(TE);
                 if (tempPower > power) {
@@ -169,15 +171,15 @@ public class BlockSided extends BlockCoverable {
 
     @Override
     /**
-     * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+     * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, pos,
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingStrongPower(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public int isProvidingStrongPower(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        int power = super.isProvidingStrongPower(blockAccess, x, y, z, side);
+        int power = super.isProvidingStrongPower(blockAccess, pos, side);
 
         if (canProvidePower()) {
-            TEBase TE = getTileEntity(blockAccess, x, y, z);
+            TEBase TE = getTileEntity(blockAccess, pos);
             if (TE != null) {
                 if (side == data.getDirection(TE).ordinal()) {
                     int tempPower = getPowerOutput(TE);
@@ -195,13 +197,13 @@ public class BlockSided extends BlockCoverable {
     /**
      * Ejects contained items into the world, and notifies neighbors of an update, as appropriate
      */
-    public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
+    public void breakBlock(World world, BlockPos pos, Block block, int metadata)
     {
         if (canProvidePower()) {
-            notifyBlocksOfPowerChange(world, x, y, z);
+            notifyBlocksOfPowerChange(world, pos);
         }
 
-        super.breakBlock(world, x, y, z, block, metadata);
+        super.breakBlock(world, pos, block, metadata);
     }
 
     /**
@@ -221,7 +223,7 @@ public class BlockSided extends BlockCoverable {
      * @param  side the side
      * @return whether side is supported
      */
-    public boolean canAttachToSide(int side)
+    public boolean canAttachToSide(EnumFacing side)
     {
         return true;
     }

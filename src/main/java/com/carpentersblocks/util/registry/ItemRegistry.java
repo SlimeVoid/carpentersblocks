@@ -1,18 +1,14 @@
 package com.carpentersblocks.util.registry;
 
+import com.carpentersblocks.item.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import com.carpentersblocks.item.ItemCarpentersBed;
-import com.carpentersblocks.item.ItemCarpentersChisel;
-import com.carpentersblocks.item.ItemCarpentersDoor;
-import com.carpentersblocks.item.ItemCarpentersHammer;
-import com.carpentersblocks.item.ItemCarpentersTile;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemRegistry {
 

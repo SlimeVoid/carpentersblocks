@@ -1,14 +1,8 @@
 package com.carpentersblocks.proxy;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import com.carpentersblocks.CarpentersBlocks;
 import com.carpentersblocks.entity.item.EntityCarpentersTile;
-import com.carpentersblocks.tileentity.TEBase;
-import com.carpentersblocks.tileentity.TECarpentersDaylightSensor;
-import com.carpentersblocks.tileentity.TECarpentersFlowerPot;
-import com.carpentersblocks.tileentity.TECarpentersSafe;
-import com.carpentersblocks.tileentity.TECarpentersTorch;
+import com.carpentersblocks.tileentity.*;
 import com.carpentersblocks.util.handler.DesignHandler;
 import com.carpentersblocks.util.handler.EventHandler;
 import com.carpentersblocks.util.handler.OverlayHandler;
@@ -20,6 +14,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 
 public class CommonProxy {
 

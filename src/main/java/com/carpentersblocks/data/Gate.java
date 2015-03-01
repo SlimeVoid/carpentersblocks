@@ -1,8 +1,8 @@
 package com.carpentersblocks.data;
 
+import com.carpentersblocks.tileentity.TEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import com.carpentersblocks.tileentity.TEBase;
 
 public class Gate {
 

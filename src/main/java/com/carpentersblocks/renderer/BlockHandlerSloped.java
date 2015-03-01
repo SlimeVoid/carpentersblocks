@@ -1,13 +1,11 @@
 package com.carpentersblocks.renderer;
 
-import static com.carpentersblocks.renderer.helper.VertexHelper.BOTTOM_LEFT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.BOTTOM_RIGHT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.TOP_LEFT;
-import static com.carpentersblocks.renderer.helper.VertexHelper.TOP_RIGHT;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
+import static com.carpentersblocks.renderer.helper.VertexHelper.*;
 
 @SideOnly(Side.CLIENT)
 public abstract class BlockHandlerSloped extends BlockHandlerBase {
