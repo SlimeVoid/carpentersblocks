@@ -21,7 +21,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
 
@@ -100,13 +100,13 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
         if (TE != null) {
             float yMin = data.isHost(TE) && data.isOpen(TE) ? 0.5F : 0.0F;
-            ForgeDirection dir = data.getDirection(TE);
+            EnumFacing dir = data.getDirection(TE);
 
             if (data.isVisible(TE)) {
                 if (data.getType(TE) == GarageDoor.TYPE_HIDDEN) {
@@ -123,7 +123,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * cleared to be reused)
      */
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, BlockPos pos)
     {
         TEBase TE = getTileEntity(world, x, y, z);
         if (TE != null) {
@@ -141,7 +141,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * x, y, z, startVec, endVec
      */
     @Override
-    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec)
+    public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3 startVec, Vec3 endVec)
     {
         TEBase TE = getTileEntity(world, x, y, z);
         if (TE != null) {
@@ -162,7 +162,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * @param z
      * @param dropSource whether player destroyed topmost block
      */
-    private void destroy(World world, int x, int y, int z, boolean doDrop)
+    private void destroy(World world, BlockPos pos, boolean doDrop)
     {
         if (!world.isRemote) {
             int baseY = data.getBottommost(world, x, y, z).yCoord;
@@ -187,9 +187,9 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * @param y
      * @param z
      */
-    private void create(TEBase TE, World world, EntityLivingBase entity, int x, int y, int z)
+    private void create(TEBase TE, World world, EntityLivingBase entity, BlockPos pos)
     {
-        ForgeDirection dir = data.getDirection(TE);
+        EnumFacing dir = data.getDirection(TE);
         int type = data.getType(TE);
         int state = data.getState(TE);
         int rigid = data.getRigidity(TE);
@@ -228,7 +228,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * returned no changes.
      */
     @Override
-    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         if (!data.isRigid(TE)) {
             int state = data.getState(TE) == GarageDoor.STATE_OPEN ? GarageDoor.STATE_CLOSED : GarageDoor.STATE_OPEN;
@@ -251,7 +251,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * @param z the z coordinate
      * @param propagate notify adjacent garage doors
      */
-    private void propagateChanges(TEBase TE, World world, int x, int y, int z, boolean notifyNeighbors)
+    private void propagateChanges(TEBase TE, World world, BlockPos pos, boolean notifyNeighbors)
     {
         int state = data.getState(TE);
         int type = data.getType(TE);
@@ -261,14 +261,14 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
 
             /* Propagate at level of top garage door only. */
 
-            ForgeDirection facing = data.getDirection(TE);
+            EnumFacing facing = data.getDirection(TE);
             int topY = data.getTopmost(world, x, y, z).yCoord;
             int propX = x;
             int propZ = z;
 
             /* Propagate in first direction. */
 
-            ForgeDirection dir = facing.getRotation(ForgeDirection.UP);
+            EnumFacing dir = facing.getRotation(EnumFacing.UP);
             do {
                 propX += dir.offsetX;
                 propZ += dir.offsetZ;
@@ -310,7 +310,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World world, BlockPos pos, Block block)
     {
         if (!world.isRemote) {
 
@@ -356,7 +356,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * @return True if the block is actually destroyed.
      */
     @Override
-    public boolean removedByPlayer(World world, EntityPlayer entityPlayer, int x, int y, int z)
+    public boolean removedByPlayer(World world, EntityPlayer entityPlayer, BlockPos pos)
     {
         if (!suppressDestroyBlock(entityPlayer)) {
             destroy(world, x, y, z, !entityPlayer.capabilities.isCreativeMode);
@@ -378,7 +378,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
      * @return A ArrayList containing all items this block drops
      */
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    public ArrayList<ItemStack> getDrops(World world, BlockPos pos, int metadata, int fortune)
     {
         ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 
@@ -395,16 +395,16 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
     /**
      * Checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
      */
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
     {
-        return world.isSideSolid(x, y + 1, z, ForgeDirection.DOWN);
+        return world.isSideSolid(x, y + 1, z, EnumFacing.DOWN);
     }
 
     /**
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
     @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    public boolean canPlaceBlockAt(World world, BlockPos pos)
     {
         if (super.canPlaceBlockAt(world, x, y, z)) {
             return canPlaceBlockOnSide(world, x, y, z, 0) || world.getBlock(x, y + 1, z).equals(this);
@@ -417,19 +417,19 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
         /* Set direction based on player facing only. */
 
-        ForgeDirection facing = EntityLivingUtil.getFacing(entityLiving).getOpposite();
+        EnumFacing facing = EntityLivingUtil.getFacing(entityLiving).getOpposite();
         data.setDirection(TE, facing);
         data.setHost(TE);
 
         /* Match type above or below block. */
 
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        for (EnumFacing dir : EnumFacing.VALID_DIRECTIONS) {
             if (world.getBlock(x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ).equals(this)) {
                 TEBase TE_adj = (TEBase) world.getTileEntity(x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ);
                 data.setType(TE, data.getType(TE_adj));
@@ -451,14 +451,14 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
     }
 
     @Override
-    public ForgeDirection[] getValidRotations(World worldObj, int x, int y,int z)
+    public EnumFacing[] getValidRotations(World worldObj, int x, int y,int z)
     {
-        ForgeDirection[] axises = {ForgeDirection.UP, ForgeDirection.DOWN};
+        EnumFacing[] axises = {EnumFacing.UP, EnumFacing.DOWN};
         return axises;
     }
 
     @Override
-    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         // to correctly support archimedes' ships mod:
         // if Axis is DOWN, block rotates to the left, north -> west -> south -> east
@@ -469,7 +469,7 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
         {
             TEBase cbTile = (TEBase)tile;
             int dataAngle = (cbTile.getData() & 0x70) >> 4;
-            ForgeDirection direction = ForgeDirection.getOrientation(dataAngle);
+            EnumFacing direction = EnumFacing.getOrientation(dataAngle);
             int newAngle = 0;
 
             switch (axis)
@@ -478,10 +478,10 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
                 {
                     switch (direction)
                     {
-                        case WEST:{newAngle = (cbTile.getData() & ~0x70) | (ForgeDirection.NORTH.ordinal() << 4); break;}
-                        case NORTH:{newAngle = (cbTile.getData() & ~0x70) | (ForgeDirection.EAST.ordinal() << 4); break;}
-                        case EAST:{newAngle = (cbTile.getData() & ~0x70) | (ForgeDirection.SOUTH.ordinal() << 4); break;}
-                        case SOUTH:{newAngle = (cbTile.getData() & ~0x70) | (ForgeDirection.WEST.ordinal() << 4); break;}
+                        case WEST:{newAngle = (cbTile.getData() & ~0x70) | (EnumFacing.NORTH.ordinal() << 4); break;}
+                        case NORTH:{newAngle = (cbTile.getData() & ~0x70) | (EnumFacing.EAST.ordinal() << 4); break;}
+                        case EAST:{newAngle = (cbTile.getData() & ~0x70) | (EnumFacing.SOUTH.ordinal() << 4); break;}
+                        case SOUTH:{newAngle = (cbTile.getData() & ~0x70) | (EnumFacing.WEST.ordinal() << 4); break;}
                         default: break;
                     }
                     cbTile.setData(newAngle);
@@ -491,10 +491,10 @@ public class BlockCarpentersGarageDoor extends BlockCoverable {
                 {
                     switch (direction)
                     {
-                        case WEST:{newAngle = (cbTile.getData() & ~0x70) | (ForgeDirection.SOUTH.ordinal() << 4); break;}
-                        case NORTH:{newAngle = (cbTile.getData() & ~0x70) | (ForgeDirection.EAST.ordinal() << 4); break;}
-                        case EAST:{newAngle = (cbTile.getData() & ~0x70) | (ForgeDirection.NORTH.ordinal() << 4); break;}
-                        case SOUTH:{newAngle = (cbTile.getData() & ~0x70) | (ForgeDirection.WEST.ordinal() << 4); break;}
+                        case WEST:{newAngle = (cbTile.getData() & ~0x70) | (EnumFacing.SOUTH.ordinal() << 4); break;}
+                        case NORTH:{newAngle = (cbTile.getData() & ~0x70) | (EnumFacing.EAST.ordinal() << 4); break;}
+                        case EAST:{newAngle = (cbTile.getData() & ~0x70) | (EnumFacing.NORTH.ordinal() << 4); break;}
+                        case SOUTH:{newAngle = (cbTile.getData() & ~0x70) | (EnumFacing.WEST.ordinal() << 4); break;}
                         default: break;
                     }
                     cbTile.setData(newAngle);

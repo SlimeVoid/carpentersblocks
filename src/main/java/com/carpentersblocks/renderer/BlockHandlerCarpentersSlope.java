@@ -24,7 +24,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -297,7 +297,7 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Renders side.
      */
-    protected void renderBaseSide(int x, int y, int z, int side, IIcon icon)
+    protected void renderBaseSide(BlockPos pos, int side, IIcon icon)
     {
         int slopeID = TE.getData();
 
@@ -472,7 +472,7 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Renders slope.
      */
-    public void renderBaseBlock(ItemStack itemStack, int x, int y, int z)
+    public void renderBaseBlock(ItemStack itemStack, BlockPos pos)
     {
         Slope slope = Slope.slopesList[TE.getData()];
 
@@ -517,22 +517,22 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
 
         /* Render non-sloped faces. */
 
-        if (slope.hasSide(ForgeDirection.DOWN) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x, y - 1, z, DOWN)) {
+        if (slope.hasSide(EnumFacing.DOWN) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x, y - 1, z, DOWN)) {
             prepareFaceYNeg(itemStack, slope, x, y, z);
         }
-        if (slope.hasSide(ForgeDirection.UP) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x, y + 1, z, UP)) {
+        if (slope.hasSide(EnumFacing.UP) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x, y + 1, z, UP)) {
             prepareFaceYPos(itemStack, slope, x, y, z);
         }
-        if (slope.hasSide(ForgeDirection.NORTH) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x, y, z - 1, NORTH)) {
+        if (slope.hasSide(EnumFacing.NORTH) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x, y, z - 1, NORTH)) {
             prepareFaceZNeg(itemStack, slope, x, y, z);
         }
-        if (slope.hasSide(ForgeDirection.SOUTH) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x, y, z + 1, SOUTH)) {
+        if (slope.hasSide(EnumFacing.SOUTH) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x, y, z + 1, SOUTH)) {
             prepareFaceZPos(itemStack, slope, x, y, z);
         }
-        if (slope.hasSide(ForgeDirection.WEST) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x - 1, y, z, WEST)) {
+        if (slope.hasSide(EnumFacing.WEST) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x - 1, y, z, WEST)) {
             prepareFaceXNeg(itemStack, slope, x, y, z);
         }
-        if (slope.hasSide(ForgeDirection.EAST) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x + 1, y, z, EAST)) {
+        if (slope.hasSide(EnumFacing.EAST) && srcBlock.shouldSideBeRendered(TE.getWorldObj(), x + 1, y, z, EAST)) {
             prepareFaceXPos(itemStack, slope, x, y, z);
         }
 
@@ -550,7 +550,7 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Will set lighting and render prism sloped faces.
      */
-    private void preparePrism(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void preparePrism(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         int POINT_N = 0;
         int POINT_S = 1;
@@ -561,16 +561,16 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
 
         /* Add prism pieces. */
 
-        if (slope.facings.contains(ForgeDirection.NORTH)) {
+        if (slope.facings.contains(EnumFacing.NORTH)) {
             pieceList.add(POINT_N);
         }
-        if (slope.facings.contains(ForgeDirection.SOUTH)) {
+        if (slope.facings.contains(EnumFacing.SOUTH)) {
             pieceList.add(POINT_S);
         }
-        if (slope.facings.contains(ForgeDirection.WEST)) {
+        if (slope.facings.contains(EnumFacing.WEST)) {
             pieceList.add(POINT_W);
         }
-        if (slope.facings.contains(ForgeDirection.EAST)) {
+        if (slope.facings.contains(EnumFacing.EAST)) {
             pieceList.add(POINT_E);
         }
 
@@ -674,7 +674,7 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Will set lighting and render prism wedge sloped faces.
      */
-    private void preparePrismWedge(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void preparePrismWedge(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         switch (slope.slopeID) {
             case Slope.ID_PRISM_WEDGE_POS_N:
@@ -770,8 +770,8 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
 
         World world = TE.getWorldObj();
 
-        boolean solid_YP = world.isSideSolid(TE.xCoord, TE.yCoord + 1, TE.zCoord, ForgeDirection.DOWN);
-        boolean solid_YN = world.isSideSolid(TE.xCoord, TE.yCoord - 1, TE.zCoord, ForgeDirection.UP);
+        boolean solid_YP = world.isSideSolid(TE.xCoord, TE.yCoord + 1, TE.zCoord, EnumFacing.DOWN);
+        boolean solid_YN = world.isSideSolid(TE.xCoord, TE.yCoord - 1, TE.zCoord, EnumFacing.UP);
 
         switch (slope.slopeID) {
             case Slope.ID_WEDGE_NW:
@@ -1005,87 +1005,87 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
         }
     }
 
-    private void prepareHorizontalWedge(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareHorizontalWedge(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         VertexHelper.startDrawing(GL11.GL_QUADS);
 
         setWedgeLighting(itemStack, slope);
 
-        if (slope.facings.contains(ForgeDirection.NORTH)) {
+        if (slope.facings.contains(EnumFacing.NORTH)) {
             setIDAndRender(itemStack, WEDGE_SLOPED_ZN, x, y, z, EAST);
         } else {
             setIDAndRender(itemStack, WEDGE_SLOPED_ZP, x, y, z, WEST);
         }
     }
 
-    private void prepareVerticalWedge(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareVerticalWedge(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         VertexHelper.startDrawing(GL11.GL_QUADS);
 
         setWedgeLighting(itemStack, slope);
 
-        if (slope.facings.contains(ForgeDirection.NORTH)) {
+        if (slope.facings.contains(EnumFacing.NORTH)) {
             setIDAndRender(itemStack, WEDGE_SLOPED_ZN, x, y, z, NORTH);
-        } else if (slope.facings.contains(ForgeDirection.SOUTH)) {
+        } else if (slope.facings.contains(EnumFacing.SOUTH)) {
             setIDAndRender(itemStack, WEDGE_SLOPED_ZP, x, y, z, SOUTH);
-        } else if (slope.facings.contains(ForgeDirection.WEST)) {
+        } else if (slope.facings.contains(EnumFacing.WEST)) {
             setIDAndRender(itemStack, WEDGE_SLOPED_XN, x, y, z, WEST);
-        } else { // ForgeDirection.EAST
+        } else { // EnumFacing.EAST
             setIDAndRender(itemStack, WEDGE_SLOPED_XP, x, y, z, EAST);
         }
     }
 
-    private void prepareWedgeIntCorner(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareWedgeIntCorner(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         VertexHelper.startDrawing(GL11.GL_TRIANGLES);
 
-        Slope slopeX = slope.facings.contains(ForgeDirection.WEST) ? slope.isPositive ? Slope.WEDGE_POS_W : Slope.WEDGE_NEG_W : slope.isPositive ? Slope.WEDGE_POS_E : Slope.WEDGE_NEG_E;
+        Slope slopeX = slope.facings.contains(EnumFacing.WEST) ? slope.isPositive ? Slope.WEDGE_POS_W : Slope.WEDGE_NEG_W : slope.isPositive ? Slope.WEDGE_POS_E : Slope.WEDGE_NEG_E;
 
         setWedgeLighting(itemStack, slopeX);
 
-        if (slopeX.facings.contains(ForgeDirection.WEST)) {
+        if (slopeX.facings.contains(EnumFacing.WEST)) {
             setIDAndRender(itemStack, WEDGE_CORNER_SLOPED_XN, x, y, z, WEST);
-        } else { // ForgeDirection.EAST
+        } else { // EnumFacing.EAST
             setIDAndRender(itemStack, WEDGE_CORNER_SLOPED_XP, x, y, z, EAST);
         }
 
-        Slope slopeZ = slope.facings.contains(ForgeDirection.NORTH) ? slope.isPositive ? Slope.WEDGE_POS_N : Slope.WEDGE_NEG_N : slope.isPositive ? Slope.WEDGE_POS_S : Slope.WEDGE_NEG_S;
+        Slope slopeZ = slope.facings.contains(EnumFacing.NORTH) ? slope.isPositive ? Slope.WEDGE_POS_N : Slope.WEDGE_NEG_N : slope.isPositive ? Slope.WEDGE_POS_S : Slope.WEDGE_NEG_S;
 
         setWedgeLighting(itemStack, slopeZ);
 
-        if (slope.facings.contains(ForgeDirection.NORTH)) {
+        if (slope.facings.contains(EnumFacing.NORTH)) {
             setIDAndRender(itemStack, WEDGE_CORNER_SLOPED_ZN, x, y, z, NORTH);
         } else {
             setIDAndRender(itemStack, WEDGE_CORNER_SLOPED_ZP, x, y, z, SOUTH);
         }
     }
 
-    private void prepareWedgeExtCorner(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareWedgeExtCorner(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         VertexHelper.startDrawing(GL11.GL_TRIANGLES);
 
-        Slope slopeX = slope.facings.contains(ForgeDirection.WEST) ? slope.isPositive ? Slope.WEDGE_POS_W : Slope.WEDGE_NEG_W : slope.isPositive ? Slope.WEDGE_POS_E : Slope.WEDGE_NEG_E;
+        Slope slopeX = slope.facings.contains(EnumFacing.WEST) ? slope.isPositive ? Slope.WEDGE_POS_W : Slope.WEDGE_NEG_W : slope.isPositive ? Slope.WEDGE_POS_E : Slope.WEDGE_NEG_E;
 
         setWedgeLighting(itemStack, slopeX);
 
-        if (slopeX.facings.contains(ForgeDirection.WEST)) {
+        if (slopeX.facings.contains(EnumFacing.WEST)) {
             setIDAndRender(itemStack, WEDGE_CORNER_SLOPED_XN, x, y, z, WEST);
-        } else { // ForgeDirection.EAST
+        } else { // EnumFacing.EAST
             setIDAndRender(itemStack, WEDGE_CORNER_SLOPED_XP, x, y, z, EAST);
         }
 
-        Slope slopeZ = slope.facings.contains(ForgeDirection.NORTH) ? slope.isPositive ? Slope.WEDGE_POS_N : Slope.WEDGE_NEG_N : slope.isPositive ? Slope.WEDGE_POS_S : Slope.WEDGE_NEG_S;
+        Slope slopeZ = slope.facings.contains(EnumFacing.NORTH) ? slope.isPositive ? Slope.WEDGE_POS_N : Slope.WEDGE_NEG_N : slope.isPositive ? Slope.WEDGE_POS_S : Slope.WEDGE_NEG_S;
 
         setWedgeLighting(itemStack, slopeZ);
 
-        if (slope.facings.contains(ForgeDirection.NORTH)) {
+        if (slope.facings.contains(EnumFacing.NORTH)) {
             setIDAndRender(itemStack, WEDGE_CORNER_SLOPED_ZN, x, y, z, NORTH);
         } else {
             setIDAndRender(itemStack, WEDGE_CORNER_SLOPED_ZP, x, y, z, SOUTH);
         }
     }
 
-    private void prepareObliqueIntCorner(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareObliqueIntCorner(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         VertexHelper.startDrawing(GL11.GL_TRIANGLES);
 
@@ -1094,8 +1094,8 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
 
         World world = TE.getWorldObj();
 
-        boolean solid_YP = world.isSideSolid(TE.xCoord, TE.yCoord + 1, TE.zCoord, ForgeDirection.DOWN);
-        boolean solid_YN = world.isSideSolid(TE.xCoord, TE.yCoord - 1, TE.zCoord, ForgeDirection.UP);
+        boolean solid_YP = world.isSideSolid(TE.xCoord, TE.yCoord + 1, TE.zCoord, EnumFacing.DOWN);
+        boolean solid_YN = world.isSideSolid(TE.xCoord, TE.yCoord - 1, TE.zCoord, EnumFacing.UP);
 
         if (renderBlocks.enableAO) {
 
@@ -1201,7 +1201,7 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
         }
     }
 
-    private void prepareObliqueExtCorner(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareObliqueExtCorner(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         VertexHelper.startDrawing(GL11.GL_TRIANGLES);
 
@@ -1210,8 +1210,8 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
 
         World world = TE.getWorldObj();
 
-        boolean solid_YP = world.isSideSolid(TE.xCoord, TE.yCoord + 1, TE.zCoord, ForgeDirection.DOWN);
-        boolean solid_YN = world.isSideSolid(TE.xCoord, TE.yCoord - 1, TE.zCoord, ForgeDirection.UP);
+        boolean solid_YP = world.isSideSolid(TE.xCoord, TE.yCoord + 1, TE.zCoord, EnumFacing.DOWN);
+        boolean solid_YN = world.isSideSolid(TE.xCoord, TE.yCoord - 1, TE.zCoord, EnumFacing.UP);
 
         if (renderBlocks.enableAO) {
 
@@ -1322,12 +1322,12 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Prepare bottom face.
      */
-    private void prepareFaceYNeg(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareFaceYNeg(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         lightingHelper.setupLightingYNeg(itemStack, x, y, z);
 
-        switch (slope.getFace(ForgeDirection.DOWN)) {
+        switch (slope.getFace(EnumFacing.DOWN)) {
             case WEDGE:
                 VertexHelper.startDrawing(GL11.GL_TRIANGLES);
                 setIDAndRender(itemStack, WEDGE_YN, x, y, z, DOWN);
@@ -1342,12 +1342,12 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Prepare top face.
      */
-    private void prepareFaceYPos(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareFaceYPos(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         lightingHelper.setupLightingYPos(itemStack, x, y, z);
 
-        switch (slope.getFace(ForgeDirection.UP)) {
+        switch (slope.getFace(EnumFacing.UP)) {
             case WEDGE:
                 VertexHelper.startDrawing(GL11.GL_TRIANGLES);
                 setIDAndRender(itemStack, WEDGE_YP, x, y, z, UP);
@@ -1362,12 +1362,12 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Prepare North face.
      */
-    private void prepareFaceZNeg(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareFaceZNeg(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         lightingHelper.setupLightingZNeg(itemStack, x, y, z);
 
-        switch (slope.getFace(ForgeDirection.NORTH)) {
+        switch (slope.getFace(EnumFacing.NORTH)) {
             case WEDGE:
                 VertexHelper.startDrawing(GL11.GL_TRIANGLES);
                 setIDAndRender(itemStack, WEDGE_ZN, x, y, z, NORTH);
@@ -1394,12 +1394,12 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Prepare South face.
      */
-    private void prepareFaceZPos(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareFaceZPos(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         lightingHelper.setupLightingZPos(itemStack, x, y, z);
 
-        switch (slope.getFace(ForgeDirection.SOUTH)) {
+        switch (slope.getFace(EnumFacing.SOUTH)) {
             case WEDGE:
                 VertexHelper.startDrawing(GL11.GL_TRIANGLES);
                 setIDAndRender(itemStack, WEDGE_ZP, x, y, z, SOUTH);
@@ -1426,12 +1426,12 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Prepare West face.
      */
-    private void prepareFaceXNeg(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareFaceXNeg(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         lightingHelper.setupLightingXNeg(itemStack, x, y, z);
 
-        switch (slope.getFace(ForgeDirection.WEST)) {
+        switch (slope.getFace(EnumFacing.WEST)) {
             case WEDGE:
                 VertexHelper.startDrawing(GL11.GL_TRIANGLES);
                 setIDAndRender(itemStack, WEDGE_XN, x, y, z, WEST);
@@ -1458,12 +1458,12 @@ public class BlockHandlerCarpentersSlope extends BlockHandlerSloped {
     /**
      * Prepare East face.
      */
-    private void prepareFaceXPos(ItemStack itemStack, Slope slope, int x, int y, int z)
+    private void prepareFaceXPos(ItemStack itemStack, Slope slope, BlockPos pos)
     {
         renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         lightingHelper.setupLightingXPos(itemStack, x, y, z);
 
-        switch (slope.getFace(ForgeDirection.EAST)) {
+        switch (slope.getFace(EnumFacing.EAST)) {
             case WEDGE:
                 VertexHelper.startDrawing(GL11.GL_TRIANGLES);
                 setIDAndRender(itemStack, WEDGE_XP, x, y, z, EAST);

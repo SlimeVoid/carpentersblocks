@@ -17,7 +17,7 @@ public class TilePacket implements ICarpentersPacket {
     /**
      * Creates a packet that passes x, y, z coordinates.
      */
-    public TilePacket(int x, int y, int z)
+    public TilePacket(BlockPos pos)
     {
         this.x = x;
         this.y = y;

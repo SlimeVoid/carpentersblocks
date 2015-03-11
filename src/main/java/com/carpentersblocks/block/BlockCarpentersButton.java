@@ -47,7 +47,7 @@ public class BlockCarpentersButton extends BlockSided {
      * cleared to be reused)
      */
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, BlockPos pos)
     {
         return null;
     }
@@ -56,7 +56,7 @@ public class BlockCarpentersButton extends BlockSided {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -69,7 +69,7 @@ public class BlockCarpentersButton extends BlockSided {
     /**
      * Called upon block activation (right click on the block.)
      */
-    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         if (!isDepressed(TE)) {
             World world = TE.getWorldObj();
@@ -85,7 +85,7 @@ public class BlockCarpentersButton extends BlockSided {
     /**
      * Ejects contained items into the world, and notifies neighbours of an update, as appropriate
      */
-    public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
+    public void breakBlock(World world, BlockPos pos, Block block, int metadata)
     {
         TEBase TE = getSimpleTileEntity(world, x, y, z);
 
@@ -134,7 +134,7 @@ public class BlockCarpentersButton extends BlockSided {
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World world, int x, int y, int z, Random random)
+    public void updateTick(World world, BlockPos pos, Random random)
     {
         if (!world.isRemote) {
             TEBase TE = getTileEntity(world, x, y, z);

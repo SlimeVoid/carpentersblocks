@@ -11,14 +11,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersBed extends BlockHandlerBase {
 
     private IIcon[] icon_design;
 
-    private ForgeDirection dir;
+    private EnumFacing dir;
     private boolean isHead;
     private boolean hasDesign;
     private boolean bedParallelNeg;
@@ -64,7 +64,7 @@ public class BlockHandlerCarpentersBed extends BlockHandlerBase {
     /**
      * Renders bed
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 
@@ -128,7 +128,7 @@ public class BlockHandlerCarpentersBed extends BlockHandlerBase {
     /**
      * Renders fabric components of bed.
      */
-    private void renderFabricComponents(ItemStack itemStack, int x, int y, int z)
+    private void renderFabricComponents(ItemStack itemStack, BlockPos pos)
     {
         suppressDyeColor = true;
         suppressOverlay = true;
@@ -149,7 +149,7 @@ public class BlockHandlerCarpentersBed extends BlockHandlerBase {
     /**
      * Renders pillow.
      */
-    private void renderPillow(ItemStack itemStack, int x, int y, int z)
+    private void renderPillow(ItemStack itemStack, BlockPos pos)
     {
         if (isHead) {
             IIcon icon_pillow = hasDesign ? icon_design[0] : IconRegistry.icon_bed_pillow;
@@ -162,7 +162,7 @@ public class BlockHandlerCarpentersBed extends BlockHandlerBase {
     /**
      * Renders blanket.
      */
-    private void renderBlanket(ItemStack itemStack, int x, int y, int z)
+    private void renderBlanket(ItemStack itemStack, BlockPos pos)
     {
         VertexHelper.setFloatingIconLock();
 
@@ -225,7 +225,7 @@ public class BlockHandlerCarpentersBed extends BlockHandlerBase {
     /**
      * Renders mattress.
      */
-    private void renderMattress(ItemStack itemStack, int x, int y, int z)
+    private void renderMattress(ItemStack itemStack, BlockPos pos)
     {
         itemStack.setItemDamage(0);
 
@@ -251,7 +251,7 @@ public class BlockHandlerCarpentersBed extends BlockHandlerBase {
     /**
      * Renders normal bed frame.
      */
-    private void renderNormalFrame(ItemStack itemStack, int x, int y, int z)
+    private void renderNormalFrame(ItemStack itemStack, BlockPos pos)
     {
         /* Render components that cannot easily be rotated */
 

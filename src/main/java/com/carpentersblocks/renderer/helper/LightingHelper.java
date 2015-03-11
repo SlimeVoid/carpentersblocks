@@ -163,7 +163,7 @@ public class LightingHelper {
      * @see    {@link ShadersHandler}
      * @return a float array with rgb values
      */
-    public void setupColor(int x, int y, int z, int side, int hexColor, IIcon icon)
+    public void setupColor(BlockPos pos, int side, int hexColor, IIcon icon)
     {
         Tessellator tessellator = Tessellator.instance;
         float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side];
@@ -287,7 +287,7 @@ public class LightingHelper {
      * @param  z the z coordinate
      * @return the {@link LightingHelper}
      */
-    public LightingHelper setupLightingYNeg(ItemStack itemStack, int x, int y, int z)
+    public LightingHelper setupLightingYNeg(ItemStack itemStack, BlockPos pos)
     {
         Block block = BlockProperties.toBlock(itemStack);
         int y_offset = renderBlocks.renderMinY > 0.0F ? y : y - 1;
@@ -361,7 +361,7 @@ public class LightingHelper {
      * @param  z the z coordinate
      * @return the {@link LightingHelper}
      */
-    public LightingHelper setupLightingYPos(ItemStack itemStack, int x, int y, int z)
+    public LightingHelper setupLightingYPos(ItemStack itemStack, BlockPos pos)
     {
         Block block = BlockProperties.toBlock(itemStack);
         int y_offset = renderBlocks.renderMaxY < 1.0F ? y : y + 1;
@@ -434,7 +434,7 @@ public class LightingHelper {
      * @param  z the z coordinate
      * @return the {@link LightingHelper}
      */
-    public LightingHelper setupLightingZNeg(ItemStack itemStack, int x, int y, int z)
+    public LightingHelper setupLightingZNeg(ItemStack itemStack, BlockPos pos)
     {
         Block block = BlockProperties.toBlock(itemStack);
         int z_offset = renderBlocks.renderMinZ > 0.0F ? z : z - 1;
@@ -508,7 +508,7 @@ public class LightingHelper {
      * @param  z the z coordinate
      * @return the {@link LightingHelper}
      */
-    public LightingHelper setupLightingZPos(ItemStack itemStack, int x, int y, int z)
+    public LightingHelper setupLightingZPos(ItemStack itemStack, BlockPos pos)
     {
         Block block = BlockProperties.toBlock(itemStack);
         int z_offset = renderBlocks.renderMaxZ < 1.0F ? z : z + 1;
@@ -581,7 +581,7 @@ public class LightingHelper {
      * @param  z the z coordinate
      * @return the {@link LightingHelper}
      */
-    public LightingHelper setupLightingXNeg(ItemStack itemStack, int x, int y, int z)
+    public LightingHelper setupLightingXNeg(ItemStack itemStack, BlockPos pos)
     {
         Block block = BlockProperties.toBlock(itemStack);
         int x_offset = renderBlocks.renderMinX > 0.0F ? x : x - 1;
@@ -655,7 +655,7 @@ public class LightingHelper {
      * @param  z the z coordinate
      * @return the {@link LightingHelper}
      */
-    public LightingHelper setupLightingXPos(ItemStack itemStack, int x, int y, int z)
+    public LightingHelper setupLightingXPos(ItemStack itemStack, BlockPos pos)
     {
         Block block = BlockProperties.toBlock(itemStack);
         int x_offset = renderBlocks.renderMaxX < 1.0F ? x : x + 1;

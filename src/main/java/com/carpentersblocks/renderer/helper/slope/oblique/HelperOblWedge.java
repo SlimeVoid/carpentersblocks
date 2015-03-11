@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class HelperOblWedge extends RenderHelper {
@@ -16,7 +16,7 @@ public class HelperOblWedge extends RenderHelper {
      */
     public static void renderSlopeZNeg(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         switch (slopeID) {
             case Slope.ID_WEDGE_POS_N:
@@ -51,7 +51,7 @@ public class HelperOblWedge extends RenderHelper {
      */
     public static void renderSlopeZPos(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.SOUTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.SOUTH, x, y, z, icon);
 
         switch (slopeID) {
             case Slope.ID_WEDGE_POS_S:
@@ -86,7 +86,7 @@ public class HelperOblWedge extends RenderHelper {
      */
     public static void renderSlopeXNeg(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.WEST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.WEST, x, y, z, icon);
 
         switch (slopeID) {
             case Slope.ID_WEDGE_POS_W:
@@ -109,7 +109,7 @@ public class HelperOblWedge extends RenderHelper {
      */
     public static void renderSlopeXPos(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.EAST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.EAST, x, y, z, icon);
 
         switch (slopeID) {
             case Slope.ID_WEDGE_POS_E:

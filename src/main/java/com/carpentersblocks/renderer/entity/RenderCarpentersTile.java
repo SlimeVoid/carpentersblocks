@@ -34,7 +34,7 @@ public class RenderCarpentersTile extends Render {
         GL11.glPopMatrix();
     }
 
-    private void render(EntityCarpentersTile entity, int x, int y, int z)
+    private void render(EntityCarpentersTile entity, BlockPos pos)
     {
         RenderBlocks renderBlocks = RenderBlocks.getInstance();
         Tessellator tessellator = Tessellator.instance;

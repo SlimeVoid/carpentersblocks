@@ -7,6 +7,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 
 public class TECarpentersSafe extends TEBase implements ISidedInventory {
 
@@ -27,26 +30,16 @@ public class TECarpentersSafe extends TEBase implements ISidedInventory {
 
     @Override
     /**
-     * Determines if this TileEntity requires update calls.
-     * @return True if you want updateEntity() to be called, false if not
-     */
-    public boolean canUpdate()
-    {
-        return true;
-    }
-
-    @Override
-    /**
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void update()
     {
         if (!worldObj.isRemote) {
             if (++tickCount >= 20 || forceEntityUpdate) {
                 tickCount = 0;
                 if (contentsChanged) {
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    this.getWorld().markBlockForUpdate(this.getPos());
                     contentsChanged = forceEntityUpdate = false;
                 }
             }
@@ -188,21 +181,21 @@ public class TECarpentersSafe extends TEBase implements ISidedInventory {
     @Override
     public boolean isUseableByPlayer(EntityPlayer entityPlayer)
     {
-        if (worldObj.getTileEntity(xCoord, yCoord, zCoord).equals(this)) {
-            return entityPlayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D;
+        if (worldObj.getTileEntity(this.getPos()).equals(this)) {
+            return entityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
         }
 
         return false;
     }
 
     @Override
-    public void openInventory()
+    public void openInventory(EntityPlayer entityplayer)
     {
         Safe.setState(this, Safe.STATE_OPEN);
     }
 
     @Override
-    public void closeInventory()
+    public void closeInventory(EntityPlayer entityplayer)
     {
         Safe.setState(this, Safe.STATE_CLOSED);
 
@@ -211,13 +204,13 @@ public class TECarpentersSafe extends TEBase implements ISidedInventory {
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
         return "tile.blockCarpentersSafe.name";
     }
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return false;
     }
@@ -229,7 +222,7 @@ public class TECarpentersSafe extends TEBase implements ISidedInventory {
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         int sizeInventory = getSizeInventory();
         int[] accessibleSlots = new int[sizeInventory];
@@ -242,15 +235,15 @@ public class TECarpentersSafe extends TEBase implements ISidedInventory {
     }
 
     @Override
-    public boolean canInsertItem(int slot, ItemStack itemStack, int side)
+    public boolean canInsertItem(int slot, ItemStack itemStack, EnumFacing side)
     {
-        return Safe.allowsInsertion(this) && Safe.getFacing(this).ordinal() != side;
+        return Safe.allowsInsertion(this) && Safe.getFacing(this) != side;
     }
 
     @Override
-    public boolean canExtractItem(int slot, ItemStack itemStack, int side)
+    public boolean canExtractItem(int slot, ItemStack itemStack, EnumFacing side)
     {
-        return Safe.allowsExtraction(this) && Safe.getFacing(this).ordinal() != side;
+        return Safe.allowsExtraction(this) && Safe.getFacing(this) != side;
     }
 
     @Override
@@ -259,4 +252,28 @@ public class TECarpentersSafe extends TEBase implements ISidedInventory {
         return true;
     }
 
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return new ChatComponentTranslation(this.getName());
+    }
 }

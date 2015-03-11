@@ -248,7 +248,7 @@ public class EventHandler {
      * @param  z the z coordinate
      * @return an approximate {@link TEBase} used for producing a sound
      */
-    private TEBase getApproximateSoundOrigin(World world, int x, int y, int z)
+    private TEBase getApproximateSoundOrigin(World world, BlockPos pos)
     {
         // Try origin first
         TileEntity TE = world.getTileEntity(x, y, z);

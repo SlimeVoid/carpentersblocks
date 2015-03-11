@@ -2,7 +2,7 @@ package com.carpentersblocks.util.slope;
 
 import com.carpentersblocks.data.Slope;
 import com.carpentersblocks.util.registry.FeatureRegistry;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class SlopeUtil {
 
@@ -320,22 +320,22 @@ public class SlopeUtil {
                                     return null;
                                 }
                             case 2:
-                                if (slope.facings.contains(ForgeDirection.NORTH)) {
+                                if (slope.facings.contains(EnumFacing.NORTH)) {
                                     return new float[] { zeroOffset * 0.5F, 0.0F, 0.0F, 1.0F - zeroOffset * 0.5F, oneOffset * 0.5F, 0.5F };
                                 }
                                 break;
                             case 3:
-                                if (slope.facings.contains(ForgeDirection.SOUTH)) {
+                                if (slope.facings.contains(EnumFacing.SOUTH)) {
                                     return new float[] { zeroOffset * 0.5F, 0.0F, 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset * 0.5F, 1.0F };
                                 }
                                 break;
                             case 4:
-                                if (slope.facings.contains(ForgeDirection.WEST)) {
+                                if (slope.facings.contains(EnumFacing.WEST)) {
                                     return new float[] { 0.0F, 0.0F, zeroOffset * 0.5F, 0.5F, oneOffset * 0.5F, 1.0F - zeroOffset * 0.5F };
                                 }
                                 break;
                             case 5:
-                                if (slope.facings.contains(ForgeDirection.EAST)) {
+                                if (slope.facings.contains(EnumFacing.EAST)) {
                                     return new float[] { 0.5F, 0.0F, zeroOffset * 0.5F, 1.0F, oneOffset * 0.5F, 1.0F - zeroOffset * 0.5F };
                                 }
                                 break;

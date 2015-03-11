@@ -9,14 +9,14 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersLadder extends BlockHandlerBase {
 
     private Ladder data = new Ladder();
     private ItemStack iron = new ItemStack(Blocks.iron_block);
-    private ForgeDirection dir;
+    private EnumFacing dir;
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderBlocks)
@@ -44,7 +44,7 @@ public class BlockHandlerCarpentersLadder extends BlockHandlerBase {
     /**
      * Renders ladder.
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 
@@ -78,7 +78,7 @@ public class BlockHandlerCarpentersLadder extends BlockHandlerBase {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    public void renderTypeDefaultClassic(ItemStack itemStack, int x, int y, int z)
+    public void renderTypeDefaultClassic(ItemStack itemStack, BlockPos pos)
     {
         double xLow = 0.0D;
         double xHigh = 1.0D;
@@ -263,13 +263,13 @@ public class BlockHandlerCarpentersLadder extends BlockHandlerBase {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    public void renderTypeDefault(ItemStack itemStack, int x, int y, int z)
+    public void renderTypeDefault(ItemStack itemStack, BlockPos pos)
     {
-        ForgeDirection axisDir = ForgeDirection.SOUTH;
+        EnumFacing axisDir = EnumFacing.SOUTH;
 
         switch (dir) {
             case DOWN: // DIR_ON_X
-                axisDir = ForgeDirection.WEST;
+                axisDir = EnumFacing.WEST;
             case UP: // DIR_ON_Z
                 renderBlockWithRotation(itemStack, x, y, z, 0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.125D, axisDir);
                 renderBlockWithRotation(itemStack, x, y, z, 0.375D, 0.0D, 0.875D, 0.625D, 1.0D, 1.0D, axisDir);
@@ -297,13 +297,13 @@ public class BlockHandlerCarpentersLadder extends BlockHandlerBase {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    public void renderTypeRail(ItemStack itemStack, int x, int y, int z)
+    public void renderTypeRail(ItemStack itemStack, BlockPos pos)
     {
-        ForgeDirection axisDir = ForgeDirection.SOUTH;
+        EnumFacing axisDir = EnumFacing.SOUTH;
 
         switch (dir) {
             case DOWN: // DIR_ON_X
-                axisDir = ForgeDirection.WEST;
+                axisDir = EnumFacing.WEST;
             case UP: // DIR_ON_Z
                 renderBlockWithRotation(iron, x, y, z, 0.3125D, 0.0D, 0.1875D, 0.375D, 1.0D, 0.25D, axisDir);
                 renderBlockWithRotation(iron, x, y, z, 0.3125D, 0.0D, 0.1875D, 0.375D, 1.0D, 0.25D, axisDir.getOpposite());
@@ -339,13 +339,13 @@ public class BlockHandlerCarpentersLadder extends BlockHandlerBase {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    public void renderTypePole(ItemStack itemStack, int x, int y, int z)
+    public void renderTypePole(ItemStack itemStack, BlockPos pos)
     {
-        ForgeDirection axisDir = ForgeDirection.SOUTH;
+        EnumFacing axisDir = EnumFacing.SOUTH;
 
         switch (dir) {
             case DOWN: // DIR_ON_X
-                axisDir = ForgeDirection.WEST;
+                axisDir = EnumFacing.WEST;
             case UP: // DIR_ON_Z
                 renderBlockWithRotation(itemStack, x, y, z, 0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D); // Pole
                 renderBlockWithRotation(itemStack, x, y, z, 0.4375D, 0.125D, 0.625D, 0.5625D, 0.1875D, 0.9375D, axisDir);

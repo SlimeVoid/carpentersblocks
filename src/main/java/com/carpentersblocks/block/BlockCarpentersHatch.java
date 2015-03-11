@@ -24,7 +24,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
@@ -100,7 +100,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
     /**
      * Called upon block activation (right click on the block.)
      */
-    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         if (!activationRequiresRedstone(TE)) {
             Hatch.setState(TE, Hatch.getState(TE) == Hatch.STATE_CLOSED ? Hatch.STATE_OPEN : Hatch.STATE_CLOSED);
@@ -120,7 +120,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -169,7 +169,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
      * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
      * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
      */
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisAlignedBB, List list, Entity entity)
+    public void addCollisionBoxesToList(World world, BlockPos pos, AxisAlignedBB axisAlignedBB, List list, Entity entity)
     {
         setBlockBoundsBasedOnState(world, x, y, z);
         super.addCollisionBoxesToList(world, x, y, z, axisAlignedBB, list, entity);
@@ -180,7 +180,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World world, BlockPos pos, Block block)
     {
         if (!world.isRemote) {
 
@@ -209,7 +209,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
                         break;
                 }
 
-                if (!(isValidSupportBlock(world, x, y, z, world.getBlock(xOffset, y, zOffset)) || world.getBlock(xOffset, y, zOffset).isSideSolid(world, xOffset, y, zOffset, ForgeDirection.getOrientation(dir + 2)))) {
+                if (!(isValidSupportBlock(world, x, y, z, world.getBlock(xOffset, y, zOffset)) || world.getBlock(xOffset, y, zOffset).isSideSolid(world, xOffset, y, zOffset, EnumFacing.getOrientation(dir + 2)))) {
                     findNextSideSupportBlock(TE, world, x, y, z);
                 }
 
@@ -232,7 +232,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
      * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
      * x, y, z, startVec, endVec
      */
-    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec)
+    public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3 startVec, Vec3 endVec)
     {
         setBlockBoundsBasedOnState(world, x, y, z);
         return super.collisionRayTrace(world, x, y, z, startVec, endVec);
@@ -242,7 +242,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
     /**
      * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
      */
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
+    public int onBlockPlaced(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int metadata)
     {
         int initData = 0;
 
@@ -263,7 +263,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
      * Called when the block is placed in the world.
      * Uses cardinal direction to adjust metadata if player clicks top or bottom face of block.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -286,17 +286,17 @@ public class BlockCarpentersHatch extends BlockCoverable {
     /**
      * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
      */
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
     {
         switch (side) {
             case 2:
-                return isValidSupportBlock(world, x, y, z, world.getBlock(x, y, z + 1)) || world.getBlock(x, y, z + 1).isSideSolid(world, x, y, z + 1, ForgeDirection.getOrientation(ForgeDirection.OPPOSITES[3]));
+                return isValidSupportBlock(world, x, y, z, world.getBlock(x, y, z + 1)) || world.getBlock(x, y, z + 1).isSideSolid(world, x, y, z + 1, EnumFacing.getOrientation(EnumFacing.OPPOSITES[3]));
             case 3:
-                return isValidSupportBlock(world, x, y, z, world.getBlock(x, y, z - 1)) || world.getBlock(x, y, z - 1).isSideSolid(world, x, y, z - 1, ForgeDirection.getOrientation(ForgeDirection.OPPOSITES[2]));
+                return isValidSupportBlock(world, x, y, z, world.getBlock(x, y, z - 1)) || world.getBlock(x, y, z - 1).isSideSolid(world, x, y, z - 1, EnumFacing.getOrientation(EnumFacing.OPPOSITES[2]));
             case 4:
-                return isValidSupportBlock(world, x, y, z, world.getBlock(x + 1, y, z)) || world.getBlock(x + 1, y, z).isSideSolid(world, x + 1, y, z, ForgeDirection.getOrientation(ForgeDirection.OPPOSITES[5]));
+                return isValidSupportBlock(world, x, y, z, world.getBlock(x + 1, y, z)) || world.getBlock(x + 1, y, z).isSideSolid(world, x + 1, y, z, EnumFacing.getOrientation(EnumFacing.OPPOSITES[5]));
             case 5:
-                return isValidSupportBlock(world, x, y, z, world.getBlock(x - 1, y, z)) || world.getBlock(x - 1, y, z).isSideSolid(world, x - 1, y, z, ForgeDirection.getOrientation(ForgeDirection.OPPOSITES[4]));
+                return isValidSupportBlock(world, x, y, z, world.getBlock(x - 1, y, z)) || world.getBlock(x - 1, y, z).isSideSolid(world, x - 1, y, z, EnumFacing.getOrientation(EnumFacing.OPPOSITES[4]));
         }
 
         return false;
@@ -306,7 +306,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
      * Will find and set a new direction for hatch if an adjacent block can support it.
      * If nothing is found, block will break.
      */
-    private void findNextSideSupportBlock(TEBase TE, World world, int x, int y, int z)
+    private void findNextSideSupportBlock(TEBase TE, World world, BlockPos pos)
     {
         int dir = Hatch.getDir(TE);
 
@@ -346,7 +346,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
      * @param entity The entity trying to use the ladder, CAN be null.
      * @return True if the block should act like a ladder
      */
-    public boolean isLadder(IBlockAccess blockAccess, int x, int y, int z, EntityLivingBase entityLiving)
+    public boolean isLadder(IBlockAccess blockAccess, BlockPos pos, EntityLivingBase entityLiving)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -360,7 +360,7 @@ public class BlockCarpentersHatch extends BlockCoverable {
      * Checks if the block ID is a valid support block for the hatch to connect with. If it is not the hatch is
      * dropped into the world.
      */
-    private boolean isValidSupportBlock(World world, int x, int y, int z, Block block)
+    private boolean isValidSupportBlock(World world, BlockPos pos, Block block)
     {
         return block == Blocks.glowstone ||
                block instanceof BlockCarpentersStairs ||
@@ -379,14 +379,14 @@ public class BlockCarpentersHatch extends BlockCoverable {
     }
 
     @Override
-    public ForgeDirection[] getValidRotations(World worldObj, int x, int y,int z)
+    public EnumFacing[] getValidRotations(World worldObj, int x, int y,int z)
     {
-        ForgeDirection[] axises = {ForgeDirection.UP, ForgeDirection.DOWN};
+        EnumFacing[] axises = {EnumFacing.UP, EnumFacing.DOWN};
         return axises;
     }
 
     @Override
-    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         // to correctly support archimedes' ships mod:
         // if Axis is DOWN, block rotates to the left, north -> west -> south -> east

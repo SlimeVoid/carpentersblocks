@@ -26,7 +26,7 @@ public class BlockHandlerCarpentersStairs extends BlockHandlerBase {
     /**
      * Renders stairs at the given coordinates
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         ItemStack itemStack = getCoverForRendering();
 
@@ -52,7 +52,7 @@ public class BlockHandlerCarpentersStairs extends BlockHandlerBase {
     /**
      * Renders side covers (stair specific).
      */
-    protected void renderSideBlocks(int x, int y, int z)
+    protected void renderSideBlocks(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 

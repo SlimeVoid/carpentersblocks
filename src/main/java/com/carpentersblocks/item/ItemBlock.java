@@ -11,7 +11,7 @@ public class ItemBlock extends Item {
     /**
      * Places the block in the world and calls post-placement methods.
      */
-    protected boolean placeBlock(World world, Block block, EntityPlayer entityPlayer, ItemStack itemStack, int x, int y, int z)
+    protected boolean placeBlock(World world, Block block, EntityPlayer entityPlayer, ItemStack itemStack, BlockPos pos)
     {
         if (world.setBlock(x, y, z, block, 0, 4)) {
 

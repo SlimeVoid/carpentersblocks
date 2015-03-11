@@ -29,7 +29,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -54,7 +54,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
     /**
      * Returns the icon on the side given the block metadata.
      */
-    public IIcon getIcon(int side, int metadata)
+    public IIcon getIcon(EnumFacing side, int metadata)
     {
         /*
          * This doesn't work perfectly, but it's necessary to render
@@ -108,7 +108,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
     /**
      * Sneak-click removes plant and/or soil.
      */
-    protected void preOnBlockClicked(TEBase TE, World world, int x, int y, int z, EntityPlayer entityPlayer, ActionResult actionResult)
+    protected void preOnBlockClicked(TEBase TE, World world, BlockPos pos, EntityPlayer entityPlayer, ActionResult actionResult)
     {
         if (entityPlayer.isSneaking()) {
 
@@ -144,7 +144,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
      * Everything contained in this will run before default onBlockActivated events take place,
      * but after the player has been verified to have permission to edit block.
      */
-    protected void preOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void preOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         ItemStack itemStack = entityPlayer.getHeldItem();
 
@@ -192,7 +192,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
     /**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         /*
          * Need to handle plant enrichment here since the properties
@@ -223,7 +223,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World world, BlockPos pos, Block block)
     {
         if (!world.isRemote) {
 
@@ -242,7 +242,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
                     Profile profile = FlowerPotHandler.getPlantProfile(TE);
 
                     if (profile.equals(Profile.DOUBLEPLANT) || profile.equals(Profile.THIN_DOUBLEPLANT)) {
-                        if (world.getBlock(x, y + 1, z).isSideSolid(world, x, y + 1, z, ForgeDirection.DOWN)) {
+                        if (world.getBlock(x, y + 1, z).isSideSolid(world, x, y + 1, z, EnumFacing.DOWN)) {
                             TE.createBlockDropEvent(TE.ATTR_PLANT);
                         }
                     }
@@ -260,17 +260,17 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
     @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    public boolean canPlaceBlockAt(World world, BlockPos pos)
     {
         Block block_YN = world.getBlock(x, y - 1, z);
-        return block_YN.isSideSolid(world, x, y - 1, z, ForgeDirection.UP) || block_YN.canPlaceTorchOnTop(world, x, y - 1, z);
+        return block_YN.isSideSolid(world, x, y - 1, z, EnumFacing.UP) || block_YN.canPlaceTorchOnTop(world, x, y - 1, z);
     }
 
     @Override
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -301,7 +301,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
      * cleared to be reused)
      */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, BlockPos pos)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -338,7 +338,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
      * @return a light value from 0 to 15
      */
     @Override
-    protected int getCurrentLightValue(IBlockAccess blockAccess, int x, int y, int z)
+    protected int getCurrentLightValue(IBlockAccess blockAccess, BlockPos pos)
     {
         int lightValue = super.getCurrentLightValue(blockAccess, x, y, z);
         TEBase TE = getTileEntity(blockAccess, x, y, z);
@@ -366,7 +366,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
     /**
      * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
      */
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -393,7 +393,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
     }
 
     @Override
-    protected boolean canCoverSide(TEBase TE, World world, int x, int y, int z, int side)
+    protected boolean canCoverSide(TEBase TE, World world, BlockPos pos, EnumFacing side)
     {
         return side == 6 ? !TE.hasDesign() : false;
     }
@@ -403,7 +403,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    public void randomDisplayTick(World world, int x, int y, int z, Random random)
+    public void randomDisplayTick(World world, BlockPos pos, Random random)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -446,7 +446,7 @@ public class BlockCarpentersFlowerPot extends BlockCoverable {
      * @return A ArrayList containing all items this block drops
      */
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    public ArrayList<ItemStack> getDrops(World world, BlockPos pos, int metadata, int fortune)
     {
         ArrayList<ItemStack> ret = super.getDrops(world, x, y, z, metadata, fortune);
         TEBase TE = getSimpleTileEntity(world, x, y, z);

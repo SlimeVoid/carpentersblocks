@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class HelperPrism extends RenderHelper {
@@ -16,7 +16,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSlopeYNegZNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         double uBM  = uBR  - (uBR  -  uBL) / 2;
         double xMid = xMax - (xMax - xMin) / 2;
@@ -31,7 +31,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSlopeYNegZPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.SOUTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.SOUTH, x, y, z, icon);
 
         double uBM  = uBR  - (uBR  -  uBL) / 2;
         double xMid = xMax - (xMax - xMin) / 2;
@@ -46,7 +46,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSlopeYNegXNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.WEST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.WEST, x, y, z, icon);
 
         double uBM  = uBR  - (uBR  -  uBL) / 2;
         double zMid = zMax - (zMax - zMin) / 2;
@@ -61,7 +61,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSlopeYNegXPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.EAST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.EAST, x, y, z, icon);
 
         double uBM  = uBR  - (uBR  -  uBL) / 2;
         double zMid = zMax - (zMax - zMin) / 2;
@@ -76,7 +76,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSlopeYPosZNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         double uTM  = uTR  - (uTR  -  uTL) / 2;
         double xMid = xMax - (xMax - xMin) / 2;
@@ -91,7 +91,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSlopeYPosZPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.SOUTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.SOUTH, x, y, z, icon);
 
         double uTM  = uTR  - (uTR  -  uTL) / 2;
         double xMid = xMax - (xMax - xMin) / 2;
@@ -106,7 +106,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSlopeYPosXNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.WEST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.WEST, x, y, z, icon);
 
         double uTM  = uTR  - (uTR  -  uTL) / 2;
         double zMid = zMax - (zMax - zMin) / 2;
@@ -121,7 +121,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSlopeYPosXPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.EAST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.EAST, x, y, z, icon);
 
         double uTM  = uTR  - (uTR  -  uTL) / 2;
         double zMid = zMax - (zMax - zMin) / 2;
@@ -136,7 +136,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderWestPointSlopeZNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         setupVertex(renderBlocks, xMax, yMax, zMax, uTL, vTL, SOUTHEAST);
         setupVertex(renderBlocks, xMin, yMin, zMin, uBR, vBR, NORTHWEST);
@@ -148,7 +148,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderWestPointSlopeZPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.SOUTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.SOUTH, x, y, z, icon);
 
         setupVertex(renderBlocks, xMin, yMax, zMin, uTL, vTL, NORTHWEST);
         setupVertex(renderBlocks, xMin, yMin, zMax, uBL, vBL, SOUTHWEST);
@@ -160,7 +160,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderEastPointSlopeZNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         setupVertex(renderBlocks, xMax, yMax, zMax, uTL, vTL, SOUTHEAST);
         setupVertex(renderBlocks, xMax, yMin, zMin, uBL, vBL, NORTHEAST);
@@ -172,7 +172,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderEastPointSlopeZPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.SOUTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.SOUTH, x, y, z, icon);
 
         setupVertex(renderBlocks, xMin, yMax, zMin, uTL, vTL, NORTHWEST);
         setupVertex(renderBlocks, xMax, yMin, zMax, uBR, vBR, SOUTHEAST);
@@ -184,7 +184,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderNorthPointSlopeXNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.WEST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.WEST, x, y, z, icon);
 
         setupVertex(renderBlocks, xMax, yMax, zMin, uTL, vTL, NORTHEAST);
         setupVertex(renderBlocks, xMin, yMin, zMin, uBL, vBL, NORTHWEST);
@@ -196,7 +196,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderNorthPointSlopeXPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.EAST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.EAST, x, y, z, icon);
 
         setupVertex(renderBlocks, xMin, yMax, zMax, uTL, vTL, SOUTHWEST);
         setupVertex(renderBlocks, xMax, yMin, zMin, uBR, vBR, NORTHEAST);
@@ -208,7 +208,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSouthPointSlopeXNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.WEST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.WEST, x, y, z, icon);
 
         setupVertex(renderBlocks, xMax, yMax, zMin, uTL, vTL, NORTHEAST);
         setupVertex(renderBlocks, xMin, yMin, zMax, uBR, vBR, SOUTHWEST);
@@ -220,7 +220,7 @@ public class HelperPrism extends RenderHelper {
      */
     public static void renderSouthPointSlopeXPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.EAST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.EAST, x, y, z, icon);
 
         setupVertex(renderBlocks, xMin, yMax, zMax, uTL, vTL, SOUTHWEST);
         setupVertex(renderBlocks, xMax, yMin, zMax, uBL, vBL, SOUTHEAST);

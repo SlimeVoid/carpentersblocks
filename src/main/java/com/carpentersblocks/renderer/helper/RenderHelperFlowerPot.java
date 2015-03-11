@@ -20,7 +20,7 @@ public class RenderHelperFlowerPot extends RenderHelper {
     /**
      * Applies plant color to tessellator.
      */
-    public static void setPlantColor(BlockHandlerBase blockHandler, ItemStack itemStack, int x, int y, int z)
+    public static void setPlantColor(BlockHandlerBase blockHandler, ItemStack itemStack, BlockPos pos)
     {
         Block block = FlowerPotProperties.toBlock(itemStack);
         Tessellator tessellator = Tessellator.instance;
@@ -40,7 +40,7 @@ public class RenderHelperFlowerPot extends RenderHelper {
     /**
      * Renders a vanilla double tall plant.
      */
-    public static boolean renderBlockDoublePlant(TEBase TE, RenderBlocks renderBlocks, ItemStack itemStack, int x, int y, int z, boolean thin)
+    public static boolean renderBlockDoublePlant(TEBase TE, RenderBlocks renderBlocks, ItemStack itemStack, BlockPos pos, boolean thin)
     {
         BlockDoublePlant block = (BlockDoublePlant) FlowerPotProperties.toBlock(itemStack);
 
@@ -122,7 +122,7 @@ public class RenderHelperFlowerPot extends RenderHelper {
     /**
      * Renders plant using crossed squares.
      */
-    public static boolean renderPlantCrossedSquares(RenderBlocks renderBlocks, Block block, IIcon icon, int x, int y, int z, float scale, boolean flip_vertical)
+    public static boolean renderPlantCrossedSquares(RenderBlocks renderBlocks, Block block, IIcon icon, BlockPos pos, float scale, boolean flip_vertical)
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(block.getMixedBrightnessForBlock(renderBlocks.blockAccess, x, y, z));
@@ -167,7 +167,7 @@ public class RenderHelperFlowerPot extends RenderHelper {
     /**
      * Renders thin plant using crossed squares.
      */
-    public static void renderPlantThinCrossedSquares(RenderBlocks renderBlocks, Block block, IIcon icon, int x, int y, int z, boolean flip_vertical)
+    public static void renderPlantThinCrossedSquares(RenderBlocks renderBlocks, Block block, IIcon icon, BlockPos pos, boolean flip_vertical)
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(block.getMixedBrightnessForBlock(renderBlocks.blockAccess, x, y, z));
@@ -236,7 +236,7 @@ public class RenderHelperFlowerPot extends RenderHelper {
     /**
      * Renders vanilla cactus using "prickly" method.
      */
-    public static void drawPlantCactus(LightingHelper lightingHelper, RenderBlocks renderBlocks, ItemStack itemStack, int x, int y, int z)
+    public static void drawPlantCactus(LightingHelper lightingHelper, RenderBlocks renderBlocks, ItemStack itemStack, BlockPos pos)
     {
         Block block = BlockProperties.toBlock(itemStack);
         IIcon icon = block.getBlockTextureFromSide(2);

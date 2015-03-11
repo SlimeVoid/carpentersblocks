@@ -13,14 +13,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersTorch extends BlockHandlerBase {
 
     private Vec3[] vec3 = new Vec3[8];
     private static Torch data = new Torch();
-    private ForgeDirection dir;
+    private EnumFacing dir;
 
     @Override
     public boolean shouldRender3DInInventory(int modelId)
@@ -47,7 +47,7 @@ public class BlockHandlerCarpentersTorch extends BlockHandlerBase {
     /**
      * Renders block
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
         disableAO = true;
@@ -68,7 +68,7 @@ public class BlockHandlerCarpentersTorch extends BlockHandlerBase {
         renderBlocks.renderAllFaces = false;
     }
 
-    private void renderTypeVanilla(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeVanilla(ItemStack itemStack, BlockPos pos)
     {
         renderBlocks.setRenderBounds(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.625D, 0.5625D);
 
@@ -147,7 +147,7 @@ public class BlockHandlerCarpentersTorch extends BlockHandlerBase {
         delegateSideRender(itemStack, x, y, z, EAST);
     }
 
-    private void renderTypeLantern(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeLantern(ItemStack itemStack, BlockPos pos)
     {
         switch (dir) {
             case UP:
@@ -161,7 +161,7 @@ public class BlockHandlerCarpentersTorch extends BlockHandlerBase {
         }
 
         for (int facing = 2; facing < 6; ++facing) {
-            ForgeDirection nextDir = ForgeDirection.getOrientation(facing);
+            EnumFacing nextDir = EnumFacing.getOrientation(facing);
             renderBlockWithRotation(itemStack, x, y, z, 0.25D, 0.25D, 0.25D, 0.375D, 0.75D, 0.375D, nextDir);
             renderBlockWithRotation(itemStack, x, y, z, 0.25D, 0.25D, 0.375D, 0.375D, 0.375D, 0.625D, nextDir);
 
@@ -194,7 +194,7 @@ public class BlockHandlerCarpentersTorch extends BlockHandlerBase {
     /**
      * Renders side.
      */
-    protected void render(int x, int y, int z, int side, IIcon icon)
+    protected void render(BlockPos pos, int side, IIcon icon)
     {
         if (data.getType(TE) == Torch.TYPE_VANILLA) {
             renderVectors(side, icon, true);
@@ -203,7 +203,7 @@ public class BlockHandlerCarpentersTorch extends BlockHandlerBase {
         }
     }
 
-    private void setVanillaRotations(ForgeDirection dir, Vec3[] vec3, int x, int y, int z)
+    private void setVanillaRotations(EnumFacing dir, Vec3[] vec3, BlockPos pos)
     {
         for (int vecCount = 0; vecCount < 8; ++vecCount)
         {

@@ -12,11 +12,11 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.IFluidBlock;
 import org.apache.logging.log4j.Level;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import static net.minecraft.util.EnumFacing.*;
 
 @SideOnly(Side.CLIENT)
 public class FancyFluidsHelper {
@@ -65,7 +65,7 @@ public class FancyFluidsHelper {
      * @param  z the z coordinate
      * @return true if fluid rendered in space
      */
-    public static boolean render(TEBase TE, RenderBlocks renderBlocks, int x, int y, int z)
+    public static boolean render(TEBase TE, RenderBlocks renderBlocks, BlockPos pos)
     {
         ItemStack itemStack = getFluidBlock(renderBlocks.blockAccess, x, y, z);
 
@@ -102,11 +102,11 @@ public class FancyFluidsHelper {
      * @param  z the z coordinate
      * @return a nearby fluid {@link ItemStack}, or null if no routable fluid exists
      */
-    public static ItemStack getFluidBlock(IBlockAccess blockAccess, int x, int y, int z)
+    public static ItemStack getFluidBlock(IBlockAccess blockAccess, BlockPos pos)
     {
         int[][] offsetXZ = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}, {-1, -1}, {-1, 1}, {1, 1}, {1, -1}};
 
-        ForgeDirection[][][] route = {
+        EnumFacing[][][] route = {
                 { { NORTH } },
                 { { SOUTH } },
                 { { WEST  } },

@@ -17,7 +17,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
@@ -143,7 +143,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -158,7 +158,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
     /**
      * Checks if the block is a solid face on the given side, used by placement logic.
      */
-    public boolean isSideSolid(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
+    public boolean isSideSolid(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -191,7 +191,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
     /**
      * Returns true if a slope should end at the given coords
      */
-    private boolean isSlopeBoundary(World world, int x, int y, int z)
+    private boolean isSlopeBoundary(World world, BlockPos pos)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -205,7 +205,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
     /**
      * Scan X axis for slopes
      */
-    private int scanX(World world, int x, int y, int z, int dir, int maxDist)
+    private int scanX(World world, BlockPos pos, int dir, int maxDist)
     {
         for (int nx = x + dir; nx != x + maxDist * dir; nx += dir) {
             if (isSlopeBoundary(world, nx, y, z)) {
@@ -219,7 +219,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
     /**
      * Scan Z axis for slopes
      */
-    private int scanZ(World world, int x, int y, int z, int dir, int maxDist)
+    private int scanZ(World world, BlockPos pos, int dir, int maxDist)
     {
         for (int nz = z + dir; nz != z + maxDist * dir; nz += dir) {
             if (isSlopeBoundary(world, x, y, nz)) {
@@ -233,7 +233,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
     /**
      * Returns block height
      */
-    private static int getBlockHeight(IBlockAccess blockAccess, int x, int y, int z)
+    private static int getBlockHeight(IBlockAccess blockAccess, BlockPos pos)
     {
         Block block = blockAccess.getBlock(x, y, z);
 
@@ -248,7 +248,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         /* If shift key is down, skip auto-setting quadrant heights. */
 
@@ -346,7 +346,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
      * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
      * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
      */
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisAlignedBB, List list, Entity entity)
+    public void addCollisionBoxesToList(World world, BlockPos pos, AxisAlignedBB axisAlignedBB, List list, Entity entity)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -372,7 +372,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
      * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
      * x, y, z, startVec, endVec
      */
-    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec)
+    public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3 startVec, Vec3 endVec)
     {
         TEBase TE = getTileEntity(world, x, y, z);
         MovingObjectPosition finalTrace = null;
@@ -416,7 +416,7 @@ public class BlockCarpentersCollapsibleBlock extends BlockCoverable {
     /**
      * Returns whether sides share faces based on sloping property and face shape.
      */
-    protected boolean shareFaces(TEBase TE_adj, TEBase TE_src, ForgeDirection side_adj, ForgeDirection side_src)
+    protected boolean shareFaces(TEBase TE_adj, TEBase TE_src, EnumFacing side_adj, EnumFacing side_src)
     {
         if (TE_adj.getBlockType() == this) {
             switch (side_adj) {

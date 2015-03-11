@@ -4,7 +4,7 @@ import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.EntityLivingUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class Safe
 {
@@ -30,7 +30,7 @@ public class Safe
     /**
      * Returns facing.
      */
-    public static ForgeDirection getFacing(TEBase TE)
+    public static EnumFacing getFacing(TEBase TE)
     {
         return EntityLivingUtil.getRotationFacing(TE.getData() & 0x3).getOpposite();
     }
@@ -56,7 +56,7 @@ public class Safe
     /**
      * Sets state.
      */
-    public static void setState(TEBase TE, int state)
+    public static boolean setState(TEBase TE, int state)
     {
         int temp = (TE.getData() & ~0x4) | (state << 2);
         World world = TE.getWorldObj();
@@ -65,7 +65,7 @@ public class Safe
             world.playAuxSFXAtEntity((EntityPlayer)null, 1003, TE.xCoord, TE.yCoord, TE.zCoord, 0);
         }
 
-        TE.setData(temp);
+        return TE.setData(temp);
     }
 
     /**

@@ -6,14 +6,14 @@ import com.carpentersblocks.data.Slope.Face;
 import com.carpentersblocks.data.Slope.Type;
 import com.carpentersblocks.tileentity.TEBase;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class SlopeTransform {
 
     /**
      * Transforms wedge slope to connect with adjacent wedge slopes.
      */
-    public static int transformWedge(World world, int slopeID, int x, int y, int z)
+    public static int transformWedge(World world, int slopeID, BlockPos pos)
     {
         Slope slope_XN = world.getBlock(x - 1, y, z) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x - 1, y, z)).getData()] : null;
         Slope slope_XP = world.getBlock(x + 1, y, z) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x + 1, y, z)).getData()] : null;
@@ -24,7 +24,7 @@ public class SlopeTransform {
 
         /* Transform into horizontal wedge. */
 
-        int face_bias = slope_YP != null && slope_YP.getFace(ForgeDirection.DOWN).equals(Face.WEDGE) ? slope_YP.getFaceBias(ForgeDirection.DOWN) : slope_YN != null && slope_YN.getFace(ForgeDirection.UP).equals(Face.WEDGE) ? slope_YN.getFaceBias(ForgeDirection.UP) : 0;
+        int face_bias = slope_YP != null && slope_YP.getFace(EnumFacing.DOWN).equals(Face.WEDGE) ? slope_YP.getFaceBias(EnumFacing.DOWN) : slope_YN != null && slope_YN.getFace(EnumFacing.UP).equals(Face.WEDGE) ? slope_YN.getFaceBias(EnumFacing.UP) : 0;
 
         switch (face_bias) {
             case Slope.XYNN:
@@ -47,19 +47,19 @@ public class SlopeTransform {
             if (slope_ZN != null) {
 
                 if (slope_XN != null) {
-                    if (slope_ZN.facings.contains(ForgeDirection.WEST) && slope_XN.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.WEST) && slope_XN.facings.contains(EnumFacing.NORTH)) {
                         return slope_XN.isPositive && slope_ZN.isPositive ? Slope.ID_WEDGE_INT_POS_NW : Slope.ID_WEDGE_INT_NEG_NW;
                     }
-                    if (slope_ZN.facings.contains(ForgeDirection.EAST) && slope_XN.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.EAST) && slope_XN.facings.contains(EnumFacing.SOUTH)) {
                         return slope_XN.isPositive && slope_ZN.isPositive ? Slope.ID_WEDGE_EXT_POS_SE : Slope.ID_WEDGE_EXT_NEG_SE;
                     }
                 }
 
                 if (slope_XP != null) {
-                    if (slope_ZN.facings.contains(ForgeDirection.EAST) && slope_XP.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.EAST) && slope_XP.facings.contains(EnumFacing.NORTH)) {
                         return slope_XP.isPositive && slope_ZN.isPositive ? Slope.ID_WEDGE_INT_POS_NE : Slope.ID_WEDGE_INT_NEG_NE;
                     }
-                    if (slope_ZN.facings.contains(ForgeDirection.WEST) && slope_XP.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.WEST) && slope_XP.facings.contains(EnumFacing.SOUTH)) {
                         return slope_XP.isPositive && slope_ZN.isPositive ? Slope.ID_WEDGE_EXT_POS_SW : Slope.ID_WEDGE_EXT_NEG_SW;
                     }
                 }
@@ -69,19 +69,19 @@ public class SlopeTransform {
             if (slope_ZP != null) {
 
                 if (slope_XN != null) {
-                    if (slope_ZP.facings.contains(ForgeDirection.WEST) && slope_XN.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.WEST) && slope_XN.facings.contains(EnumFacing.SOUTH)) {
                         return slope_XN.isPositive && slope_ZP.isPositive ? Slope.ID_WEDGE_INT_POS_SW : Slope.ID_WEDGE_INT_NEG_SW;
                     }
-                    if (slope_ZP.facings.contains(ForgeDirection.EAST) && slope_XN.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.EAST) && slope_XN.facings.contains(EnumFacing.NORTH)) {
                         return slope_XN.isPositive && slope_ZP.isPositive ? Slope.ID_WEDGE_EXT_POS_NE : Slope.ID_WEDGE_EXT_NEG_NE;
                     }
                 }
 
                 if (slope_XP != null) {
-                    if (slope_ZP.facings.contains(ForgeDirection.EAST) && slope_XP.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.EAST) && slope_XP.facings.contains(EnumFacing.SOUTH)) {
                         return slope_XP.isPositive && slope_ZP.isPositive ? Slope.ID_WEDGE_INT_POS_SE : Slope.ID_WEDGE_INT_NEG_SE;
                     }
-                    if (slope_ZP.facings.contains(ForgeDirection.WEST) && slope_XP.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.WEST) && slope_XP.facings.contains(EnumFacing.NORTH)) {
                         return slope_XP.isPositive && slope_ZP.isPositive ? Slope.ID_WEDGE_EXT_POS_NW : Slope.ID_WEDGE_EXT_NEG_NW;
                     }
                 }
@@ -90,20 +90,20 @@ public class SlopeTransform {
 
             if (slope_XN != null) {
 
-                if (slope.facings.contains(ForgeDirection.WEST)) {
-                    if (slope_XN.facings.contains(ForgeDirection.SOUTH) && !slope_XN.facings.contains(ForgeDirection.EAST)) {
+                if (slope.facings.contains(EnumFacing.WEST)) {
+                    if (slope_XN.facings.contains(EnumFacing.SOUTH) && !slope_XN.facings.contains(EnumFacing.EAST)) {
                         return slope_XN.isPositive ? Slope.ID_WEDGE_INT_POS_SW : Slope.ID_WEDGE_INT_NEG_SW;
                     }
-                    if (slope_XN.facings.contains(ForgeDirection.NORTH) && !slope_XN.facings.contains(ForgeDirection.EAST)) {
+                    if (slope_XN.facings.contains(EnumFacing.NORTH) && !slope_XN.facings.contains(EnumFacing.EAST)) {
                         return slope_XN.isPositive ? Slope.ID_WEDGE_INT_POS_NW : Slope.ID_WEDGE_INT_NEG_NW;
                     }
                 }
 
-                if (slope.facings.contains(ForgeDirection.EAST)) {
-                    if (slope_XN.facings.contains(ForgeDirection.SOUTH) && !slope_XN.facings.contains(ForgeDirection.EAST)) {
+                if (slope.facings.contains(EnumFacing.EAST)) {
+                    if (slope_XN.facings.contains(EnumFacing.SOUTH) && !slope_XN.facings.contains(EnumFacing.EAST)) {
                         return slope_XN.isPositive ? Slope.ID_WEDGE_EXT_POS_SE : Slope.ID_WEDGE_EXT_NEG_SE;
                     }
-                    if (slope_XN.facings.contains(ForgeDirection.NORTH) && !slope_XN.facings.contains(ForgeDirection.EAST)) {
+                    if (slope_XN.facings.contains(EnumFacing.NORTH) && !slope_XN.facings.contains(EnumFacing.EAST)) {
                         return slope_XN.isPositive ? Slope.ID_WEDGE_EXT_POS_NE : Slope.ID_WEDGE_EXT_NEG_NE;
                     }
                 }
@@ -112,20 +112,20 @@ public class SlopeTransform {
 
             if (slope_XP != null) {
 
-                if (slope.facings.contains(ForgeDirection.WEST)) {
-                    if (slope_XP.facings.contains(ForgeDirection.SOUTH) && !slope_XP.facings.contains(ForgeDirection.WEST)) {
+                if (slope.facings.contains(EnumFacing.WEST)) {
+                    if (slope_XP.facings.contains(EnumFacing.SOUTH) && !slope_XP.facings.contains(EnumFacing.WEST)) {
                         return slope_XP.isPositive ? Slope.ID_WEDGE_EXT_POS_SW : Slope.ID_WEDGE_EXT_NEG_SW;
                     }
-                    if (slope_XP.facings.contains(ForgeDirection.NORTH) && !slope_XP.facings.contains(ForgeDirection.WEST)) {
+                    if (slope_XP.facings.contains(EnumFacing.NORTH) && !slope_XP.facings.contains(EnumFacing.WEST)) {
                         return slope_XP.isPositive ? Slope.ID_WEDGE_EXT_POS_NW : Slope.ID_WEDGE_EXT_NEG_NW;
                     }
                 }
 
-                if (slope.facings.contains(ForgeDirection.EAST)) {
-                    if (slope_XP.facings.contains(ForgeDirection.SOUTH) && !slope_XP.facings.contains(ForgeDirection.WEST)) {
+                if (slope.facings.contains(EnumFacing.EAST)) {
+                    if (slope_XP.facings.contains(EnumFacing.SOUTH) && !slope_XP.facings.contains(EnumFacing.WEST)) {
                         return slope_XP.isPositive ? Slope.ID_WEDGE_INT_POS_SE : Slope.ID_WEDGE_INT_NEG_SE;
                     }
-                    if (slope_XP.facings.contains(ForgeDirection.NORTH) && !slope_XP.facings.contains(ForgeDirection.WEST)) {
+                    if (slope_XP.facings.contains(EnumFacing.NORTH) && !slope_XP.facings.contains(EnumFacing.WEST)) {
                         return slope_XP.isPositive ? Slope.ID_WEDGE_INT_POS_NE : Slope.ID_WEDGE_INT_NEG_NE;
                     }
                 }
@@ -134,20 +134,20 @@ public class SlopeTransform {
 
             if (slope_ZN != null) {
 
-                if (slope.facings.contains(ForgeDirection.NORTH)) {
-                    if (slope_ZN.facings.contains(ForgeDirection.EAST) && !slope_ZN.facings.contains(ForgeDirection.SOUTH)) {
+                if (slope.facings.contains(EnumFacing.NORTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.EAST) && !slope_ZN.facings.contains(EnumFacing.SOUTH)) {
                         return slope_ZN.isPositive ? Slope.ID_WEDGE_INT_POS_NE : Slope.ID_WEDGE_INT_NEG_NE;
                     }
-                    if (slope_ZN.facings.contains(ForgeDirection.WEST) && !slope_ZN.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.WEST) && !slope_ZN.facings.contains(EnumFacing.SOUTH)) {
                         return slope_ZN.isPositive ? Slope.ID_WEDGE_INT_POS_NW : Slope.ID_WEDGE_INT_NEG_NW;
                     }
                 }
 
-                if (slope.facings.contains(ForgeDirection.SOUTH)) {
-                    if (slope_ZN.facings.contains(ForgeDirection.EAST) && !slope_ZN.facings.contains(ForgeDirection.SOUTH)) {
+                if (slope.facings.contains(EnumFacing.SOUTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.EAST) && !slope_ZN.facings.contains(EnumFacing.SOUTH)) {
                         return slope_ZN.isPositive ? Slope.ID_WEDGE_EXT_POS_SE : Slope.ID_WEDGE_EXT_NEG_SE;
                     }
-                    if (slope_ZN.facings.contains(ForgeDirection.WEST) && !slope_ZN.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.WEST) && !slope_ZN.facings.contains(EnumFacing.SOUTH)) {
                         return slope_ZN.isPositive ? Slope.ID_WEDGE_EXT_POS_SW : Slope.ID_WEDGE_EXT_NEG_SW;
                     }
                 }
@@ -156,20 +156,20 @@ public class SlopeTransform {
 
             if (slope_ZP != null) {
 
-                if (slope.facings.contains(ForgeDirection.NORTH)) {
-                    if (slope_ZP.facings.contains(ForgeDirection.EAST) && !slope_ZP.facings.contains(ForgeDirection.NORTH)) {
+                if (slope.facings.contains(EnumFacing.NORTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.EAST) && !slope_ZP.facings.contains(EnumFacing.NORTH)) {
                         return slope_ZP.isPositive ? Slope.ID_WEDGE_EXT_POS_NE : Slope.ID_WEDGE_EXT_NEG_NE;
                     }
-                    if (slope_ZP.facings.contains(ForgeDirection.WEST) && !slope_ZP.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.WEST) && !slope_ZP.facings.contains(EnumFacing.NORTH)) {
                         return slope_ZP.isPositive ? Slope.ID_WEDGE_EXT_POS_NW : Slope.ID_WEDGE_EXT_NEG_NW;
                     }
                 }
 
-                if (slope.facings.contains(ForgeDirection.SOUTH)) {
-                    if (slope_ZP.facings.contains(ForgeDirection.EAST) && !slope_ZP.facings.contains(ForgeDirection.NORTH)) {
+                if (slope.facings.contains(EnumFacing.SOUTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.EAST) && !slope_ZP.facings.contains(EnumFacing.NORTH)) {
                         return slope_ZP.isPositive ? Slope.ID_WEDGE_INT_POS_SE : Slope.ID_WEDGE_INT_NEG_SE;
                     }
-                    if (slope_ZP.facings.contains(ForgeDirection.WEST) && !slope_ZP.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.WEST) && !slope_ZP.facings.contains(EnumFacing.NORTH)) {
                         return slope_ZP.isPositive ? Slope.ID_WEDGE_INT_POS_SW : Slope.ID_WEDGE_INT_NEG_SW;
                     }
                 }
@@ -184,7 +184,7 @@ public class SlopeTransform {
     /**
      * Transforms adjacent wedge slopes to connect to source wedge slopeID.
      */
-    public static void transformAdjacentWedges(World world, int slopeID, int x, int y, int z)
+    public static void transformAdjacentWedges(World world, int slopeID, BlockPos pos)
     {
         Slope slope_XN = world.getBlock(x - 1, y, z) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x - 1, y, z)).getData()] : null;
         Slope slope_XP = world.getBlock(x + 1, y, z) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x + 1, y, z)).getData()] : null;
@@ -201,88 +201,88 @@ public class SlopeTransform {
             TEBase TE_ZN = slope_ZN != null ? (TEBase) world.getTileEntity(x, y, z - 1) : null;
             TEBase TE_ZP = slope_ZP != null ? (TEBase) world.getTileEntity(x, y, z + 1) : null;
 
-            if (slope.facings.contains(ForgeDirection.WEST)) {
+            if (slope.facings.contains(EnumFacing.WEST)) {
 
                 if (slope_ZN != null && primary_type.equals(slope_ZN.getPrimaryType()) && slope.isPositive == slope_ZN.isPositive) {
-                    if (slope_ZN.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.NORTH)) {
                         TE_ZN.setData(slope.isPositive ? Slope.ID_WEDGE_EXT_POS_NW : Slope.ID_WEDGE_EXT_NEG_NW);
                     }
-                    if (slope_ZN.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.SOUTH)) {
                         TE_ZN.setData(slope.isPositive ? Slope.ID_WEDGE_INT_POS_SW : Slope.ID_WEDGE_INT_NEG_SW);
                     }
                 }
 
                 if (slope_ZP != null && primary_type.equals(slope_ZP.getPrimaryType()) && slope.isPositive == slope_ZP.isPositive) {
-                    if (slope_ZP.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.SOUTH)) {
                         TE_ZP.setData(slope.isPositive ? Slope.ID_WEDGE_EXT_POS_SW : Slope.ID_WEDGE_EXT_NEG_SW);
                     }
-                    if (slope_ZP.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.NORTH)) {
                         TE_ZP.setData(slope.isPositive ? Slope.ID_WEDGE_INT_POS_NW : Slope.ID_WEDGE_INT_NEG_NW);
                     }
                 }
 
             }
 
-            if (slope.facings.contains(ForgeDirection.EAST)) {
+            if (slope.facings.contains(EnumFacing.EAST)) {
 
                 if (slope_ZN != null && primary_type.equals(slope_ZN.getPrimaryType()) && slope.isPositive == slope_ZN.isPositive) {
-                    if (slope_ZN.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.NORTH)) {
                         TE_ZN.setData(slope.isPositive ? Slope.ID_WEDGE_EXT_POS_NE : Slope.ID_WEDGE_EXT_NEG_NE);
                     }
-                    if (slope_ZN.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZN.facings.contains(EnumFacing.SOUTH)) {
                         TE_ZN.setData(slope.isPositive ? Slope.ID_WEDGE_INT_POS_SE : Slope.ID_WEDGE_INT_NEG_SE);
                     }
                 }
 
                 if (slope_ZP != null && primary_type.equals(slope_ZP.getPrimaryType()) && slope.isPositive == slope_ZP.isPositive) {
-                    if (slope_ZP.facings.contains(ForgeDirection.SOUTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.SOUTH)) {
                         TE_ZP.setData(slope.isPositive ? Slope.ID_WEDGE_EXT_POS_SE : Slope.ID_WEDGE_EXT_NEG_SE);
                     }
-                    if (slope_ZP.facings.contains(ForgeDirection.NORTH)) {
+                    if (slope_ZP.facings.contains(EnumFacing.NORTH)) {
                         TE_ZP.setData(slope.isPositive ? Slope.ID_WEDGE_INT_POS_NE : Slope.ID_WEDGE_INT_NEG_NE);
                     }
                 }
 
             }
 
-            if (slope.facings.contains(ForgeDirection.NORTH)) {
+            if (slope.facings.contains(EnumFacing.NORTH)) {
 
                 if (slope_XN != null && primary_type.equals(slope_XN.getPrimaryType()) && slope.isPositive == slope_XN.isPositive) {
-                    if (slope_XN.facings.contains(ForgeDirection.WEST)) {
+                    if (slope_XN.facings.contains(EnumFacing.WEST)) {
                         TE_XN.setData(slope.isPositive ? Slope.ID_WEDGE_EXT_POS_NW : Slope.ID_WEDGE_EXT_NEG_NW);
                     }
-                    if (slope_XN.facings.contains(ForgeDirection.EAST)) {
+                    if (slope_XN.facings.contains(EnumFacing.EAST)) {
                         TE_XN.setData(slope.isPositive ? Slope.ID_WEDGE_INT_POS_NE : Slope.ID_WEDGE_INT_NEG_NE);
                     }
                 }
 
                 if (slope_XP != null && primary_type.equals(slope_XP.getPrimaryType()) && slope.isPositive == slope_XP.isPositive) {
-                    if (slope_XP.facings.contains(ForgeDirection.EAST)) {
+                    if (slope_XP.facings.contains(EnumFacing.EAST)) {
                         TE_XP.setData(slope.isPositive ? Slope.ID_WEDGE_EXT_POS_NE : Slope.ID_WEDGE_EXT_NEG_NE);
                     }
-                    if (slope_XP.facings.contains(ForgeDirection.WEST)) {
+                    if (slope_XP.facings.contains(EnumFacing.WEST)) {
                         TE_XP.setData(slope.isPositive ? Slope.ID_WEDGE_INT_POS_NW : Slope.ID_WEDGE_INT_NEG_NW);
                     }
                 }
 
             }
 
-            if (slope.facings.contains(ForgeDirection.SOUTH)) {
+            if (slope.facings.contains(EnumFacing.SOUTH)) {
 
                 if (slope_XN != null && primary_type.equals(slope_XN.getPrimaryType()) && slope.isPositive == slope_XN.isPositive) {
-                    if (slope_XN.facings.contains(ForgeDirection.WEST)) {
+                    if (slope_XN.facings.contains(EnumFacing.WEST)) {
                         TE_XN.setData(slope.isPositive ? Slope.ID_WEDGE_EXT_POS_SW : Slope.ID_WEDGE_EXT_NEG_SW);
                     }
-                    if (slope_XN.facings.contains(ForgeDirection.EAST)) {
+                    if (slope_XN.facings.contains(EnumFacing.EAST)) {
                         TE_XN.setData(slope.isPositive ? Slope.ID_WEDGE_INT_POS_SE : Slope.ID_WEDGE_INT_NEG_SE);
                     }
                 }
 
                 if (slope_XP != null && primary_type.equals(slope_XP.getPrimaryType()) && slope.isPositive == slope_XP.isPositive) {
-                    if (slope_XP.facings.contains(ForgeDirection.EAST)) {
+                    if (slope_XP.facings.contains(EnumFacing.EAST)) {
                         TE_XP.setData(slope.isPositive ? Slope.ID_WEDGE_EXT_POS_SE : Slope.ID_WEDGE_EXT_NEG_SE);
                     }
-                    if (slope_XP.facings.contains(ForgeDirection.WEST)) {
+                    if (slope_XP.facings.contains(EnumFacing.WEST)) {
                         TE_XP.setData(slope.isPositive ? Slope.ID_WEDGE_INT_POS_SW : Slope.ID_WEDGE_INT_NEG_SW);
                     }
                 }
@@ -295,7 +295,7 @@ public class SlopeTransform {
     /**
      * Transforms adjacent prism slopes to connect to source prism slope.
      */
-    public static void transformAdjacentPrisms(World world, int x, int y, int z)
+    public static void transformAdjacentPrisms(World world, BlockPos pos)
     {
         Slope slope_XN = world.getBlock(x - 1, y, z) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x - 1, y, z)).getData()] : null;
         Slope slope_XP = world.getBlock(x + 1, y, z) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x + 1, y, z)).getData()] : null;
@@ -319,17 +319,17 @@ public class SlopeTransform {
     /**
      * Transforms prism slope to connect with adjacent prism slopes.
      */
-    public static int transformPrism(World world, int slopeID, int x, int y, int z)
+    public static int transformPrism(World world, int slopeID, BlockPos pos)
     {
         Slope slope_XN = world.getBlock(x - 1, y, z) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x - 1, y, z)).getData()] : null;
         Slope slope_XP = world.getBlock(x + 1, y, z) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x + 1, y, z)).getData()] : null;
         Slope slope_ZN = world.getBlock(x, y, z - 1) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x, y, z - 1)).getData()] : null;
         Slope slope_ZP = world.getBlock(x, y, z + 1) instanceof BlockCarpentersSlope ? Slope.slopesList[((TEBase) world.getTileEntity(x, y, z + 1)).getData()] : null;
 
-        boolean prism_XN = slope_XN != null && (slope_XN.getPrimaryType().equals(Type.PRISM) || slope_XN.getPrimaryType().equals(Type.PRISM_WEDGE) && slope_XN.facings.contains(ForgeDirection.EAST ));
-        boolean prism_XP = slope_XP != null && (slope_XP.getPrimaryType().equals(Type.PRISM) || slope_XP.getPrimaryType().equals(Type.PRISM_WEDGE) && slope_XP.facings.contains(ForgeDirection.WEST ));
-        boolean prism_ZN = slope_ZN != null && (slope_ZN.getPrimaryType().equals(Type.PRISM) || slope_ZN.getPrimaryType().equals(Type.PRISM_WEDGE) && slope_ZN.facings.contains(ForgeDirection.SOUTH));
-        boolean prism_ZP = slope_ZP != null && (slope_ZP.getPrimaryType().equals(Type.PRISM) || slope_ZP.getPrimaryType().equals(Type.PRISM_WEDGE) && slope_ZP.facings.contains(ForgeDirection.NORTH));
+        boolean prism_XN = slope_XN != null && (slope_XN.getPrimaryType().equals(Type.PRISM) || slope_XN.getPrimaryType().equals(Type.PRISM_WEDGE) && slope_XN.facings.contains(EnumFacing.EAST ));
+        boolean prism_XP = slope_XP != null && (slope_XP.getPrimaryType().equals(Type.PRISM) || slope_XP.getPrimaryType().equals(Type.PRISM_WEDGE) && slope_XP.facings.contains(EnumFacing.WEST ));
+        boolean prism_ZN = slope_ZN != null && (slope_ZN.getPrimaryType().equals(Type.PRISM) || slope_ZN.getPrimaryType().equals(Type.PRISM_WEDGE) && slope_ZN.facings.contains(EnumFacing.SOUTH));
+        boolean prism_ZP = slope_ZP != null && (slope_ZP.getPrimaryType().equals(Type.PRISM) || slope_ZP.getPrimaryType().equals(Type.PRISM_WEDGE) && slope_ZP.facings.contains(EnumFacing.NORTH));
 
         int prism_set = 0x0000;
 

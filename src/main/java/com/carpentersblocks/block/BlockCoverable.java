@@ -43,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
 
-public class BlockCoverable extends BlockContainer {
+public abstract class BlockCoverable extends BlockContainer {
 
     /** Block drop event for dropping attribute. */
     public static int EVENT_ID_DROP_ATTR = 0;
@@ -127,7 +127,7 @@ public class BlockCoverable extends BlockContainer {
      * <p>
      * Due to the amount of control needed over this, vanilla calls will always return an invisible icon.
      */
-    //public IIcon getIcon(int side, int metadata)
+    //public IIcon getIcon(EnumFacing side, int metadata)
     //{
     //    if (BlockProperties.isMetadataDefaultIcon(metadata)) {
     //        return getIcon();
@@ -150,7 +150,7 @@ public class BlockCoverable extends BlockContainer {
     /**
      * Retrieves the block texture to use based on the display side. Args: iBlockAccess, pos, side
      */
-//    public IIcon getIcon(IBlockAccess blockAccess, BlockPos pos, int side)
+//    public IIcon getIcon(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 //    {
 //        TEBase TE = getTileEntity(blockAccess, pos);
 //        ItemStack itemStack = BlockProperties.getCover(TE, 6);
@@ -160,14 +160,14 @@ public class BlockCoverable extends BlockContainer {
 //    }
 
 
-    //private static IIcon getWrappedIcon(Block b, IBlockAccess iba, BlockPos pos, int side, int meta)
+    //private static IIcon getWrappedIcon(Block b, IBlockAccess iba, BlockPos pos, EnumFacing side, int meta)
     //{
     //    return b instanceof IWrappableBlock ? ((IWrappableBlock)b).getIcon(iba, pos, side, b, meta) : b.getIcon(side, meta);
     //}
 
     /**
      * For South-sided blocks, rotates and sets the block bounds using
-     * the provided ForgeDirection.
+     * the provided EnumFacing.
      *
      * @param  dir the rotated {@link EnumFacing}
      */
@@ -374,7 +374,7 @@ public class BlockCoverable extends BlockContainer {
      * @param TE
      * @param side
      */
-    private void popAttribute(TEBase TE, int side)
+    private void popAttribute(TEBase TE, EnumFacing side)
     {
         if (TE.hasAttribute(TE.ATTR_ILLUMINATOR)) {
             TE.createBlockDropEvent(TE.ATTR_ILLUMINATOR);
@@ -452,7 +452,7 @@ public class BlockCoverable extends BlockContainer {
                             /* Will handle blocks that save directions using all axes (logs, quartz) */
                             if (BlockProperties.blockRotates(itemStack)) {
                                 //int rot = Direction.rotateOpposite[EntityLivingUtil.getRotationValue(entityPlayer)];
-                                //int side_interpolated = entityPlayer.rotationPitch < -45.0F ? 0 : entityPlayer.rotationPitch > 45 ? 1 : rot == 0 ? 3 : rot == 1 ? 4 : rot == 2 ? 2 : 5;
+                                //EnumFacing side_interpolated = entityPlayer.rotationPitch < -45.0F ? 0 : entityPlayer.rotationPitch > 45 ? 1 : rot == 0 ? 3 : rot == 1 ? 4 : rot == 2 ? 2 : 5;
                                 coverstate = coverstate.getBlock().onBlockPlaced(world, TE.getPos(), entityPlayer.getHorizontalFacing(), hitX, hitY, hitZ, metadata, entityPlayer);
                                 metadata = coverstate.getBlock().getMetaFromState(coverstate);
                             }
@@ -527,7 +527,7 @@ public class BlockCoverable extends BlockContainer {
     /**
      * Cycles through chisel patterns.
      */
-    public boolean onChiselClick(TEBase TE, int side, boolean leftClick)
+    public boolean onChiselClick(TEBase TE, EnumFacing side, boolean leftClick)
     {
         String design = TE.getChiselDesign(side);
         String designAdj = "";
@@ -575,7 +575,7 @@ public class BlockCoverable extends BlockContainer {
         if (!world.isRemote) {
             TEBase TE = getTileEntity(world, pos);
             if (TE != null) {
-                for (int side = 0; side < 6; ++side) {
+                for (EnumFacing side = 0; side < 6; ++side) {
                     if (TE.hasAttribute(TE.ATTR_COVER[side])) {
                         if (!canCoverSide(TE, world, pos, side)) {
                             TE.removeAttributes(side);
@@ -817,7 +817,7 @@ public class BlockCoverable extends BlockContainer {
             if (FeatureRegistry.enableIllumination && TE.hasAttribute(TE.ATTR_ILLUMINATOR)) {
                 lightValue = 15;
             } else {
-                for (int side = 0; side < 7; ++side) {
+                for (EnumFacing side = 0; side < 7; ++side) {
                     if (TE.hasAttribute(TE.ATTR_COVER[side])) {
                         ItemStack itemStack = BlockProperties.getCover(TE, side);
                         int tempLight = getLightValue(TE, BlockProperties.toBlockState(itemStack).getBlock(), itemStack.getItemDamage());
@@ -1169,7 +1169,7 @@ public class BlockCoverable extends BlockContainer {
 
             List<IBlockState> blocks = new ArrayList<IBlockState>();
 
-            for (int side1 = 1; side1 < 7; side1 += 5) {
+            for (EnumFacing side1 = 1; side1 < 7; side1 += 5) {
                 if (TE.hasAttribute(TE.ATTR_COVER[side1])) {
                     blocks.add(BlockProperties.toBlockState(BlockProperties.getCover(TE, side1)));
                 }
@@ -1428,8 +1428,10 @@ public class BlockCoverable extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int metadata)
     {
-        return new TEBase();
+        return this.createNewCarpentersTile(world, metadata);
     }
+
+    public abstract TileEntity createNewCarpentersTile(World world, int metadata);
 
     @Override
     public boolean hasTileEntity(IBlockState state)
@@ -1478,7 +1480,7 @@ public class BlockCoverable extends BlockContainer {
     /**
      * Returns whether side of block supports a cover.
      */
-    protected boolean canCoverSide(TEBase TE, World world, BlockPos pos, int side)
+    protected boolean canCoverSide(TEBase TE, World world, BlockPos pos, EnumFacing side)
     {
         return side == 6;
     }

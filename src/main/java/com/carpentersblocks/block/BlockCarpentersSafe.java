@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
 
@@ -70,7 +70,7 @@ public class BlockCarpentersSafe extends BlockCoverable {
     protected boolean onHammerLeftClick(TEBase TE, EntityPlayer entityPlayer)
     {
         int rot = EntityLivingUtil.getRotationValue(entityPlayer);
-        ForgeDirection dir = EntityLivingUtil.getRotationFacing(rot).getOpposite();
+        EnumFacing dir = EntityLivingUtil.getRotationFacing(rot).getOpposite();
 
         if (dir != Safe.getFacing(TE)) {
             Safe.setFacing(TE, rot);
@@ -140,7 +140,7 @@ public class BlockCarpentersSafe extends BlockCoverable {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -165,7 +165,7 @@ public class BlockCarpentersSafe extends BlockCoverable {
     /**
      * Called upon block activation (right click on the block.)
      */
-    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         actionResult.setAltered();
 
@@ -206,7 +206,7 @@ public class BlockCarpentersSafe extends BlockCoverable {
      * @return The amount of the explosion absorbed.
      */
     @Override
-    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+    public float getExplosionResistance(Entity entity, World world, BlockPos pos, double explosionX, double explosionY, double explosionZ)
     {
         return Blocks.bedrock.getExplosionResistance(entity);
     }
@@ -222,7 +222,7 @@ public class BlockCarpentersSafe extends BlockCoverable {
      * @param side The side to check
      * @return True if the block is solid on the specified side.
      */
-    public boolean isSideSolid(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
+    public boolean isSideSolid(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -247,7 +247,7 @@ public class BlockCarpentersSafe extends BlockCoverable {
      * @return A ArrayList containing all items this block drops
      */
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    public ArrayList<ItemStack> getDrops(World world, BlockPos pos, int metadata, int fortune)
     {
         ArrayList<ItemStack> ret = super.getDrops(world, x, y, z, metadata, fortune);
         TEBase TE = getSimpleTileEntity(world, x, y, z);
@@ -272,7 +272,7 @@ public class BlockCarpentersSafe extends BlockCoverable {
      * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
      * EntityPlayer.
      */
-    public float getPlayerRelativeBlockHardness(EntityPlayer entityPlayer, World world, int x, int y, int z)
+    public float getPlayerRelativeBlockHardness(EntityPlayer entityPlayer, World world, BlockPos pos)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -306,14 +306,14 @@ public class BlockCarpentersSafe extends BlockCoverable {
     }
 
     @Override
-    public ForgeDirection[] getValidRotations(World worldObj, int x, int y,int z)
+    public EnumFacing[] getValidRotations(World worldObj, int x, int y,int z)
     {
-        ForgeDirection[] axises = {ForgeDirection.UP, ForgeDirection.DOWN};
+        EnumFacing[] axises = {EnumFacing.UP, EnumFacing.DOWN};
         return axises;
     }
 
     @Override
-    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         // to correctly support archimedes' ships mod:
         // if Axis is DOWN, block rotates to the left, north -> west -> south -> east
@@ -323,7 +323,7 @@ public class BlockCarpentersSafe extends BlockCoverable {
         if (tile != null && tile instanceof TEBase)
         {
             TEBase cbTile = (TEBase)tile;
-            ForgeDirection direction = Safe.getFacing(cbTile);
+            EnumFacing direction = Safe.getFacing(cbTile);
             switch (axis)
             {
                 case UP:

@@ -19,7 +19,7 @@ public class BlockHandlerCarpentersButton extends BlockHandlerBase {
     /**
      * Renders block
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
         super.renderCarpentersBlock(x, y, z);

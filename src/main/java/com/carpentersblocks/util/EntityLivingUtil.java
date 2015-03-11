@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class EntityLivingUtil {
 
@@ -40,25 +40,25 @@ public class EntityLivingUtil {
     }
 
     /**
-     * Gets the {@link ForgeDirection} for a player rotation value returned
+     * Gets the {@link EnumFacing} for a player rotation value returned
      * by {@link #getRotationValue(EntityLivingBase)}, which by default will
      * be the opposite facing of the {@link Entity}.
      *
      * @param  rot the rotation value
-     * @return the {@link ForgeDirection}
+     * @return the {@link EnumFacing}
      */
-    public static ForgeDirection getRotationFacing(int rot)
+    public static EnumFacing getRotationFacing(int rot)
     {
-        return ForgeDirection.getOrientation(Direction.directionToFacing[rot]);
+        return EnumFacing.getOrientation(Direction.directionToFacing[rot]);
     }
 
     /**
-     * Gets player facing as {@link ForgeDirection}.
+     * Gets player facing as {@link EnumFacing}.
      *
      * @param  entityPlayer the {@link EntityLivingBase}
-     * @return the {@link ForgeDirection}
+     * @return the {@link EnumFacing}
      */
-    public static ForgeDirection getFacing(EntityLivingBase entity)
+    public static EnumFacing getFacing(EntityLivingBase entity)
     {
         int rot = getRotationValue(entity);
         return getRotationFacing(rot).getOpposite();

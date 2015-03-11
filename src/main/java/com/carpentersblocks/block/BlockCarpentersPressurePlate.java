@@ -96,7 +96,7 @@ public class BlockCarpentersPressurePlate extends BlockSided {
      * cleared to be reused)
      */
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, BlockPos pos)
     {
         return null;
     }
@@ -105,7 +105,7 @@ public class BlockCarpentersPressurePlate extends BlockSided {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -119,7 +119,7 @@ public class BlockCarpentersPressurePlate extends BlockSided {
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World world, int x, int y, int z, Random random)
+    public void updateTick(World world, BlockPos pos, Random random)
     {
         if (!world.isRemote) {
 
@@ -148,7 +148,7 @@ public class BlockCarpentersPressurePlate extends BlockSided {
     /**
      * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
      */
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity)
     {
         if (!world.isRemote) {
             TEBase TE = getTileEntity(world, x, y, z);
@@ -192,7 +192,7 @@ public class BlockCarpentersPressurePlate extends BlockSided {
      * @param  z the z coordinate
      * @return the {@link AxisAlignedBB}
      */
-    private AxisAlignedBB getSensitiveAABB(World world, int x, int y, int z)
+    private AxisAlignedBB getSensitiveAABB(World world, BlockPos pos)
     {
         setBlockBoundsBasedOnState(world, x, y, z);
         return AxisAlignedBB.getBoundingBox(x + minX, y + minY, z + minZ, x + maxX, y + maxY, z + maxZ);
@@ -201,7 +201,7 @@ public class BlockCarpentersPressurePlate extends BlockSided {
     /**
      * Activates pressure plate.
      */
-    private void toggleOn(TEBase TE, World world, int x, int y, int z)
+    private void toggleOn(TEBase TE, World world, BlockPos pos)
     {
         data.setState(TE, data.STATE_ON, true);
         notifyBlocksOfPowerChange(world, x, y, z);
@@ -211,7 +211,7 @@ public class BlockCarpentersPressurePlate extends BlockSided {
     /**
      * Deactivates pressure plate.
      */
-    private void toggleOff(TEBase TE, World world, int x, int y, int z)
+    private void toggleOff(TEBase TE, World world, BlockPos pos)
     {
         data.setState(TE, data.STATE_OFF, true);
         notifyBlocksOfPowerChange(world, x, y, z);
@@ -275,7 +275,7 @@ public class BlockCarpentersPressurePlate extends BlockSided {
     /**
      * Ejects contained items into the world, and notifies neighbours of an update, as appropriate
      */
-    public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
+    public void breakBlock(World world, BlockPos pos, Block block, int metadata)
     {
         TEBase TE = getSimpleTileEntity(world, x, y, z);
 

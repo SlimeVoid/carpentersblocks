@@ -9,7 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersDaylightSensor extends BlockHandlerBase {
@@ -63,7 +63,7 @@ public class BlockHandlerCarpentersDaylightSensor extends BlockHandlerBase {
     /**
      * Renders block
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 
@@ -74,7 +74,7 @@ public class BlockHandlerCarpentersDaylightSensor extends BlockHandlerBase {
         DaylightSensor data = new DaylightSensor();
         ((BlockCarpentersDaylightSensor)srcBlock).setBlockBoundsBasedOnState(renderBlocks.blockAccess, x, y, z);
 
-        ForgeDirection dir = data.getDirection(TE).getOpposite();
+        EnumFacing dir = data.getDirection(TE).getOpposite();
 
         /* Render glass pane */
 

@@ -41,7 +41,7 @@ public class BlockSided extends BlockCoverable {
     public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
     {
         if (canAttachToSide(side)) {
-            BlockPos offsetPos = pos.add(-side.getFrontOffsetX(), -side.getFrontOffsetY(), -side.getFrontOffsetZ();
+            BlockPos offsetPos = pos.add(-side.getFrontOffsetX(), -side.getFrontOffsetY(), -side.getFrontOffsetZ());
             return world.getBlockState(offsetPos).getBlock().isSideSolid(world, offsetPos, side);
         } else {
             return false;
@@ -132,13 +132,13 @@ public class BlockSided extends BlockCoverable {
         if (canProvidePower()) {
             TEBase TE = getTileEntity(world, pos);
             if (TE != null) {
-                ForgeDirection dir = data.getDirection(TE);
+                EnumFacing dir = data.getDirection(TE);
                 world.notifyBlocksOfNeighborChange(x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ, this);
             } else {
 
                 /* When block is destroyed, notify neighbors in all directions. */
 
-                for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                for (EnumFacing dir : EnumFacing.VALID_DIRECTIONS) {
                     world.notifyBlocksOfNeighborChange(x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ, this);
                 }
 

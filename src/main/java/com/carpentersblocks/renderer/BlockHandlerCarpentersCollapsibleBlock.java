@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 
 import static com.carpentersblocks.renderer.helper.VertexHelper.*;
@@ -41,7 +41,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
     /**
      * Renders side.
      */
-    protected void renderBaseSide(int x, int y, int z, int side, IIcon icon)
+    protected void renderBaseSide(BlockPos pos, int side, IIcon icon)
     {
         switch (renderID)
         {
@@ -79,7 +79,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
     /**
      * Renders base block.
      */
-    protected void renderBaseBlock(ItemStack itemStack, int x, int y, int z)
+    protected void renderBaseBlock(ItemStack itemStack, BlockPos pos)
     {
         renderBlocks.enableAO = getEnableAO(itemStack);
         CollapsibleUtil.computeOffsets(TE);
@@ -141,7 +141,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
     /**
      * Returns lightness for sloped face on side.
      */
-    private float getInterpolatedLightness(ForgeDirection side)
+    private float getInterpolatedLightness(EnumFacing side)
     {
         switch (side) {
             case NORTH: {
@@ -176,7 +176,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
     /**
      * Draws the top face using four triangles.
      */
-    private void prepareTopFace(ItemStack itemStack, int x, int y, int z)
+    private void prepareTopFace(ItemStack itemStack, BlockPos pos)
     {
         /* Compute CENTER_YMAX lighting. */
 
@@ -215,7 +215,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
 
         /* Top North triangle. */
 
-        lightingHelper.setLightnessOverride(getInterpolatedLightness(ForgeDirection.NORTH));
+        lightingHelper.setLightnessOverride(getInterpolatedLightness(EnumFacing.NORTH));
         renderBlocks.setRenderBounds(0.0D, Math.min(CollapsibleUtil.offset_XZNN, CollapsibleUtil.offset_XZPN), 0.0D, 1.0D, Math.max(CollapsibleUtil.offset_XZNN, CollapsibleUtil.offset_XZPN), 0.5D);
         lightingHelper.ao[TOP_LEFT] = lightingHelper.ao[TOP_RIGHT] = aoCenter;
         renderBlocks.brightnessTopLeft = renderBlocks.brightnessTopRight = brightnessCenter;
@@ -227,7 +227,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
 
         /* Top South triangle. */
 
-        lightingHelper.setLightnessOverride(getInterpolatedLightness(ForgeDirection.SOUTH));
+        lightingHelper.setLightnessOverride(getInterpolatedLightness(EnumFacing.SOUTH));
         renderBlocks.setRenderBounds(0.0D, Math.min(CollapsibleUtil.offset_XZNP, CollapsibleUtil.offset_XZPP), 0.5D, 1.0D, Math.max(CollapsibleUtil.offset_XZNP, CollapsibleUtil.offset_XZPP), 1.0D);
         lightingHelper.ao[BOTTOM_LEFT] = lightingHelper.ao[BOTTOM_RIGHT] = aoCenter;
         renderBlocks.brightnessBottomLeft = renderBlocks.brightnessBottomRight = brightnessCenter;
@@ -239,7 +239,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
 
         /* Top West triangle. */
 
-        lightingHelper.setLightnessOverride(getInterpolatedLightness(ForgeDirection.WEST));
+        lightingHelper.setLightnessOverride(getInterpolatedLightness(EnumFacing.WEST));
         renderBlocks.setRenderBounds(0.0D, Math.min(CollapsibleUtil.offset_XZNN, CollapsibleUtil.offset_XZNP), 0.0D, 0.5D, Math.max(CollapsibleUtil.offset_XZNN, CollapsibleUtil.offset_XZNP), 1.0D);
         lightingHelper.ao[TOP_LEFT] = lightingHelper.ao[BOTTOM_LEFT] = aoCenter;
         renderBlocks.brightnessTopLeft = renderBlocks.brightnessBottomLeft = brightnessCenter;
@@ -251,7 +251,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
 
         /* Top East triangle. */
 
-        lightingHelper.setLightnessOverride(getInterpolatedLightness(ForgeDirection.EAST));
+        lightingHelper.setLightnessOverride(getInterpolatedLightness(EnumFacing.EAST));
         renderBlocks.setRenderBounds(0.5D, Math.min(CollapsibleUtil.offset_XZPN, CollapsibleUtil.offset_XZPP), 0.0D, 1.0D, Math.max(CollapsibleUtil.offset_XZPN, CollapsibleUtil.offset_XZPP), 1.0D);
         lightingHelper.ao[TOP_RIGHT] = lightingHelper.ao[BOTTOM_RIGHT] = aoCenter;
         renderBlocks.brightnessTopRight = renderBlocks.brightnessBottomRight = brightnessCenter;
@@ -267,7 +267,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
     /**
      * Prepare North face.
      */
-    private void prepareFaceZNeg(ItemStack itemStack, int x, int y, int z)
+    private void prepareFaceZNeg(ItemStack itemStack, BlockPos pos)
     {
         lightingHelper.setupLightingZNeg(itemStack, x, y, z);
 
@@ -282,7 +282,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
     /**
      * Prepare South face.
      */
-    private void prepareFaceZPos(ItemStack itemStack, int x, int y, int z)
+    private void prepareFaceZPos(ItemStack itemStack, BlockPos pos)
     {
         lightingHelper.setupLightingZPos(itemStack, x, y, z);
 
@@ -297,7 +297,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
     /**
      * Prepare West face.
      */
-    private void prepareFaceXNeg(ItemStack itemStack, int x, int y, int z)
+    private void prepareFaceXNeg(ItemStack itemStack, BlockPos pos)
     {
         lightingHelper.setupLightingXNeg(itemStack, x, y, z);
 
@@ -312,7 +312,7 @@ public class BlockHandlerCarpentersCollapsibleBlock extends BlockHandlerSloped {
     /**
      * Prepare East face.
      */
-    private void prepareFaceXPos(ItemStack itemStack, int x, int y, int z)
+    private void prepareFaceXPos(ItemStack itemStack, BlockPos pos)
     {
         lightingHelper.setupLightingXPos(itemStack, x, y, z);
 

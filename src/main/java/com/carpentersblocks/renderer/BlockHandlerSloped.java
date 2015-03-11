@@ -32,7 +32,7 @@ public abstract class BlockHandlerSloped extends BlockHandlerBase {
      * Sets renderID to identify which RenderHelper to use
      * and passes control to delegateSideRender().
      */
-    protected final void setIDAndRender(ItemStack itemStack, int renderID, int x, int y, int z, int side)
+    protected final void setIDAndRender(ItemStack itemStack, int renderID, BlockPos pos, int side)
     {
         this.renderID = renderID;
         delegateSideRender(itemStack, x, y, z, side);
@@ -152,13 +152,13 @@ public abstract class BlockHandlerSloped extends BlockHandlerBase {
     /**
      * A renderSide method that happens after checking if side cover is rendering.
      */
-    abstract void renderBaseSide(int x, int y, int z, int side, IIcon icon);
+    abstract void renderBaseSide(BlockPos pos, int side, IIcon icon);
 
     @Override
     /**
      * Renders side.
      */
-    protected final void render(int x, int y, int z, int side, IIcon icon)
+    protected final void render(BlockPos pos, int side, IIcon icon)
     {
         if (coverRendering != 6) {
             super.render(x, y, z, side, icon);
@@ -170,13 +170,13 @@ public abstract class BlockHandlerSloped extends BlockHandlerBase {
     /**
      * Renders the base cover block.
      */
-    abstract void renderBaseBlock(ItemStack itemStack, int x, int y, int z);
+    abstract void renderBaseBlock(ItemStack itemStack, BlockPos pos);
 
     @Override
     /**
      * Renders the block.
      */
-    protected final void renderBlock(ItemStack itemStack, int x, int y, int z)
+    protected final void renderBlock(ItemStack itemStack, BlockPos pos)
     {
         if (coverRendering != 6) {
             super.renderBlock(itemStack, x, y, z);

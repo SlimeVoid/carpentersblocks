@@ -20,7 +20,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class BlockCarpentersLever extends BlockSided {
 
@@ -47,7 +47,7 @@ public class BlockCarpentersLever extends BlockSided {
     /**
      * Returns the icon on the side given the block metadata.
      */
-    public IIcon getIcon(int side, int metadata)
+    public IIcon getIcon(EnumFacing side, int metadata)
     {
         return IconRegistry.icon_lever;
     }
@@ -77,7 +77,7 @@ public class BlockCarpentersLever extends BlockSided {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
 
@@ -86,12 +86,12 @@ public class BlockCarpentersLever extends BlockSided {
         if (TE != null) {
             int meta = world.getBlockMetadata(x, y, z);
             if (meta < 2) {
-                ForgeDirection dir = EntityLivingUtil.getFacing(entityLiving);
-                if (dir.equals(ForgeDirection.NORTH) || dir.equals(ForgeDirection.SOUTH)) {
+                EnumFacing dir = EntityLivingUtil.getFacing(entityLiving);
+                if (dir.equals(EnumFacing.NORTH) || dir.equals(EnumFacing.SOUTH)) {
                     data.setAxis(TE, Axis.Z);
                 }
             } else {
-                if (meta == ForgeDirection.NORTH.ordinal() || meta == ForgeDirection.SOUTH.ordinal()) {
+                if (meta == EnumFacing.NORTH.ordinal() || meta == EnumFacing.SOUTH.ordinal()) {
                     data.setAxis(TE, Axis.Z);
                 }
             }
@@ -103,7 +103,7 @@ public class BlockCarpentersLever extends BlockSided {
      * cleared to be reused)
      */
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, BlockPos pos)
     {
         return null;
     }
@@ -112,13 +112,13 @@ public class BlockCarpentersLever extends BlockSided {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
         if (TE != null) {
 
-            ForgeDirection side = data.getDirection(TE);
+            EnumFacing side = data.getDirection(TE);
             Axis axis = data.getAxis(TE);
 
             float offset = 0.1875F;
@@ -150,7 +150,7 @@ public class BlockCarpentersLever extends BlockSided {
     /**
      * Called upon block activation.
      */
-    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         data.setState(TE, isActive(TE) ? data.STATE_OFF : data.STATE_ON, true);
 
@@ -187,7 +187,7 @@ public class BlockCarpentersLever extends BlockSided {
     /**
      * Ejects contained items into the world, and notifies neighbours of an update, as appropriate
      */
-    public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
+    public void breakBlock(World world, BlockPos pos, Block block, int metadata)
     {
         TEBase TE = getSimpleTileEntity(world, x, y, z);
 

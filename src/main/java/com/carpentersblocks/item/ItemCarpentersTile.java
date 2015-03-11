@@ -9,9 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import static net.minecraft.util.EnumFacing.*;
 
 public class ItemCarpentersTile extends Item {
 
@@ -32,7 +32,7 @@ public class ItemCarpentersTile extends Item {
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, BlockPos pos, int side, float hitX, float hitY, float hitZ)
     {
         if (world.isRemote) {
 
@@ -40,7 +40,7 @@ public class ItemCarpentersTile extends Item {
 
         } else {
 
-            ForgeDirection dir = ForgeDirection.getOrientation(side);
+            EnumFacing dir = EnumFacing.getOrientation(side);
             int x_offset = x + dir.offsetX;
             int y_offset = y + dir.offsetY;
             int z_offset = z + dir.offsetZ;
@@ -51,9 +51,9 @@ public class ItemCarpentersTile extends Item {
 
             } else {
 
-                ForgeDirection offset_side = getOffsetSide(ForgeDirection.getOrientation(side), hitX, hitY, hitZ);
+                EnumFacing offset_side = getOffsetSide(EnumFacing.getOrientation(side), hitX, hitY, hitZ);
 
-                EntityCarpentersTile entity = new EntityCarpentersTile(entityPlayer, world, x_offset, y_offset, z_offset, ForgeDirection.getOrientation(side), offset_side, entityPlayer.isSneaking());
+                EntityCarpentersTile entity = new EntityCarpentersTile(entityPlayer, world, x_offset, y_offset, z_offset, EnumFacing.getOrientation(side), offset_side, entityPlayer.isSneaking());
 
                 if (entity != null && entity.onValidSurface()) {
                     world.spawnEntityInWorld(entity);
@@ -69,9 +69,9 @@ public class ItemCarpentersTile extends Item {
     /**
      * Returns offset side relative to where on a block a player clicks.
      */
-    private ForgeDirection getOffsetSide(ForgeDirection side, float hitX, float hitY, float hitZ)
+    private EnumFacing getOffsetSide(EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        ForgeDirection offset_side = UNKNOWN;
+        EnumFacing offset_side = UNKNOWN;
 
         float ratio = 0.20F;
         float invert_ratio = 1.0F - ratio;

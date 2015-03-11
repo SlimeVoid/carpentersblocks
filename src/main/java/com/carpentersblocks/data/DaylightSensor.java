@@ -1,7 +1,7 @@
 package com.carpentersblocks.data;
 
 import com.carpentersblocks.tileentity.TEBase;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class DaylightSensor implements ISided {
 
@@ -23,17 +23,17 @@ public class DaylightSensor implements ISided {
      * Returns direction.
      */
     @Override
-    public ForgeDirection getDirection(TEBase TE)
+    public EnumFacing getDirection(TEBase TE)
     {
         int side = (TE.getData() & 0x380) >> 7;
-        return ForgeDirection.getOrientation(side);
+        return EnumFacing.getOrientation(side);
     }
 
     /**
      * Sets direction.
      */
     @Override
-    public void setDirection(TEBase TE, ForgeDirection dir)
+    public void setDirection(TEBase TE, EnumFacing dir)
     {
         int temp = (TE.getData() & ~0x380) | (dir.ordinal() << 7);
         TE.setData(temp);

@@ -31,7 +31,7 @@ public class OptifineHandler {
         }
     }
 
-    public static int getColorMultiplier(Block block, IBlockAccess blockAccess, int x, int y, int z)
+    public static int getColorMultiplier(Block block, IBlockAccess blockAccess, BlockPos pos)
     {
         int colorMultiplier = block.colorMultiplier(blockAccess, x, y, z);
         try {

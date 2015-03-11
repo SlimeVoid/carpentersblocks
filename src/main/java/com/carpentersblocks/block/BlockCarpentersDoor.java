@@ -14,7 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.Random;
 
@@ -80,7 +80,7 @@ public class BlockCarpentersDoor extends BlockHinged {
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public Item getItem(World world, int x, int y, int z)
+    public Item getItem(World world, BlockPos pos)
     {
         return ItemRegistry.itemCarpentersDoor;
     }
@@ -95,14 +95,14 @@ public class BlockCarpentersDoor extends BlockHinged {
     }
 
     @Override
-    public ForgeDirection[] getValidRotations(World worldObj, int x, int y,int z)
+    public EnumFacing[] getValidRotations(World worldObj, int x, int y,int z)
     {
-        ForgeDirection[] axises = {ForgeDirection.UP, ForgeDirection.DOWN};
+        EnumFacing[] axises = {EnumFacing.UP, EnumFacing.DOWN};
         return axises;
     }
 
     @Override
-    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         // to correctly support archimedes' ships mod:
         // if Axis is DOWN, block rotates to the left, north -> west -> south -> east

@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class BlockCarpentersLadder extends BlockSided {
 
@@ -60,12 +60,12 @@ public class BlockCarpentersLadder extends BlockSided {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
         if (TE != null) {
-            ForgeDirection dir =data.getDirection(TE);
+            EnumFacing dir =data.getDirection(TE);
             switch (dir) {
                 case DOWN: // DIR_ON_X
                     setBlockBounds(0.0F, 0.0F, 0.375F, 1.0F, 1.0F, 0.625F);
@@ -80,7 +80,7 @@ public class BlockCarpentersLadder extends BlockSided {
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
     {
         /* Check for solid face. */
 
@@ -89,7 +89,7 @@ public class BlockCarpentersLadder extends BlockSided {
         /* For DOWN and UP orientation, also check for ladder. */
 
         if (!result && side < 2) {
-            ForgeDirection dir = ForgeDirection.getOrientation(side);
+            EnumFacing dir = EnumFacing.getOrientation(side);
             result = world.getBlock(x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ).equals(this);
         }
 
@@ -100,12 +100,12 @@ public class BlockCarpentersLadder extends BlockSided {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         /* Need to interpret DOWN and UP orientation as axis assignment. */
 
         if (world.getBlockMetadata(x, y, z) < 2) {
-            ForgeDirection facing = EntityLivingUtil.getFacing(entityLiving).getOpposite();
+            EnumFacing facing = EntityLivingUtil.getFacing(entityLiving).getOpposite();
             if (facing.offsetX != 0) {
                 world.setBlockMetadataWithNotify(x, y, z, Ladder.DIR_ON_Z, 0);
             } else {
@@ -115,9 +115,9 @@ public class BlockCarpentersLadder extends BlockSided {
 
         /* Match type above or below ladder. */
 
-        for (int side = 0; side < 2; ++side) {
+        for (EnumFacing side = 0; side < 2; ++side) {
             TEBase TE = getTileEntity(world, x, y, z);
-            ForgeDirection dir = ForgeDirection.getOrientation(side);
+            EnumFacing dir = EnumFacing.getOrientation(side);
             if (world.getBlock(x, y + dir.offsetY, z).equals(this)) {
                 TEBase TE_adj = (TEBase) world.getTileEntity(x, y + dir.offsetY, z);
                 data.setType(TE, data.getType(TE_adj));
@@ -132,7 +132,7 @@ public class BlockCarpentersLadder extends BlockSided {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World world, BlockPos pos, Block block)
     {
         if (!world.isRemote) {
             TEBase TE = getTileEntity(world, x, y, z);
@@ -143,7 +143,7 @@ public class BlockCarpentersLadder extends BlockSided {
     }
 
     @Override
-    public boolean isLadder(IBlockAccess blockAccess, int x, int y, int z, EntityLivingBase entityLiving)
+    public boolean isLadder(IBlockAccess blockAccess, BlockPos pos, EntityLivingBase entityLiving)
     {
         return true;
     }
@@ -158,14 +158,14 @@ public class BlockCarpentersLadder extends BlockSided {
     }
 
     @Override
-    public ForgeDirection[] getValidRotations(World worldObj, int x, int y,int z)
+    public EnumFacing[] getValidRotations(World worldObj, int x, int y,int z)
     {
-        ForgeDirection[] axises = {ForgeDirection.UP, ForgeDirection.DOWN};
+        EnumFacing[] axises = {EnumFacing.UP, EnumFacing.DOWN};
         return axises;
     }
 
     @Override
-    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         // to correctly support archimedes' ships mod:
         // if Axis is DOWN, block rotates to the left, north -> west -> south -> east

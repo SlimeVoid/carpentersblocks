@@ -3,13 +3,13 @@ package com.carpentersblocks.renderer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerHinged extends BlockHandlerBase {
 
     /** Side block renders against. */
-    protected ForgeDirection side;
+    protected EnumFacing side;
 
     /** Whether block is in open state. */
     protected boolean isOpen;
@@ -27,7 +27,7 @@ public class BlockHandlerHinged extends BlockHandlerBase {
     /**
      * Renders pane like glass or screen.
      */
-    protected final void renderPartPane(IIcon icon, int x, int y, int z)
+    protected final void renderPartPane(IIcon icon, BlockPos pos)
     {
         int dir = side.ordinal();
         renderBlocks.setRenderBounds(paneBounds[dir][0], paneBounds[dir][1], paneBounds[dir][2], paneBounds[dir][3], paneBounds[dir][4], paneBounds[dir][5]);

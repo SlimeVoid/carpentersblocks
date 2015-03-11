@@ -46,7 +46,7 @@ public class BlockHandlerCarpentersFlowerPot extends BlockHandlerBase {
     /**
      * Renders block
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 
@@ -82,7 +82,7 @@ public class BlockHandlerCarpentersFlowerPot extends BlockHandlerBase {
     /**
      * Renders flower pot
      */
-    public boolean renderPot(ItemStack itemStack, int x, int y, int z)
+    public boolean renderPot(ItemStack itemStack, BlockPos pos)
     {
         if (TE.hasDesign()) {
             IIcon designIcon = IconRegistry.icon_design_flower_pot.get(DesignHandler.listFlowerPot.indexOf(TE.getDesign()));
@@ -122,7 +122,7 @@ public class BlockHandlerCarpentersFlowerPot extends BlockHandlerBase {
     /**
      * Renders soil
      */
-    public boolean renderSoil(ItemStack itemStack, int x, int y, int z)
+    public boolean renderSoil(ItemStack itemStack, BlockPos pos)
     {
         renderBlocks.setRenderBounds(0.375D, 0.0625D, 0.375D, 0.625D, 0.25D, 0.625D);
         renderBlock(itemStack, x, y, z);
@@ -133,7 +133,7 @@ public class BlockHandlerCarpentersFlowerPot extends BlockHandlerBase {
     /**
      * Renders plant
      */
-    public boolean renderPlant(ItemStack itemStack, int x, int y, int z)
+    public boolean renderPlant(ItemStack itemStack, BlockPos pos)
     {
         Block block = FlowerPotProperties.toBlock(itemStack);
         if (block.getRenderBlockPass() != renderPass)
@@ -192,7 +192,7 @@ public class BlockHandlerCarpentersFlowerPot extends BlockHandlerBase {
     /**
      * Draws stacked blocks for leaves or mod cacti.
      */
-    private void drawStackedBlocks(ItemStack itemStack, int x, int y, int z)
+    private void drawStackedBlocks(ItemStack itemStack, BlockPos pos)
     {
         TE.setMetadata(itemStack.getItemDamage());
         renderBlocks.setRenderBounds(0.375F, 0.0D, 0.375F, 0.625F, 0.25D, 0.625F);

@@ -4,7 +4,7 @@ import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.BlockProperties;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class Button implements ISided {
 
@@ -25,16 +25,16 @@ public class Button implements ISided {
      * Returns direction.
      */
     @Override
-    public ForgeDirection getDirection(TEBase TE)
+    public EnumFacing getDirection(TEBase TE)
     {
-        return ForgeDirection.getOrientation(TE.getData() & 0x7);
+        return EnumFacing.getOrientation(TE.getData() & 0x7);
     }
 
     /**
      * Sets direction.
      */
     @Override
-    public void setDirection(TEBase TE, ForgeDirection dir)
+    public void setDirection(TEBase TE, EnumFacing dir)
     {
         int temp = (TE.getData() & ~0x7) | dir.ordinal();
         TE.setData(temp);

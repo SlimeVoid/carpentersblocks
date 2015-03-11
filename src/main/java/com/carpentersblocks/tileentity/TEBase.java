@@ -6,6 +6,7 @@ import com.carpentersblocks.util.handler.DesignHandler;
 import com.carpentersblocks.util.protection.IProtected;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,12 +14,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.*;
 
-public class TEBase extends TileEntity implements IProtected {
+public abstract class TEBase extends TileEntity implements IProtected, IUpdatePlayerListBox {
 
     private static final String TAG_ATTR          = "cbAttribute";
     private static final String TAG_ATTR_LIST     = "cbAttrList";
@@ -114,7 +117,7 @@ public class TEBase extends TileEntity implements IProtected {
     {
         NBTTagCompound nbt = new NBTTagCompound();
         writeToNBT(nbt);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
+        return new S35PacketUpdateTileEntity(this.getPos(), this.getBlockMetadata(), nbt);
     }
 
     @Override
@@ -129,19 +132,19 @@ public class TEBase extends TileEntity implements IProtected {
      */
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
-        readFromNBT(pkt.func_148857_g());
+        readFromNBT(pkt.getNbtCompound());
 
         /*
          * Block.getLightValue() is called often when rendering, requiring
          * expensive tile entity lookups. When data is loaded, update the
          * light value cache for this entity to speed up the render process.
          */
-        ((BlockCoverable)getBlockType()).updateLightValue(getWorldObj(), xCoord, yCoord, zCoord);
+        ((BlockCoverable)getBlockType()).updateLightValue(this.getWorld(), this.getPos());
 
         if (worldObj.isRemote) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            worldObj.markBlockForUpdate(this.getPos());
             // TODO: Rename to updateAllLightByTypes
-            worldObj.func_147451_t(xCoord, yCoord, zCoord);
+            worldObj.checkLight(this.getPos());
         }
     }
 
@@ -149,18 +152,14 @@ public class TEBase extends TileEntity implements IProtected {
      * Called from Chunk.setBlockIDWithMetadata, determines if this tile entity should be re-created when the ID, or Metadata changes.
      * Use with caution as this will leave straggler TileEntities, or create conflicts with other TileEntities if not used properly.
      *
-     * @param oldID The old ID of the block
-     * @param newID The new ID of the block (May be the same)
-     * @param oldMeta The old metadata of the block
-     * @param newMeta The new metadata of the block (May be the same)
      * @param world Current world
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z Position
+     * @param pos Original block position
+     * @param oldBlock the original Block
+     * @param newBlock the new Block
      * @return True to remove the old tile entity, false to keep it in tact {and create a new one if the new values specify to}
      */
     @Override
-    public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z)
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldBlock, IBlockState newBlock)
     {
         /*
          * This is a curious method.
@@ -182,7 +181,7 @@ public class TEBase extends TileEntity implements IProtected {
      */
     public void onChunkUnload()
     {
-        int hash = BlockCoverable.hashCoords(xCoord, yCoord, zCoord);
+        int hash = BlockCoverable.hashCoords(this.getPos());
         BlockCoverable.cache.remove(hash);
     }
 
@@ -200,16 +199,6 @@ public class TEBase extends TileEntity implements IProtected {
     public String getOwner()
     {
         return cbOwner;
-    }
-
-    @Override
-    /**
-     * Determines if this TileEntity requires update calls.
-     * @return True if you want updateEntity() to be called, false if not
-     */
-    public boolean canUpdate()
-    {
-        return false;
     }
 
     public boolean hasAttribute(byte attrId)
@@ -239,19 +228,18 @@ public class TEBase extends TileEntity implements IProtected {
      * <p>
      * Corrects log rotation, among other things.
      *
-     * @param  rand a {@link Random} reference
      * @param  itemStack the {@link ItemStack}
      * @return the cover {@link ItemStack} in it's default state
      */
     private ItemStack setDefaultMetadata(ItemStack itemStack)
     {
-        Block block = BlockProperties.toBlock(itemStack);
+        IBlockState block = BlockProperties.toBlockState(itemStack);
 
         // Correct rotation metadata before dropping block
-        if (BlockProperties.blockRotates(itemStack) || block instanceof BlockDirectional)
+        if (BlockProperties.blockRotates(itemStack) || block.getBlock() instanceof BlockDirectional)
         {
-            int dmgDrop = block.damageDropped(itemStack.getItemDamage());
-            Item itemDrop = block.getItemDropped(itemStack.getItemDamage(), getWorldObj().rand, /* Fortune */ 0);
+            int dmgDrop = block.getBlock().damageDropped(block);
+            Item itemDrop = block.getBlock().getItemDropped(block, this.getWorld().rand, /* Fortune */ 0);
 
             /* Check if block drops itself, and, if so, correct the damage value to the block's default. */
 
@@ -275,31 +263,32 @@ public class TEBase extends TileEntity implements IProtected {
 
             cbAttrMap.put(attrId, reducedStack);
 
-            World world = getWorldObj();
+            World world = this.getWorld();
             if (world != null) {
 
-                Block block = itemStack == null ? getBlockType() : BlockProperties.toBlock(itemStack);
+                IBlockState block = itemStack == null ? this.getWorld().getBlockState(this.getPos()) : BlockProperties.toBlockState(itemStack);
 
                 if (attrId < 7) {
                     int metadata = itemStack == null ? 0 : itemStack.getItemDamage();
                     if (attrId == ATTR_COVER[6]) {
-                        world.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, metadata, 0);
+                        // TODO :: addAttribute
+                        // world.setBlockState(this.getPos(), block);//.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, metadata, 0);
                     }
-                    world.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, block);
+                    world.notifyNeighborsOfStateChange(this.getPos(), block.getBlock());
                 } else if (attrId == ATTR_PLANT | attrId == ATTR_SOIL) {
-                    world.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, block);
+                    world.notifyNeighborsOfStateChange(this.getPos(), block.getBlock());
                 }
 
                 if (attrId == ATTR_FERTILIZER) {
                     /* Play sound when fertilizing plants.. though I've never heard it before. */
-                    getWorldObj().playAuxSFX(2005, xCoord, yCoord, zCoord, 0);
+                    getWorld().playAuxSFX(2005, this.getPos(), 0);
                 }
 
-                world.markBlockForUpdate(xCoord, yCoord, zCoord);
+                world.markBlockForUpdate(this.getPos());
 
             }
 
-            markDirty();
+            this.markDirty();
 
         }
     }
@@ -314,7 +303,7 @@ public class TEBase extends TileEntity implements IProtected {
     public void onAttrDropped(byte attrId)
     {
         cbAttrMap.remove(attrId);
-        getWorldObj().markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.getWorld().markBlockForUpdate(this.getPos());
         markDirty();
     }
 
@@ -325,7 +314,7 @@ public class TEBase extends TileEntity implements IProtected {
      */
     public void createBlockDropEvent(byte attrId)
     {
-        getWorldObj().addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), BlockCoverable.EVENT_ID_DROP_ATTR, attrId);
+        this.getWorld().addBlockEvent(this.getPos(), getBlockType(), BlockCoverable.EVENT_ID_DROP_ATTR, attrId);
     }
 
     public void removeAttributes(int side)
@@ -362,7 +351,7 @@ public class TEBase extends TileEntity implements IProtected {
     {
         if (!cbChiselDesign.equals(iconName)) {
             cbChiselDesign[side] = iconName;
-            getWorldObj().markBlockForUpdate(xCoord, yCoord, zCoord);
+            this.getWorld().markBlockForUpdate(this.getPos());
             return true;
         }
 
@@ -373,7 +362,7 @@ public class TEBase extends TileEntity implements IProtected {
     {
         if (!cbChiselDesign.equals("")) {
             cbChiselDesign[side] = "";
-            getWorldObj().markBlockForUpdate(xCoord, yCoord, zCoord);
+            this.getWorld().markBlockForUpdate(this.getPos());
         }
     }
 
@@ -394,7 +383,7 @@ public class TEBase extends TileEntity implements IProtected {
     {
         if (data != getData()) {
             cbMetadata = (short) data;
-            getWorldObj().markBlockForUpdate(xCoord, yCoord, zCoord);
+            this.getWorld().markBlockForUpdate(this.getPos());
             return true;
         }
 
@@ -415,7 +404,7 @@ public class TEBase extends TileEntity implements IProtected {
     {
         if (!cbDesign.equals(name)) {
             cbDesign = name;
-            getWorldObj().markBlockForUpdate(xCoord, yCoord, zCoord);
+            this.getWorld().markBlockForUpdate(this.getPos());
             return true;
         }
 
@@ -424,7 +413,7 @@ public class TEBase extends TileEntity implements IProtected {
 
     public boolean removeDesign()
     {
-        return setDesign("");
+        return this.setDesign("");
     }
 
     public String getBlockDesignType()
@@ -435,12 +424,12 @@ public class TEBase extends TileEntity implements IProtected {
 
     public boolean setNextDesign()
     {
-        return setDesign(DesignHandler.getNext(getBlockDesignType(), cbDesign));
+        return this.setDesign(DesignHandler.getNext(getBlockDesignType(), cbDesign));
     }
 
     public boolean setPrevDesign()
     {
-        return setDesign(DesignHandler.getPrev(getBlockDesignType(), cbDesign));
+        return this.setDesign(DesignHandler.getPrev(getBlockDesignType(), cbDesign));
     }
 
     /**
@@ -453,7 +442,8 @@ public class TEBase extends TileEntity implements IProtected {
      */
     public void setMetadata(int metadata)
     {
-        getWorldObj().setBlockMetadataWithNotify(xCoord, yCoord, zCoord, metadata, 4);
+        // TODO :: Replace setMetadata
+        // this.getWorld().setBlockMetadataWithNotify(xCoord, yCoord, zCoord, metadata, 4);
     }
 
     /**
@@ -461,8 +451,9 @@ public class TEBase extends TileEntity implements IProtected {
      */
     public void restoreMetadata()
     {
-        int metadata = hasAttribute(ATTR_COVER[6]) ? getAttribute(ATTR_COVER[6]).getItemDamage() : 0;
-        getWorldObj().setBlockMetadataWithNotify(xCoord, yCoord, zCoord, metadata, 4);
+        // TODO :: Replace restore
+        // int metadata = hasAttribute(ATTR_COVER[6]) ? getAttribute(ATTR_COVER[6]).getItemDamage() : 0;
+        // this.getWorld().setBlockMetadataWithNotify(this.getPos(), metadata, 4);
     }
 
 }

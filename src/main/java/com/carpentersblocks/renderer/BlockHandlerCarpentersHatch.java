@@ -8,12 +8,12 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
 
-    private ForgeDirection baseDir;
+    private EnumFacing baseDir;
     private boolean isHigh;
     private int type;
 
@@ -34,7 +34,7 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
     /**
      * Renders block at coordinates.
      */
-    public void renderCarpentersBlock(int x, int y, int z)
+    public void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 
@@ -71,28 +71,28 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
 
         switch (Hatch.getDir(TE)) {
             case Hatch.DIR_Z_NEG:
-                side = baseDir = ForgeDirection.SOUTH;
+                side = baseDir = EnumFacing.SOUTH;
                 break;
             case Hatch.DIR_Z_POS:
-                side = baseDir = ForgeDirection.NORTH;
+                side = baseDir = EnumFacing.NORTH;
                 break;
             case Hatch.DIR_X_NEG:
-                side = baseDir = ForgeDirection.EAST;
+                side = baseDir = EnumFacing.EAST;
                 break;
             case Hatch.DIR_X_POS:
-                side = baseDir = ForgeDirection.WEST;
+                side = baseDir = EnumFacing.WEST;
                 break;
         }
 
         if (!isOpen) {
-            side = isHigh ? ForgeDirection.UP : ForgeDirection.DOWN;
+            side = isHigh ? EnumFacing.UP : EnumFacing.DOWN;
         }
     }
 
     /**
      * Renders hidden hatch at given coordinates.
      */
-    private void renderTypeHidden(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeHidden(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.0D, 0.0D, 0.875D, 1.0D, 1.0D, 1.0D, side);
         renderPartHandle(new ItemStack(Blocks.iron_block), x, y, z, true, false);
@@ -101,7 +101,7 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
     /**
      * Renders standard 3x3 outer frame.
      */
-    private void renderPartFrame(ItemStack itemStack, int x, int y, int z)
+    private void renderPartFrame(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.0D, 0.0D, 0.8125D, 0.1875D, 1.0D, 1.0D, side);
         renderBlockWithRotation(itemStack, x, y, z, 0.1875D, 0.8125D, 0.8125D, 0.8125D, 1.0D, 1.0D, side);
@@ -112,7 +112,7 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
     /**
      * Renders a window or screen hatch at given coordinates.
      */
-    private void renderTypeFrame(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeFrame(ItemStack itemStack, BlockPos pos)
     {
         renderPartFrame(itemStack, x, y, z);
         renderPartPane(type == Hatch.TYPE_SCREEN ? IconRegistry.icon_hatch_screen : IconRegistry.icon_hatch_glass, x, y, z);
@@ -122,7 +122,7 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
     /**
      * Renders a French window hatch at given coordinates.
      */
-    private void renderTypeFrench(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeFrench(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.1875D, 0.4375D, 0.875D, 0.8125D, 0.5625D, 0.9375D, side);
         renderBlockWithRotation(itemStack, x, y, z, 0.4375D, 0.1875D, 0.875D, 0.5625D, 0.4375D, 0.9375D, side);
@@ -135,7 +135,7 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
     /**
      * Renders a panel hatch at given coordinates.
      */
-    private void renderTypePanel(ItemStack itemStack, int x, int y, int z)
+    private void renderTypePanel(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.1875D, 0.1875D, 0.875D, 0.8215D, 0.8215D, 0.9375D, side);
         renderBlockWithRotation(itemStack, x, y, z, 0.3125D, 0.3125D, 0.8125D, 0.6875D, 0.6875D, 1.0D, side);
@@ -146,7 +146,7 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
     /**
      * Renders a hatch handle for the given coordinates.
      */
-    private void renderPartHandle(ItemStack itemStack, int x, int y, int z, boolean renderInterior, boolean renderExterior)
+    private void renderPartHandle(ItemStack itemStack, BlockPos pos, boolean renderInterior, boolean renderExterior)
     {
         if (!renderInterior && !renderExterior) {
             return;
@@ -164,7 +164,7 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
 
             if (isOpen) {
 
-                ForgeDirection dir = side.getOpposite();
+                EnumFacing dir = side.getOpposite();
                 int xTemp = x - dir.offsetX;
                 int yTemp = y - dir.offsetY;
                 int zTemp = z - dir.offsetZ;
@@ -175,7 +175,7 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
 
             } else {
 
-                ForgeDirection dir = isHigh ? baseDir : baseDir.getOpposite();
+                EnumFacing dir = isHigh ? baseDir : baseDir.getOpposite();
 
                 renderBlockWithRotation(itemStack, x, y, z, 0.375D, yMin, 0.9375D - zOffset, 0.4375D, yMax, 1.0D - zOffset, side, dir);
                 renderBlockWithRotation(itemStack, x, y, z, 0.5625D, yMin, 0.9375D - zOffset, 0.625D, yMax, 1.0D - zOffset, side, dir);
@@ -194,8 +194,8 @@ public class BlockHandlerCarpentersHatch extends BlockHandlerHinged {
 
             } else {
 
-                ForgeDirection dir1 = side.getOpposite();
-                ForgeDirection dir2 = !isHigh ? baseDir.getOpposite() : baseDir;
+                EnumFacing dir1 = side.getOpposite();
+                EnumFacing dir2 = !isHigh ? baseDir.getOpposite() : baseDir;
                 int xTemp = x - dir1.offsetX;
                 int yTemp = y - dir1.offsetY;
                 int zTemp = z - dir1.offsetZ;

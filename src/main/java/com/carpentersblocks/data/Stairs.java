@@ -1,11 +1,11 @@
 package com.carpentersblocks.data;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import static net.minecraft.util.EnumFacing.*;
 
 public class Stairs {
 
@@ -90,7 +90,7 @@ public class Stairs {
     public final boolean isPositive;
 
     /** Stairs direction. */
-    public final List<ForgeDirection> facings;
+    public final List<EnumFacing> facings;
 
     public static final byte NO_FACE = 0;
     public static final byte FULL = 1;
@@ -101,7 +101,7 @@ public class Stairs {
     public static final byte MAX_MIN = 3;
     public static final byte MAX_MAX = 4;
 
-    public Stairs(int stairsID, Type stairsType, ForgeDirection[] facings, int[] faceShape, int[] staggeredCorner)
+    public Stairs(int stairsID, Type stairsType, EnumFacing[] facings, int[] faceShape, int[] staggeredCorner)
     {
         this.stairsID = stairsID;
         stairsList[stairsID] = this;
@@ -109,50 +109,50 @@ public class Stairs {
         this.faceShape = faceShape;
         this.staggeredCorner = staggeredCorner;
 
-        this.facings = new ArrayList<ForgeDirection>();
+        this.facings = new ArrayList<EnumFacing>();
 
-        for (ForgeDirection face : facings) {
+        for (EnumFacing face : facings) {
             this.facings.add(face);
         }
 
         isPositive = this.facings.contains(UP);
     }
 
-    public static final Stairs NORMAL_NW = new Stairs(ID_NORMAL_NW, Type.NORMAL_SIDE, new ForgeDirection[] { NORTH, WEST }, new int[] { STAGGERED, STAGGERED, NO_FACE, FULL, NO_FACE, FULL }, new int[] { MAX_MAX, MAX_MAX, 0, 0, 0, 0 });
-    public static final Stairs NORMAL_NE = new Stairs(ID_NORMAL_NE, Type.NORMAL_SIDE, new ForgeDirection[] { NORTH, EAST }, new int[] { STAGGERED, STAGGERED, NO_FACE, FULL, FULL, NO_FACE }, new int[] { MIN_MAX, MIN_MAX, 0, 0, 0, 0 });
-    public static final Stairs NORMAL_SW = new Stairs(ID_NORMAL_SW, Type.NORMAL_SIDE, new ForgeDirection[] { SOUTH, WEST }, new int[] { STAGGERED, STAGGERED, FULL, NO_FACE, NO_FACE, FULL }, new int[] { MAX_MIN, MAX_MIN, 0, 0, 0, 0 });
-    public static final Stairs NORMAL_SE = new Stairs(ID_NORMAL_SE, Type.NORMAL_SIDE, new ForgeDirection[] { SOUTH, EAST }, new int[] { STAGGERED, STAGGERED, FULL, NO_FACE, FULL, NO_FACE }, new int[] { MIN_MIN, MIN_MIN, 0, 0, 0, 0 });
-    public static final Stairs NORMAL_NEG_N = new Stairs(ID_NORMAL_NEG_N, Type.NORMAL, new ForgeDirection[] { DOWN, NORTH }, new int[] { NO_FACE, FULL, NO_FACE, FULL, STAGGERED, STAGGERED }, new int[] { 0, 0, 0, 0, MAX_MAX, MAX_MAX });
-    public static final Stairs NORMAL_NEG_S = new Stairs(ID_NORMAL_NEG_S, Type.NORMAL, new ForgeDirection[] { DOWN, SOUTH }, new int[] { NO_FACE, FULL, FULL, NO_FACE, STAGGERED, STAGGERED }, new int[] { 0, 0, 0, 0, MIN_MAX, MIN_MAX });
-    public static final Stairs NORMAL_NEG_W = new Stairs(ID_NORMAL_NEG_W, Type.NORMAL, new ForgeDirection[] { DOWN, WEST }, new int[] { NO_FACE, FULL, STAGGERED, STAGGERED, NO_FACE, FULL }, new int[] { 0, 0, MAX_MAX, MAX_MAX, 0, 0 });
-    public static final Stairs NORMAL_NEG_E = new Stairs(ID_NORMAL_NEG_E, Type.NORMAL, new ForgeDirection[] { DOWN, EAST }, new int[] { NO_FACE, FULL, STAGGERED, STAGGERED, FULL, NO_FACE }, new int[] { 0, 0, MIN_MAX, MIN_MAX, 0, 0 });
-    public static final Stairs NORMAL_POS_N = new Stairs(ID_NORMAL_POS_N, Type.NORMAL, new ForgeDirection[] { UP, NORTH }, new int[] { FULL, NO_FACE, NO_FACE, FULL, STAGGERED, STAGGERED }, new int[] { 0, 0, 0, 0, MAX_MIN, MAX_MIN });
-    public static final Stairs NORMAL_POS_S = new Stairs(ID_NORMAL_POS_S, Type.NORMAL, new ForgeDirection[] { UP, SOUTH }, new int[] { FULL, NO_FACE, FULL, NO_FACE, STAGGERED, STAGGERED }, new int[] { 0, 0, 0, 0, MIN_MIN, MIN_MIN });
-    public static final Stairs NORMAL_POS_W = new Stairs(ID_NORMAL_POS_W, Type.NORMAL, new ForgeDirection[] { UP, WEST }, new int[] { FULL, NO_FACE, STAGGERED, STAGGERED, NO_FACE, FULL }, new int[] { 0, 0, MAX_MIN, MAX_MIN, 0, 0 });
-    public static final Stairs NORMAL_POS_E = new Stairs(ID_NORMAL_POS_E, Type.NORMAL, new ForgeDirection[] { UP, EAST }, new int[] { FULL, NO_FACE, STAGGERED, STAGGERED, FULL, NO_FACE }, new int[] { 0, 0, MIN_MIN, MIN_MIN, 0, 0 });
-    public static final Stairs NORMAL_INT_NEG_NW = new Stairs(ID_NORMAL_INT_NEG_NW, Type.NORMAL_INT, new ForgeDirection[] { DOWN, NORTH, WEST }, new int[] { NO_FACE, FULL, STAGGERED, FULL, STAGGERED, FULL }, new int[] { 0, 0, MAX_MAX, 0, MAX_MAX, 0 });
-    public static final Stairs NORMAL_INT_NEG_NE = new Stairs(ID_NORMAL_INT_NEG_NE, Type.NORMAL_INT, new ForgeDirection[] { DOWN, NORTH, EAST }, new int[] { NO_FACE, FULL, STAGGERED, FULL, FULL, STAGGERED }, new int[] { 0, 0, MIN_MAX, 0, 0, MAX_MAX });
-    public static final Stairs NORMAL_INT_NEG_SW = new Stairs(ID_NORMAL_INT_NEG_SW, Type.NORMAL_INT, new ForgeDirection[] { DOWN, SOUTH, WEST }, new int[] { NO_FACE, FULL, FULL, STAGGERED, STAGGERED, FULL }, new int[] { 0, 0, 0, MAX_MAX, MIN_MAX, 0 });
-    public static final Stairs NORMAL_INT_NEG_SE = new Stairs(ID_NORMAL_INT_NEG_SE, Type.NORMAL_INT, new ForgeDirection[] { DOWN, SOUTH, EAST }, new int[] { NO_FACE, FULL, FULL, STAGGERED, FULL, STAGGERED }, new int[] { 0, 0, 0, MIN_MAX, 0, MIN_MAX });
-    public static final Stairs NORMAL_INT_POS_NW = new Stairs(ID_NORMAL_INT_POS_NW, Type.NORMAL_INT, new ForgeDirection[] { UP, NORTH, WEST }, new int[] { FULL, NO_FACE, STAGGERED, FULL, STAGGERED, FULL }, new int[] { 0, 0, MAX_MIN, 0, MAX_MIN, 0 });
-    public static final Stairs NORMAL_INT_POS_NE = new Stairs(ID_NORMAL_INT_POS_NE, Type.NORMAL_INT, new ForgeDirection[] { UP, NORTH, EAST }, new int[] { FULL, NO_FACE, STAGGERED, FULL, FULL, STAGGERED }, new int[] { 0, 0, MIN_MIN, 0, 0, MAX_MIN });
-    public static final Stairs NORMAL_INT_POS_SW = new Stairs(ID_NORMAL_INT_POS_SW, Type.NORMAL_INT, new ForgeDirection[] { UP, SOUTH, WEST }, new int[] { FULL, NO_FACE, FULL, STAGGERED, STAGGERED, FULL }, new int[] { 0, 0, 0, MAX_MIN, MIN_MIN, 0 });
-    public static final Stairs NORMAL_INT_POS_SE = new Stairs(ID_NORMAL_INT_POS_SE, Type.NORMAL_INT, new ForgeDirection[] { UP, SOUTH, EAST }, new int[] { FULL, NO_FACE, FULL, STAGGERED, FULL, STAGGERED }, new int[] { 0, 0, 0, MIN_MIN, 0, MIN_MIN });
-    public static final Stairs NORMAL_EXT_NEG_NW = new Stairs(ID_NORMAL_EXT_NEG_NW, Type.NORMAL_EXT, new ForgeDirection[] { DOWN, NORTH, WEST }, new int[] { NO_FACE, FULL, NO_FACE, STAGGERED, NO_FACE, STAGGERED }, new int[] { 0, 0, 0, MAX_MAX, 0, MAX_MAX });
-    public static final Stairs NORMAL_EXT_NEG_NE = new Stairs(ID_NORMAL_EXT_NEG_NE, Type.NORMAL_EXT, new ForgeDirection[] { DOWN, NORTH, EAST }, new int[] { NO_FACE, FULL, NO_FACE, STAGGERED, STAGGERED, NO_FACE }, new int[] { 0, 0, 0, MIN_MAX, MAX_MAX, 0 });
-    public static final Stairs NORMAL_EXT_NEG_SW = new Stairs(ID_NORMAL_EXT_NEG_SW, Type.NORMAL_EXT, new ForgeDirection[] { DOWN, SOUTH, WEST }, new int[] { NO_FACE, FULL, STAGGERED, NO_FACE, NO_FACE, STAGGERED }, new int[] { 0, 0, MAX_MAX, 0, 0, MIN_MAX });
-    public static final Stairs NORMAL_EXT_NEG_SE = new Stairs(ID_NORMAL_EXT_NEG_SE, Type.NORMAL_EXT, new ForgeDirection[] { DOWN, SOUTH, EAST }, new int[] { NO_FACE, FULL, STAGGERED, NO_FACE, STAGGERED, NO_FACE }, new int[] { 0, 0, MIN_MAX, 0, MIN_MAX, 0 });
-    public static final Stairs NORMAL_EXT_POS_NW = new Stairs(ID_NORMAL_EXT_POS_NW, Type.NORMAL_EXT, new ForgeDirection[] { UP, NORTH, WEST }, new int[] { FULL, NO_FACE, NO_FACE, STAGGERED, NO_FACE, STAGGERED }, new int[] { 0, 0, 0, MAX_MIN, 0, MAX_MIN });
-    public static final Stairs NORMAL_EXT_POS_NE = new Stairs(ID_NORMAL_EXT_POS_NE, Type.NORMAL_EXT, new ForgeDirection[] { UP, NORTH, EAST }, new int[] { FULL, NO_FACE, NO_FACE, STAGGERED, STAGGERED, NO_FACE }, new int[] { 0, 0, 0, MIN_MIN, MAX_MIN, 0 });
-    public static final Stairs NORMAL_EXT_POS_SW = new Stairs(ID_NORMAL_EXT_POS_SW, Type.NORMAL_EXT, new ForgeDirection[] { UP, SOUTH, WEST }, new int[] { FULL, NO_FACE, STAGGERED, NO_FACE, NO_FACE, STAGGERED }, new int[] { 0, 0, MAX_MIN, 0, 0, MIN_MIN });
-    public static final Stairs NORMAL_EXT_POS_SE = new Stairs(ID_NORMAL_EXT_POS_SE, Type.NORMAL_EXT, new ForgeDirection[] { UP, SOUTH, EAST }, new int[] { FULL, NO_FACE, STAGGERED, NO_FACE, STAGGERED, NO_FACE }, new int[] { 0, 0, MIN_MIN, 0, MIN_MIN, 0 });
+    public static final Stairs NORMAL_NW = new Stairs(ID_NORMAL_NW, Type.NORMAL_SIDE, new EnumFacing[] { NORTH, WEST }, new int[] { STAGGERED, STAGGERED, NO_FACE, FULL, NO_FACE, FULL }, new int[] { MAX_MAX, MAX_MAX, 0, 0, 0, 0 });
+    public static final Stairs NORMAL_NE = new Stairs(ID_NORMAL_NE, Type.NORMAL_SIDE, new EnumFacing[] { NORTH, EAST }, new int[] { STAGGERED, STAGGERED, NO_FACE, FULL, FULL, NO_FACE }, new int[] { MIN_MAX, MIN_MAX, 0, 0, 0, 0 });
+    public static final Stairs NORMAL_SW = new Stairs(ID_NORMAL_SW, Type.NORMAL_SIDE, new EnumFacing[] { SOUTH, WEST }, new int[] { STAGGERED, STAGGERED, FULL, NO_FACE, NO_FACE, FULL }, new int[] { MAX_MIN, MAX_MIN, 0, 0, 0, 0 });
+    public static final Stairs NORMAL_SE = new Stairs(ID_NORMAL_SE, Type.NORMAL_SIDE, new EnumFacing[] { SOUTH, EAST }, new int[] { STAGGERED, STAGGERED, FULL, NO_FACE, FULL, NO_FACE }, new int[] { MIN_MIN, MIN_MIN, 0, 0, 0, 0 });
+    public static final Stairs NORMAL_NEG_N = new Stairs(ID_NORMAL_NEG_N, Type.NORMAL, new EnumFacing[] { DOWN, NORTH }, new int[] { NO_FACE, FULL, NO_FACE, FULL, STAGGERED, STAGGERED }, new int[] { 0, 0, 0, 0, MAX_MAX, MAX_MAX });
+    public static final Stairs NORMAL_NEG_S = new Stairs(ID_NORMAL_NEG_S, Type.NORMAL, new EnumFacing[] { DOWN, SOUTH }, new int[] { NO_FACE, FULL, FULL, NO_FACE, STAGGERED, STAGGERED }, new int[] { 0, 0, 0, 0, MIN_MAX, MIN_MAX });
+    public static final Stairs NORMAL_NEG_W = new Stairs(ID_NORMAL_NEG_W, Type.NORMAL, new EnumFacing[] { DOWN, WEST }, new int[] { NO_FACE, FULL, STAGGERED, STAGGERED, NO_FACE, FULL }, new int[] { 0, 0, MAX_MAX, MAX_MAX, 0, 0 });
+    public static final Stairs NORMAL_NEG_E = new Stairs(ID_NORMAL_NEG_E, Type.NORMAL, new EnumFacing[] { DOWN, EAST }, new int[] { NO_FACE, FULL, STAGGERED, STAGGERED, FULL, NO_FACE }, new int[] { 0, 0, MIN_MAX, MIN_MAX, 0, 0 });
+    public static final Stairs NORMAL_POS_N = new Stairs(ID_NORMAL_POS_N, Type.NORMAL, new EnumFacing[] { UP, NORTH }, new int[] { FULL, NO_FACE, NO_FACE, FULL, STAGGERED, STAGGERED }, new int[] { 0, 0, 0, 0, MAX_MIN, MAX_MIN });
+    public static final Stairs NORMAL_POS_S = new Stairs(ID_NORMAL_POS_S, Type.NORMAL, new EnumFacing[] { UP, SOUTH }, new int[] { FULL, NO_FACE, FULL, NO_FACE, STAGGERED, STAGGERED }, new int[] { 0, 0, 0, 0, MIN_MIN, MIN_MIN });
+    public static final Stairs NORMAL_POS_W = new Stairs(ID_NORMAL_POS_W, Type.NORMAL, new EnumFacing[] { UP, WEST }, new int[] { FULL, NO_FACE, STAGGERED, STAGGERED, NO_FACE, FULL }, new int[] { 0, 0, MAX_MIN, MAX_MIN, 0, 0 });
+    public static final Stairs NORMAL_POS_E = new Stairs(ID_NORMAL_POS_E, Type.NORMAL, new EnumFacing[] { UP, EAST }, new int[] { FULL, NO_FACE, STAGGERED, STAGGERED, FULL, NO_FACE }, new int[] { 0, 0, MIN_MIN, MIN_MIN, 0, 0 });
+    public static final Stairs NORMAL_INT_NEG_NW = new Stairs(ID_NORMAL_INT_NEG_NW, Type.NORMAL_INT, new EnumFacing[] { DOWN, NORTH, WEST }, new int[] { NO_FACE, FULL, STAGGERED, FULL, STAGGERED, FULL }, new int[] { 0, 0, MAX_MAX, 0, MAX_MAX, 0 });
+    public static final Stairs NORMAL_INT_NEG_NE = new Stairs(ID_NORMAL_INT_NEG_NE, Type.NORMAL_INT, new EnumFacing[] { DOWN, NORTH, EAST }, new int[] { NO_FACE, FULL, STAGGERED, FULL, FULL, STAGGERED }, new int[] { 0, 0, MIN_MAX, 0, 0, MAX_MAX });
+    public static final Stairs NORMAL_INT_NEG_SW = new Stairs(ID_NORMAL_INT_NEG_SW, Type.NORMAL_INT, new EnumFacing[] { DOWN, SOUTH, WEST }, new int[] { NO_FACE, FULL, FULL, STAGGERED, STAGGERED, FULL }, new int[] { 0, 0, 0, MAX_MAX, MIN_MAX, 0 });
+    public static final Stairs NORMAL_INT_NEG_SE = new Stairs(ID_NORMAL_INT_NEG_SE, Type.NORMAL_INT, new EnumFacing[] { DOWN, SOUTH, EAST }, new int[] { NO_FACE, FULL, FULL, STAGGERED, FULL, STAGGERED }, new int[] { 0, 0, 0, MIN_MAX, 0, MIN_MAX });
+    public static final Stairs NORMAL_INT_POS_NW = new Stairs(ID_NORMAL_INT_POS_NW, Type.NORMAL_INT, new EnumFacing[] { UP, NORTH, WEST }, new int[] { FULL, NO_FACE, STAGGERED, FULL, STAGGERED, FULL }, new int[] { 0, 0, MAX_MIN, 0, MAX_MIN, 0 });
+    public static final Stairs NORMAL_INT_POS_NE = new Stairs(ID_NORMAL_INT_POS_NE, Type.NORMAL_INT, new EnumFacing[] { UP, NORTH, EAST }, new int[] { FULL, NO_FACE, STAGGERED, FULL, FULL, STAGGERED }, new int[] { 0, 0, MIN_MIN, 0, 0, MAX_MIN });
+    public static final Stairs NORMAL_INT_POS_SW = new Stairs(ID_NORMAL_INT_POS_SW, Type.NORMAL_INT, new EnumFacing[] { UP, SOUTH, WEST }, new int[] { FULL, NO_FACE, FULL, STAGGERED, STAGGERED, FULL }, new int[] { 0, 0, 0, MAX_MIN, MIN_MIN, 0 });
+    public static final Stairs NORMAL_INT_POS_SE = new Stairs(ID_NORMAL_INT_POS_SE, Type.NORMAL_INT, new EnumFacing[] { UP, SOUTH, EAST }, new int[] { FULL, NO_FACE, FULL, STAGGERED, FULL, STAGGERED }, new int[] { 0, 0, 0, MIN_MIN, 0, MIN_MIN });
+    public static final Stairs NORMAL_EXT_NEG_NW = new Stairs(ID_NORMAL_EXT_NEG_NW, Type.NORMAL_EXT, new EnumFacing[] { DOWN, NORTH, WEST }, new int[] { NO_FACE, FULL, NO_FACE, STAGGERED, NO_FACE, STAGGERED }, new int[] { 0, 0, 0, MAX_MAX, 0, MAX_MAX });
+    public static final Stairs NORMAL_EXT_NEG_NE = new Stairs(ID_NORMAL_EXT_NEG_NE, Type.NORMAL_EXT, new EnumFacing[] { DOWN, NORTH, EAST }, new int[] { NO_FACE, FULL, NO_FACE, STAGGERED, STAGGERED, NO_FACE }, new int[] { 0, 0, 0, MIN_MAX, MAX_MAX, 0 });
+    public static final Stairs NORMAL_EXT_NEG_SW = new Stairs(ID_NORMAL_EXT_NEG_SW, Type.NORMAL_EXT, new EnumFacing[] { DOWN, SOUTH, WEST }, new int[] { NO_FACE, FULL, STAGGERED, NO_FACE, NO_FACE, STAGGERED }, new int[] { 0, 0, MAX_MAX, 0, 0, MIN_MAX });
+    public static final Stairs NORMAL_EXT_NEG_SE = new Stairs(ID_NORMAL_EXT_NEG_SE, Type.NORMAL_EXT, new EnumFacing[] { DOWN, SOUTH, EAST }, new int[] { NO_FACE, FULL, STAGGERED, NO_FACE, STAGGERED, NO_FACE }, new int[] { 0, 0, MIN_MAX, 0, MIN_MAX, 0 });
+    public static final Stairs NORMAL_EXT_POS_NW = new Stairs(ID_NORMAL_EXT_POS_NW, Type.NORMAL_EXT, new EnumFacing[] { UP, NORTH, WEST }, new int[] { FULL, NO_FACE, NO_FACE, STAGGERED, NO_FACE, STAGGERED }, new int[] { 0, 0, 0, MAX_MIN, 0, MAX_MIN });
+    public static final Stairs NORMAL_EXT_POS_NE = new Stairs(ID_NORMAL_EXT_POS_NE, Type.NORMAL_EXT, new EnumFacing[] { UP, NORTH, EAST }, new int[] { FULL, NO_FACE, NO_FACE, STAGGERED, STAGGERED, NO_FACE }, new int[] { 0, 0, 0, MIN_MIN, MAX_MIN, 0 });
+    public static final Stairs NORMAL_EXT_POS_SW = new Stairs(ID_NORMAL_EXT_POS_SW, Type.NORMAL_EXT, new EnumFacing[] { UP, SOUTH, WEST }, new int[] { FULL, NO_FACE, STAGGERED, NO_FACE, NO_FACE, STAGGERED }, new int[] { 0, 0, MAX_MIN, 0, 0, MIN_MIN });
+    public static final Stairs NORMAL_EXT_POS_SE = new Stairs(ID_NORMAL_EXT_POS_SE, Type.NORMAL_EXT, new EnumFacing[] { UP, SOUTH, EAST }, new int[] { FULL, NO_FACE, STAGGERED, NO_FACE, STAGGERED, NO_FACE }, new int[] { 0, 0, MIN_MIN, 0, MIN_MIN, 0 });
 
-    public boolean isFaceFull(ForgeDirection side)
+    public boolean isFaceFull(EnumFacing side)
     {
         return faceShape[side.ordinal()] == FULL;
     }
 
-    public int staggeredOrientation(ForgeDirection side)
+    public int staggeredOrientation(EnumFacing side)
     {
         return staggeredCorner[side.ordinal()];
     }

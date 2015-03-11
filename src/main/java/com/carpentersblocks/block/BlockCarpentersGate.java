@@ -16,7 +16,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class BlockCarpentersGate extends BlockCoverable {
 
@@ -66,7 +66,7 @@ public class BlockCarpentersGate extends BlockCoverable {
     /**
      * Opens or closes gate on right click.
      */
-    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         if (Gate.getState(TE) == Gate.STATE_OPEN) {
 
@@ -95,7 +95,7 @@ public class BlockCarpentersGate extends BlockCoverable {
     /**
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
-    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    public boolean canPlaceBlockAt(World world, BlockPos pos)
     {
         return !world.getBlock(x, y - 1, z).getMaterial().isSolid() ? false : super.canPlaceBlockAt(world, x, y, z);
     }
@@ -105,7 +105,7 @@ public class BlockCarpentersGate extends BlockCoverable {
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
      * cleared to be reused)
      */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, BlockPos pos)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -136,7 +136,7 @@ public class BlockCarpentersGate extends BlockCoverable {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -162,7 +162,7 @@ public class BlockCarpentersGate extends BlockCoverable {
     /**
      * Opens or closes one neighboring gate above or below block.
      */
-    private void cycleNeighborGate(TEBase TE, World world, int x, int y, int z)
+    private void cycleNeighborGate(TEBase TE, World world, BlockPos pos)
     {
         boolean isGateBelow = world.getBlock(x, y - 1, z).equals(this);
         boolean isGateAbove = world.getBlock(x, y + 1, z).equals(this);
@@ -194,7 +194,7 @@ public class BlockCarpentersGate extends BlockCoverable {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -234,7 +234,7 @@ public class BlockCarpentersGate extends BlockCoverable {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World world, BlockPos pos, Block block)
     {
         if (!world.isRemote) {
 
@@ -270,7 +270,7 @@ public class BlockCarpentersGate extends BlockCoverable {
      * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
      * coordinates.  Args: world, x, y, z, side
      */
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
@@ -285,14 +285,14 @@ public class BlockCarpentersGate extends BlockCoverable {
     }
 
     @Override
-    public ForgeDirection[] getValidRotations(World worldObj, int x, int y,int z)
+    public EnumFacing[] getValidRotations(World worldObj, int x, int y,int z)
     {
-        ForgeDirection[] axises = {ForgeDirection.UP, ForgeDirection.DOWN};
+        EnumFacing[] axises = {EnumFacing.UP, EnumFacing.DOWN};
         return axises;
     }
 
     @Override
-    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         // to correctly support archimedes' ships mod:
         // if Axis is DOWN, block rotates to the left, north -> west -> south -> east

@@ -13,10 +13,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
@@ -108,7 +109,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -125,7 +126,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
      * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
      * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
      */
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisAlignedBB, List list, Entity entity)
+    public void addCollisionBoxesToList(World world, BlockPos pos, AxisAlignedBB axisAlignedBB, List list, Entity entity)
     {
         setBlockBoundsBasedOnState(world, x, y, z);
         super.addCollisionBoxesToList(world, x, y, z, axisAlignedBB, list, entity);
@@ -135,7 +136,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
 
@@ -169,7 +170,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
     /**
      * Checks if the block is a solid face on the given side, used by placement logic.
      */
-    public boolean isSideSolid(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
+    public boolean isSideSolid(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -181,17 +182,17 @@ public class BlockCarpentersBlock extends BlockCoverable {
 
                 if (data == Slab.BLOCK_FULL) {
                     return true;
-                } else if (data == Slab.SLAB_Y_NEG && side == ForgeDirection.DOWN) {
+                } else if (data == Slab.SLAB_Y_NEG && side == EnumFacing.DOWN) {
                     return true;
-                } else if (data == Slab.SLAB_Y_POS && side == ForgeDirection.UP) {
+                } else if (data == Slab.SLAB_Y_POS && side == EnumFacing.UP) {
                     return true;
-                } else if (data == Slab.SLAB_Z_NEG && side == ForgeDirection.NORTH) {
+                } else if (data == Slab.SLAB_Z_NEG && side == EnumFacing.NORTH) {
                     return true;
-                } else if (data == Slab.SLAB_Z_POS && side == ForgeDirection.SOUTH) {
+                } else if (data == Slab.SLAB_Z_POS && side == EnumFacing.SOUTH) {
                     return true;
-                } else if (data == Slab.SLAB_X_NEG && side == ForgeDirection.WEST) {
+                } else if (data == Slab.SLAB_X_NEG && side == EnumFacing.WEST) {
                     return true;
-                } else if (data == Slab.SLAB_X_POS && side == ForgeDirection.EAST) {
+                } else if (data == Slab.SLAB_X_POS && side == EnumFacing.EAST) {
                     return true;
                 }
 
@@ -212,7 +213,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
      * @return Whether Block#isProvidingWeakPower should be called when determining indirect power
      */
     @Override
-    public boolean shouldCheckWeakPower(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldCheckWeakPower(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -229,7 +230,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
      * Compares dimensions and coordinates of two opposite
      * sides to determine whether they share faces.
      */
-    protected boolean shareFaces(TEBase TE_adj, TEBase TE_src, ForgeDirection side_adj, ForgeDirection side_src)
+    protected boolean shareFaces(TEBase TE_adj, TEBase TE_src, EnumFacing side_adj, EnumFacing side_src)
     {
         if (TE_adj.getBlockType() == this) {
 
@@ -263,7 +264,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
     /**
      * Returns whether block can support cover on side.
      */
-    public boolean canCoverSide(TEBase TE, World world, int x, int y, int z, int side)
+    public boolean canCoverSide(TEBase TE, World world, BlockPos pos, EnumFacing side)
     {
         return true;
     }

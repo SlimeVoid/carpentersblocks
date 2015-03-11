@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class EntityCarpentersTile extends EntityBase {
         super(world);
     }
 
-    public EntityCarpentersTile(EntityPlayer entityPlayer, World world, int x, int y, int z, ForgeDirection dir, ForgeDirection offset_side, boolean ignoreNeighbors)
+    public EntityCarpentersTile(EntityPlayer entityPlayer, World world, BlockPos pos, EnumFacing dir, EnumFacing offset_side, boolean ignoreNeighbors)
     {
         super(world, entityPlayer.getUniqueID());
         posX = x;
@@ -114,7 +114,7 @@ public class EntityCarpentersTile extends EntityBase {
             {
                 /* Skip checking diagonal tiles when tile is placed in center. */
 
-                if (offset_side.equals(ForgeDirection.UNKNOWN))
+                if (offset_side.equals(EnumFacing.UNKNOWN))
                 {
                     switch (dir) {
                         case DOWN:
@@ -221,12 +221,12 @@ public class EntityCarpentersTile extends EntityBase {
         boundingBox.setBounds(posX + bounds[0], posY + bounds[1], posZ + bounds[2], posX + bounds[3], posY + bounds[4], posZ + bounds[5]);
     }
 
-    public ForgeDirection getDirection()
+    public EnumFacing getDirection()
     {
-        return ForgeDirection.getOrientation(getDataWatcher().getWatchableObjectInt(ID_DIRECTION));
+        return EnumFacing.getOrientation(getDataWatcher().getWatchableObjectInt(ID_DIRECTION));
     }
 
-    public void setDirection(ForgeDirection dir)
+    public void setDirection(EnumFacing dir)
     {
         getDataWatcher().updateObject(ID_DIRECTION, new Integer(dir.ordinal()));
     }
@@ -395,7 +395,7 @@ public class EntityCarpentersTile extends EntityBase {
      */
     public boolean onValidSurface()
     {
-        ForgeDirection dir = getDirection();
+        EnumFacing dir = getDirection();
 
         int x_offset = MathHelper.floor_double(posX) - dir.offsetX;
         int y_offset = MathHelper.floor_double(posY) - dir.offsetY;

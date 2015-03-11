@@ -4,7 +4,7 @@ import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.registry.BlockRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class GarageDoor implements ISided {
 
@@ -48,17 +48,17 @@ public class GarageDoor implements ISided {
      * Returns direction.
      */
     @Override
-    public ForgeDirection getDirection(TEBase TE)
+    public EnumFacing getDirection(TEBase TE)
     {
         int side = (TE.getData() & 0x70) >> 4;
-        return ForgeDirection.getOrientation(side);
+        return EnumFacing.getOrientation(side);
     }
 
     /**
      * Sets direction.
      */
     @Override
-    public void setDirection(TEBase TE, ForgeDirection dir)
+    public void setDirection(TEBase TE, EnumFacing dir)
     {
         int temp = (TE.getData() & ~0x70) | (dir.ordinal() << 4);
         TE.setData(temp);
@@ -153,7 +153,7 @@ public class GarageDoor implements ISided {
      * @param  TE the {@link TEBase}
      * @return the {@link TEBase}
      */
-    public TEBase getTopmost(World world, int x, int y, int z)
+    public TEBase getTopmost(World world, BlockPos pos)
     {
         do {
             ++y;
@@ -168,7 +168,7 @@ public class GarageDoor implements ISided {
      * @param  TE the {@link TEBase}
      * @return the {@link TEBase}
      */
-    public TEBase getBottommost(World world, int x, int y, int z)
+    public TEBase getBottommost(World world, BlockPos pos)
     {
         do {
             --y;

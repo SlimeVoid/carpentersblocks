@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class HelperOblique extends RenderHelper {
@@ -16,7 +16,7 @@ public class HelperOblique extends RenderHelper {
      */
     public static void renderIntObliqueYNeg(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         double uMI = uTR - (uTR - uTL) / 2;
         double vMI = rotation % 2 == 0 ? vTL : (vBR - (vBR - vBL) / 2);
@@ -50,7 +50,7 @@ public class HelperOblique extends RenderHelper {
      */
     public static void renderIntObliqueYPos(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         boolean altRot = rotation % 2 == 0;
         double uMI = !altRot ? uBL : (uTR - (uTR - uTL) / 2);
@@ -85,7 +85,7 @@ public class HelperOblique extends RenderHelper {
      */
     public static void renderExtObliqueYNegLeft(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         double uTOP_MIDDLE = uTR;
         double uTOP_RIGHT_MIDDLE = uTOP_MIDDLE - (uTR - uTL) / 2;
@@ -122,7 +122,7 @@ public class HelperOblique extends RenderHelper {
      */
     public static void renderExtObliqueYNegRight(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         double uTOP_MIDDLE = uTR - (uTR - uTL) / 2;
         double uTOP_LEFT_MIDDLE = uTOP_MIDDLE - (uTR - uTL) / 2;
@@ -159,7 +159,7 @@ public class HelperOblique extends RenderHelper {
      */
     public static void renderExtObliqueYPosLeft(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         double uMI1 = uBR; // u middle coordinate, left triangle
         double uMI2 = uMI1 - (uBR - uBL) / 2; // u middle coordinate, right triangle
@@ -196,7 +196,7 @@ public class HelperOblique extends RenderHelper {
      */
     public static void renderExtObliqueYPosRight(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         double uBOTTOM_MIDDLE = uBR - (uBR - uBL) / 2;
         double uBOTTOM_LEFT_MIDDLE = uBOTTOM_MIDDLE - (uBR - uBL) / 2;

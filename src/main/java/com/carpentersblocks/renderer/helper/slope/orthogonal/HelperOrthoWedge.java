@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class HelperOrthoWedge extends RenderHelper {
@@ -16,7 +16,7 @@ public class HelperOrthoWedge extends RenderHelper {
      */
     public static void renderFaceYNeg(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.DOWN, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.DOWN, x, y, z, icon);
 
         switch (slopeID)
         {
@@ -56,7 +56,7 @@ public class HelperOrthoWedge extends RenderHelper {
      */
     public static void renderFaceYPos(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.UP, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.UP, x, y, z, icon);
 
         switch (slopeID)
         {
@@ -96,12 +96,12 @@ public class HelperOrthoWedge extends RenderHelper {
      */
     public static void renderFaceZNeg(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         Slope slope = Slope.slopesList[slopeID];
 
         if (slope.isPositive) {
-            if (slope.facings.contains(ForgeDirection.WEST)) {
+            if (slope.facings.contains(EnumFacing.WEST)) {
                 setupVertex(renderBlocks, xMax, yMax, zMin, uTL,                      vTL, TOP_LEFT    );
                 setupVertex(renderBlocks, xMax, yMin, zMin, uBL,                      vBL, BOTTOM_LEFT );
                 setupVertex(renderBlocks, xMin, yMin, zMin, uBR, floatingIcon ? vTR : vBR, BOTTOM_RIGHT);
@@ -111,7 +111,7 @@ public class HelperOrthoWedge extends RenderHelper {
                 setupVertex(renderBlocks, xMin, yMax, zMin, uTR,                      vTR, TOP_RIGHT   );
             }
         } else {
-            if (slope.facings.contains(ForgeDirection.WEST)) {
+            if (slope.facings.contains(EnumFacing.WEST)) {
                 setupVertex(renderBlocks, xMax, yMax, zMin, uTL, vTL, TOP_LEFT    );
                 setupVertex(renderBlocks, xMax, yMin, zMin, uBL, vBL, BOTTOM_LEFT );
                 setupVertex(renderBlocks, xMin, yMax, zMin, uTR, vTR, TOP_RIGHT   );
@@ -128,12 +128,12 @@ public class HelperOrthoWedge extends RenderHelper {
      */
     public static void renderFaceZPos(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.SOUTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.SOUTH, x, y, z, icon);
 
         Slope slope = Slope.slopesList[slopeID];
 
         if (slope.isPositive) {
-            if (slope.facings.contains(ForgeDirection.WEST)) {
+            if (slope.facings.contains(EnumFacing.WEST)) {
                 setupVertex(renderBlocks, xMin, yMin, zMax, uBL, floatingIcon ? vTL : vBL, BOTTOM_LEFT );
                 setupVertex(renderBlocks, xMax, yMin, zMax, uBR,                      vBR, BOTTOM_RIGHT);
                 setupVertex(renderBlocks, xMax, yMax, zMax, uTR,                      vTR, TOP_RIGHT   );
@@ -143,7 +143,7 @@ public class HelperOrthoWedge extends RenderHelper {
                 setupVertex(renderBlocks, xMax, yMin, zMax, uBR, floatingIcon ? vTR : vBR, BOTTOM_RIGHT);
             }
         } else {
-            if (slope.facings.contains(ForgeDirection.WEST)) {
+            if (slope.facings.contains(EnumFacing.WEST)) {
                 setupVertex(renderBlocks, xMin, yMax, zMax, uTL, vTL, TOP_LEFT    );
                 setupVertex(renderBlocks, xMax, yMin, zMax, uBR, vBR, BOTTOM_RIGHT);
                 setupVertex(renderBlocks, xMax, yMax, zMax, uTR, vTR, TOP_RIGHT   );
@@ -160,12 +160,12 @@ public class HelperOrthoWedge extends RenderHelper {
      */
     public static void renderFaceXNeg(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.WEST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.WEST, x, y, z, icon);
 
         Slope slope = Slope.slopesList[slopeID];
 
         if (slope.isPositive) {
-            if (slope.facings.contains(ForgeDirection.NORTH)) {
+            if (slope.facings.contains(EnumFacing.NORTH)) {
                 setupVertex(renderBlocks, xMin, yMin, zMin, uBL, floatingIcon ? vTL : vBL, BOTTOM_LEFT );
                 setupVertex(renderBlocks, xMin, yMin, zMax, uBR,                      vBR, BOTTOM_RIGHT);
                 setupVertex(renderBlocks, xMin, yMax, zMax, uTR,                      vTR, TOP_RIGHT   );
@@ -175,7 +175,7 @@ public class HelperOrthoWedge extends RenderHelper {
                 setupVertex(renderBlocks, xMin, yMin, zMax, uBR, floatingIcon ? vTR : vBR, BOTTOM_RIGHT);
             }
         } else {
-            if (slope.facings.contains(ForgeDirection.NORTH)) {
+            if (slope.facings.contains(EnumFacing.NORTH)) {
                 setupVertex(renderBlocks, xMin, yMax, zMax, uTR, vTR, TOP_RIGHT   );
                 setupVertex(renderBlocks, xMin, yMax, zMin, uTL, vTL, TOP_LEFT    );
                 setupVertex(renderBlocks, xMin, yMin, zMax, uBR, vBR, BOTTOM_RIGHT);
@@ -192,12 +192,12 @@ public class HelperOrthoWedge extends RenderHelper {
      */
     public static void renderFaceXPos(RenderBlocks renderBlocks, int slopeID, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.EAST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.EAST, x, y, z, icon);
 
         Slope slope = Slope.slopesList[slopeID];
 
         if (slope.isPositive) {
-            if (slope.facings.contains(ForgeDirection.NORTH)) {
+            if (slope.facings.contains(EnumFacing.NORTH)) {
                 setupVertex(renderBlocks, xMax, yMax, zMax, uTL,                      vTL, TOP_LEFT    );
                 setupVertex(renderBlocks, xMax, yMin, zMax, uBL,                      vBL, BOTTOM_LEFT );
                 setupVertex(renderBlocks, xMax, yMin, zMin, uBR, floatingIcon ? vTR : vBR, BOTTOM_RIGHT);
@@ -207,7 +207,7 @@ public class HelperOrthoWedge extends RenderHelper {
                 setupVertex(renderBlocks, xMax, yMax, zMin, uTR,                      vTR, TOP_RIGHT   );
             }
         } else {
-            if (slope.facings.contains(ForgeDirection.NORTH)) {
+            if (slope.facings.contains(EnumFacing.NORTH)) {
                 setupVertex(renderBlocks, xMax, yMin, zMax, uBL, vBL, BOTTOM_LEFT );
                 setupVertex(renderBlocks, xMax, yMax, zMin, uTR, vTR, TOP_RIGHT   );
                 setupVertex(renderBlocks, xMax, yMax, zMax, uTL, vTL, TOP_LEFT    );

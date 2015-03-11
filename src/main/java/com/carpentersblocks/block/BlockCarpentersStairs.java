@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
@@ -158,7 +158,7 @@ public class BlockCarpentersStairs extends BlockCoverable {
      * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
      * x, y, z, startVec, endVec
      */
-    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec)
+    public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3 startVec, Vec3 endVec)
     {
         TEBase TE = getTileEntity(world, x, y, z);
         MovingObjectPosition finalTrace = null;
@@ -204,7 +204,7 @@ public class BlockCarpentersStairs extends BlockCoverable {
      * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
      * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
      */
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisAlignedBB, List list, Entity entity)
+    public void addCollisionBoxesToList(World world, BlockPos pos, AxisAlignedBB axisAlignedBB, List list, Entity entity)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -235,7 +235,7 @@ public class BlockCarpentersStairs extends BlockCoverable {
     /**
      * Checks if the block is a solid face on the given side, used by placement logic.
      */
-    public boolean isSideSolid(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection side)
+    public boolean isSideSolid(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -258,7 +258,7 @@ public class BlockCarpentersStairs extends BlockCoverable {
      *     12 - 13    -    Top or bottom side of block clicked.  onBlockPlacedBy() determines
      *                 direction and sets interpolated value from 0 - 11.
      */
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
+    public int onBlockPlaced(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int metadata)
     {
         // Normalize face coordinates
         switch (side) {
@@ -297,7 +297,7 @@ public class BlockCarpentersStairs extends BlockCoverable {
      * Called when the block is placed in the world.
      * Uses cardinal direction to adjust metadata if player clicks top or bottom face of block.
      */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -344,7 +344,7 @@ public class BlockCarpentersStairs extends BlockCoverable {
     /**
      * Returns whether block can support cover on side.
      */
-    public boolean canCoverSide(TEBase TE, World world, int x, int y, int z, int side)
+    public boolean canCoverSide(TEBase TE, World world, BlockPos pos, EnumFacing side)
     {
         return true;
     }
@@ -359,14 +359,14 @@ public class BlockCarpentersStairs extends BlockCoverable {
     }
 
     @Override
-    public ForgeDirection[] getValidRotations(World worldObj, int x, int y,int z)
+    public EnumFacing[] getValidRotations(World worldObj, int x, int y,int z)
     {
-        ForgeDirection[] axises = {ForgeDirection.UP, ForgeDirection.DOWN};
+        EnumFacing[] axises = {EnumFacing.UP, EnumFacing.DOWN};
         return axises;
     }
 
     @Override
-    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         // to correctly support archimedes' ships mod:
         // if Axis is DOWN, block rotates to the left, north -> west -> south -> east

@@ -20,7 +20,7 @@ public class TECarpentersTorch extends TEBase {
      */
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
-        if (getWorldObj().isRemote) {
+        if (this.getWorld().isRemote) {
 
             Torch data = new Torch();
             State existing_state = data.getState(this);
@@ -39,4 +39,8 @@ public class TECarpentersTorch extends TEBase {
         }
     }
 
+    @Override
+    public void update() {
+
+    }
 }

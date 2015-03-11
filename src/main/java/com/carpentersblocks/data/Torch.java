@@ -2,7 +2,7 @@ package com.carpentersblocks.data;
 
 import com.carpentersblocks.tileentity.TEBase;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class Torch implements ISided {
 
@@ -27,16 +27,16 @@ public class Torch implements ISided {
      * Returns direction.
      */
     @Override
-    public ForgeDirection getDirection(TEBase TE)
+    public EnumFacing getDirection(TEBase TE)
     {
-        return ForgeDirection.getOrientation(TE.getData() & 0x7);
+        return EnumFacing.getOrientation(TE.getData() & 0x7);
     }
 
     /**
      * Sets direction.
      */
     @Override
-    public void setDirection(TEBase TE, ForgeDirection dir)
+    public void setDirection(TEBase TE, EnumFacing dir)
     {
         int temp = (TE.getData() & ~0x7) | dir.ordinal();
         TE.setData(temp);
@@ -96,7 +96,7 @@ public class Torch implements ISided {
         if (getType(TE) == TYPE_VANILLA) {
             double offset1 = 0.2199999988079071D;
             double offset2 = 0.27000001072883606D;
-            ForgeDirection side = getDirection(TE);
+            EnumFacing side = getDirection(TE);
             switch (side) {
                 case NORTH:
                     coords = new double[] { xOffset, yOffset + offset1, zOffset + offset2 };

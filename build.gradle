@@ -30,7 +30,7 @@ minecraft {
     version = mc
     mappings = map
     if  (file('../run').exists()) {
-        runDir = "../run/assets"
+        runDir = "../run"
     } else {
         runDir = "assets"
     }

@@ -4,7 +4,7 @@ import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.EntityLivingUtil;
 import com.carpentersblocks.util.registry.BlockRegistry;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class Bed {
 
@@ -62,7 +62,7 @@ public class Bed {
      */
     public static TEBase getOppositeTE(TEBase TE)
     {
-        ForgeDirection dir = getDirection(TE);
+        EnumFacing dir = getDirection(TE);
         int x = TE.xCoord;
         int z = TE.zCoord;
 
@@ -103,7 +103,7 @@ public class Bed {
     /**
      * Returns direction of bed piece.
      */
-    public static ForgeDirection getDirection(TEBase TE)
+    public static EnumFacing getDirection(TEBase TE)
     {
         int rot = (TE.getData() & 0x6000) >> 13;
         return EntityLivingUtil.getRotationFacing(rot).getOpposite();

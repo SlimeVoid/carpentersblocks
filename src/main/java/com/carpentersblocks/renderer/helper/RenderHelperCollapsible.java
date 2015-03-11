@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class RenderHelperCollapsible extends RenderHelper {
@@ -15,7 +15,7 @@ public class RenderHelperCollapsible extends RenderHelper {
      */
     public static void renderSlopeYPosZNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.UP, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.UP, x, y, z, icon);
 
         double uTM = uTR - (uTR - uTL) / 2;
         double xMid = xMax - (xMax - xMin) / 2;
@@ -30,7 +30,7 @@ public class RenderHelperCollapsible extends RenderHelper {
      */
     public static void renderSlopeYPosZPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.UP, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.UP, x, y, z, icon);
 
         double uBM = uBR - (uBR - uBL) / 2;
         double xMid = xMax - (xMax - xMin) / 2;
@@ -45,7 +45,7 @@ public class RenderHelperCollapsible extends RenderHelper {
      */
     public static void renderSlopeXNegYPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.UP, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.UP, x, y, z, icon);
 
         double vLM = vBL - (vBL - vTL) / 2;
         double zMid = zMax - (zMax - zMin) / 2;
@@ -60,7 +60,7 @@ public class RenderHelperCollapsible extends RenderHelper {
      */
     public static void renderSlopeXPosYPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.UP, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.UP, x, y, z, icon);
 
         double vRM = vBR - (vBR - vTR) / 2;
         double zMid = zMax - (zMax - zMin) / 2;
@@ -75,7 +75,7 @@ public class RenderHelperCollapsible extends RenderHelper {
      */
     public static void renderFaceZNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         if (floatingIcon) {
             vBL = vTL - (vTL - vBL) * CollapsibleUtil.offset_XZPN;
@@ -96,7 +96,7 @@ public class RenderHelperCollapsible extends RenderHelper {
      */
     public static void renderFaceZPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.SOUTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.SOUTH, x, y, z, icon);
 
         if (floatingIcon) {
             vBL = vTL - (vTL - vBL) * CollapsibleUtil.offset_XZNP;
@@ -117,7 +117,7 @@ public class RenderHelperCollapsible extends RenderHelper {
      */
     public static void renderFaceXNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.WEST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.WEST, x, y, z, icon);
 
         if (floatingIcon) {
             vBL = vTL - (vTL - vBL) * CollapsibleUtil.offset_XZNN;
@@ -138,7 +138,7 @@ public class RenderHelperCollapsible extends RenderHelper {
      */
     public static void renderFaceXPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.EAST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.EAST, x, y, z, icon);
 
         if (floatingIcon) {
             vBL = vTL - (vTL - vBL) * CollapsibleUtil.offset_XZPP;

@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class RenderHelper extends VertexHelper {
@@ -76,7 +76,7 @@ public class RenderHelper extends VertexHelper {
     /**
      * Will populate render bounds and icon u, v translations.
      */
-    protected static void prepareRender(RenderBlocks renderBlocks, ForgeDirection side, double x, double y, double z, IIcon icon)
+    protected static void prepareRender(RenderBlocks renderBlocks, EnumFacing side, double x, double y, double z, IIcon icon)
     {
         /* Enforce default floating icons */
 
@@ -475,7 +475,7 @@ public class RenderHelper extends VertexHelper {
      */
     public static void renderFaceYNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.DOWN, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.DOWN, x, y, z, icon);
 
         setupVertex(renderBlocks, xMin, yMin, zMax, uTR, vTR, SOUTHWEST);
         setupVertex(renderBlocks, xMin, yMin, zMin, uBR, vBR, NORTHWEST);
@@ -488,7 +488,7 @@ public class RenderHelper extends VertexHelper {
      */
     public static void renderFaceYPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.UP, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.UP, x, y, z, icon);
 
         setupVertex(renderBlocks, xMax, yMax, zMax, uTL, vTL, SOUTHEAST);
         setupVertex(renderBlocks, xMax, yMax, zMin, uBL, vBL, NORTHEAST);
@@ -501,7 +501,7 @@ public class RenderHelper extends VertexHelper {
      */
     public static void renderFaceZNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.NORTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.NORTH, x, y, z, icon);
 
         setupVertex(renderBlocks, xMax, yMax, zMin, uTL, vTL, TOP_LEFT    );
         setupVertex(renderBlocks, xMax, yMin, zMin, uBL, vBL, BOTTOM_LEFT );
@@ -514,7 +514,7 @@ public class RenderHelper extends VertexHelper {
      */
     public static void renderFaceZPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.SOUTH, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.SOUTH, x, y, z, icon);
 
         setupVertex(renderBlocks, xMin, yMax, zMax, uTL, vTL, TOP_LEFT    );
         setupVertex(renderBlocks, xMin, yMin, zMax, uBL, vBL, BOTTOM_LEFT );
@@ -527,7 +527,7 @@ public class RenderHelper extends VertexHelper {
      */
     public static void renderFaceXNeg(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.WEST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.WEST, x, y, z, icon);
 
         setupVertex(renderBlocks, xMin, yMax, zMin, uTL, vTL, TOP_LEFT    );
         setupVertex(renderBlocks, xMin, yMin, zMin, uBL, vBL, BOTTOM_LEFT );
@@ -540,7 +540,7 @@ public class RenderHelper extends VertexHelper {
      */
     public static void renderFaceXPos(RenderBlocks renderBlocks, double x, double y, double z, IIcon icon)
     {
-        prepareRender(renderBlocks, ForgeDirection.EAST, x, y, z, icon);
+        prepareRender(renderBlocks, EnumFacing.EAST, x, y, z, icon);
 
         setupVertex(renderBlocks, xMax, yMax, zMax, uTL, vTL, TOP_LEFT    );
         setupVertex(renderBlocks, xMax, yMin, zMax, uBL, vBL, BOTTOM_LEFT );

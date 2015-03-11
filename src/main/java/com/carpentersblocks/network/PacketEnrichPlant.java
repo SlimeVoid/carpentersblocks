@@ -20,7 +20,7 @@ public class PacketEnrichPlant extends TilePacket {
     /**
      * For the server to examine plant color, since it's a client-side only property.
      */
-    public PacketEnrichPlant(int x, int y, int z, int hexColor)
+    public PacketEnrichPlant(BlockPos pos, int hexColor)
     {
         super(x, y, z);
         this.hexColor = hexColor;

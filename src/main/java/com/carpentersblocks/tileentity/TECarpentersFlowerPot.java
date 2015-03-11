@@ -19,7 +19,7 @@ public class TECarpentersFlowerPot extends TEBase {
      */
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
-        World world = getWorldObj();
+        World world = this.getWorld();
 
         if (world.isRemote) {
 
@@ -36,10 +36,14 @@ public class TECarpentersFlowerPot extends TEBase {
              */
 
             if (!wasEnriched && hasAttribute(ATTR_FERTILIZER)) {
-                ItemDye.func_150918_a(world, xCoord, yCoord, zCoord, 15);
+                ItemDye.spawnBonemealParticles(world, this.getPos(), 15);
             }
 
         }
     }
 
+    @Override
+    public void update() {
+
+    }
 }

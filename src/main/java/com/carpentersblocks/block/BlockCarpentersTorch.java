@@ -23,7 +23,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.Random;
 
@@ -57,7 +57,7 @@ public class BlockCarpentersTorch extends BlockSided {
     /**
      * Returns the icon on the side given the block metadata.
      */
-    public IIcon getIcon(int side, int metadata)
+    public IIcon getIcon(EnumFacing side, int metadata)
     {
         return IconRegistry.icon_torch;
     }
@@ -99,7 +99,7 @@ public class BlockCarpentersTorch extends BlockSided {
      * Called when block is activated (right-click), before normal processing resumes.
      */
     @Override
-    protected void preOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void preOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         ItemStack itemStack = entityPlayer.getHeldItem();
 
@@ -124,7 +124,7 @@ public class BlockCarpentersTorch extends BlockSided {
      * @return a light value from 0 to 15
      */
     @Override
-    protected int getCurrentLightValue(IBlockAccess blockAccess, int x, int y, int z)
+    protected int getCurrentLightValue(IBlockAccess blockAccess, BlockPos pos)
     {
         int lightValue = super.getCurrentLightValue(blockAccess, x, y, z);
         TEBase TE = getTileEntity(blockAccess, x, y, z);
@@ -150,7 +150,7 @@ public class BlockCarpentersTorch extends BlockSided {
      * cleared to be reused)
      */
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, BlockPos pos)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 
@@ -165,13 +165,13 @@ public class BlockCarpentersTorch extends BlockSided {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
         if (TE != null) {
 
-            ForgeDirection side = data.getDirection(TE);
+            EnumFacing side = data.getDirection(TE);
 
             if (data.getType(TE) == data.TYPE_VANILLA) {
                 switch (side) {
@@ -202,7 +202,7 @@ public class BlockCarpentersTorch extends BlockSided {
      * @return whether side is supported
      */
     @Override
-    public boolean canAttachToSide(int side)
+    public boolean canAttachToSide(EnumFacing side)
     {
         return side != 0;
     }
@@ -211,7 +211,7 @@ public class BlockCarpentersTorch extends BlockSided {
      * Ticks the block if it's been scheduled
      */
     @Override
-    public void updateTick(World world, int x, int y, int z, Random random)
+    public void updateTick(World world, BlockPos pos, Random random)
     {
         if (!world.isRemote) {
 
@@ -253,7 +253,7 @@ public class BlockCarpentersTorch extends BlockSided {
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    public void randomDisplayTick(World world, int x, int y, int z, Random random)
+    public void randomDisplayTick(World world, BlockPos pos, Random random)
     {
         TEBase TE = getTileEntity(world, x, y, z);
 

@@ -11,7 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersSafe extends BlockHandlerBase {
 
-    private ForgeDirection dir;
+    private EnumFacing dir;
     private boolean isOpen;
     private boolean isLocked;
     private ItemStack panelItemStack;
@@ -82,7 +82,7 @@ public class BlockHandlerCarpentersSafe extends BlockHandlerBase {
 
         for (Component comp : coverList) {
             renderBlocks.setRenderBounds(comp.xMin, comp.yMin, comp.zMin, comp.xMax, comp.yMax, comp.zMax);
-            rotateBounds(renderBlocks, ForgeDirection.WEST);
+            rotateBounds(renderBlocks, EnumFacing.WEST);
             super.renderInventoryBlock(block, metadata, modelID, renderBlocks);
         }
 
@@ -90,38 +90,38 @@ public class BlockHandlerCarpentersSafe extends BlockHandlerBase {
 
         for (Component comp : panelList) {
             renderBlocks.setRenderBounds(comp.xMin, comp.yMin, comp.zMin, comp.xMax, comp.yMax, comp.zMax);
-            rotateBounds(renderBlocks, ForgeDirection.WEST);
+            rotateBounds(renderBlocks, EnumFacing.WEST);
             super.renderInventoryBlock(Blocks.iron_block, metadata, modelID, renderBlocks);
         }
 
         /* Handle */
 
         renderBlocks.setRenderBounds(0.8125D, 0.375D, 0.9375D, 0.875D, 0.625D, 1.0D);
-        rotateBounds(renderBlocks, ForgeDirection.WEST);
+        rotateBounds(renderBlocks, EnumFacing.WEST);
         super.renderInventoryBlock(Blocks.iron_block, metadata, modelID, renderBlocks);
 
         /* Sliding door */
 
         renderBlocks.setRenderBounds(0.375D, 0.0625D, 0.875F, 0.9375D, 0.9375D, 0.9375D);
-        rotateBounds(renderBlocks, ForgeDirection.WEST);
+        rotateBounds(renderBlocks, EnumFacing.WEST);
         super.renderInventoryBlock(block, metadata, modelID, renderBlocks);
 
         /* Red light */
 
         renderBlocks.setRenderBounds(0.125D, 0.75D, 0.9375D, 0.25D, 0.8125D, 1.0D);
-        rotateBounds(renderBlocks, ForgeDirection.WEST);
+        rotateBounds(renderBlocks, EnumFacing.WEST);
         super.renderInventoryBlock(Blocks.obsidian, metadata, modelID, renderBlocks);
 
         /* Green light */
 
         renderBlocks.setRenderBounds(0.125D, 0.8125D, 0.9375D, 0.25D, 0.875D, 1.0D);
-        rotateBounds(renderBlocks, ForgeDirection.WEST);
+        rotateBounds(renderBlocks, EnumFacing.WEST);
         super.renderInventoryBlock(Blocks.obsidian, metadata, modelID, renderBlocks);
 
         /* Capacity strip */
 
         renderBlocks.setRenderBounds(0.125D, 0.125D, 0.9375D, 0.25D, 0.6875D, 1.0D);
-        rotateBounds(renderBlocks, ForgeDirection.WEST);
+        rotateBounds(renderBlocks, EnumFacing.WEST);
         super.renderInventoryBlock(Blocks.obsidian, metadata, modelID, renderBlocks);
     }
 
@@ -129,7 +129,7 @@ public class BlockHandlerCarpentersSafe extends BlockHandlerBase {
     /**
      * Renders safe.
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 
@@ -189,7 +189,7 @@ public class BlockHandlerCarpentersSafe extends BlockHandlerBase {
         renderBlocks.renderAllFaces = false;
     }
 
-    private void renderPartCapacityLight(int x, int y, int z)
+    private void renderPartCapacityLight(BlockPos pos)
     {
         double yMin = 0.125D;
         double yMax = 0.1875D;
@@ -230,7 +230,7 @@ public class BlockHandlerCarpentersSafe extends BlockHandlerBase {
         }
     }
 
-    private void renderPartLockLight(int x, int y, int z)
+    private void renderPartLockLight(BlockPos pos)
     {
         if (isLocked) {
             lightingHelper.setColorOverride(UNLOCKED_INACTIVE);

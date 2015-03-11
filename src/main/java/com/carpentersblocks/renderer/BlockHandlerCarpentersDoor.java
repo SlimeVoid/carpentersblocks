@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
@@ -27,7 +27,7 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
     /**
      * Renders block at coordinates.
      */
-    public void renderCarpentersBlock(int x, int y, int z)
+    public void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 
@@ -68,11 +68,11 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
         int facing = Hinge.getFacing(TE);
         this.facing = facing == Hinge.FACING_ZN ? 0 : facing == Hinge.FACING_ZP ? 1 : facing == Hinge.FACING_XN ? 2 : 3;
 
-        ForgeDirection[][] extrapolatedSide = {
-                { ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST },
-                { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.WEST },
-                { ForgeDirection.EAST, ForgeDirection.SOUTH, ForgeDirection.NORTH },
-                { ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.SOUTH }
+        EnumFacing[][] extrapolatedSide = {
+                { EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST },
+                { EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.WEST },
+                { EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.NORTH },
+                { EnumFacing.WEST, EnumFacing.NORTH, EnumFacing.SOUTH }
         };
 
         side = extrapolatedSide[this.facing][!isOpen ? 0 : hingeLeft ? 1 : 2];
@@ -86,7 +86,7 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    private void renderTypeFrench(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeFrench(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.0D, 0.0D, 0.8125D, 0.1875D, 1.0D, 1.0D, side);
         renderBlockWithRotation(itemStack, x, y, z, 0.8125D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D, side);
@@ -118,7 +118,7 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    private void renderTypeGlassTop(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeGlassTop(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.0D, 0.0D, 0.8125D, 0.1875D, 1.0D, 1.0D, side);
         renderBlockWithRotation(itemStack, x, y, z, 0.8125D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D, side);
@@ -144,7 +144,7 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    private void renderTypePaneled(ItemStack itemStack, int x, int y, int z)
+    private void renderTypePaneled(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.0D, 0.0D, 0.8125D, 0.1875D, 1.0D, 1.0D, side);
         renderBlockWithRotation(itemStack, x, y, z, 0.8125D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D, side);
@@ -171,7 +171,7 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    private void renderTypeTall(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeTall(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.0D, 0.0D, 0.8125D, 0.1875D, 1.0D, 1.0D, side);
         renderBlockWithRotation(itemStack, x, y, z, 0.8125D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D, side);
@@ -195,7 +195,7 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    private void renderTypeHidden(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeHidden(ItemStack itemStack, BlockPos pos)
     {
         renderBlockWithRotation(itemStack, x, y, z, 0.0D, 0.0D, 0.8125D, 1.0D, 1.0D, 1.0D, side);
         renderPartPullHandle(new ItemStack(Blocks.iron_block), x, y, z, true, false);
@@ -209,7 +209,7 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    private void renderPartPullHandle(ItemStack itemStack, int x, int y, int z, boolean renderInner, boolean renderOuter)
+    private void renderPartPullHandle(ItemStack itemStack, BlockPos pos, boolean renderInner, boolean renderOuter)
     {
         if (!renderInner && !renderOuter) {
             return;
@@ -234,7 +234,7 @@ public class BlockHandlerCarpentersDoor extends BlockHandlerHinged {
         }
 
         if (renderOffset) {
-            ForgeDirection opp = side.getOpposite();
+            EnumFacing opp = side.getOpposite();
             renderBlockWithRotation(itemStack, x - opp.offsetX, y, z - opp.offsetZ, xMin, yMin, 0.0F, xMin + 0.0625F, yMax, 0.0625F, side);
             renderBlockWithRotation(itemStack, x - opp.offsetX, y, z - opp.offsetZ, xMin, yMinOffset, 0.0625F, xMin + 0.0625F, yMaxOffset, 0.125F, side);
         }

@@ -5,24 +5,22 @@ import com.carpentersblocks.data.Bed;
 import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.handler.ChatHandler;
 import com.carpentersblocks.util.registry.BlockRegistry;
-import com.carpentersblocks.util.registry.IconRegistry;
 import com.carpentersblocks.util.registry.ItemRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -35,16 +33,16 @@ public class BlockCarpentersBed extends BlockCoverable {
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.625F, 1.0F);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    /**
-     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
-     * is the only chance you get to register icons.
-     */
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        IconRegistry.icon_bed_pillow = iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + "bed/bed_pillow");
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    /**
+//     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+//     * is the only chance you get to register icons.
+//     */
+//    public void registerBlockIcons(IIconRegister iconRegister)
+//    {
+//        IconRegistry.icon_bed_pillow = iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + "bed/bed_pillow");
+//    }
 
     @Override
     /**
@@ -52,7 +50,7 @@ public class BlockCarpentersBed extends BlockCoverable {
      * players to sleep in it, though the block has to specifically
      * perform the sleeping functionality in it's activated event.
      */
-    public boolean isBed(IBlockAccess blockAccess, int x, int y, int z, EntityLivingBase player)
+    public boolean isBed(IBlockAccess blockAccess, BlockPos pos, Entity entity)
     {
         return true;
     }
@@ -89,29 +87,30 @@ public class BlockCarpentersBed extends BlockCoverable {
     /**
      * Called upon block activation (right click on the block.)
      */
-    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ, ActionResult actionResult)
+    protected void postOnBlockActivated(TEBase TE, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ, ActionResult actionResult)
     {
         actionResult.setAltered();
-        World world = TE.getWorldObj();
+        World world = TE.getWorld();
 
-        int x = TE.xCoord;
-        int y = TE.yCoord;
-        int z = TE.zCoord;
+        int x = TE.getPos().getX();
+        int y = TE.getPos().getY();
+        int z = TE.getPos().getZ();
 
         if (!Bed.isHeadOfBed(TE)) {
 
             TEBase TE_opp = Bed.getOppositeTE(TE);
 
             if (TE_opp != null) {
-                x = TE_opp.xCoord;
-                z = TE_opp.zCoord;
+                x = TE_opp.getPos().getX();
+                z = TE_opp.getPos().getZ();
             } else {
                 return;
             }
 
         }
+        BlockPos bedPartPos = new BlockPos(x, y, z);
 
-        if (world.provider.canRespawnHere() && world.getBiomeGenForCoords(x, z) != BiomeGenBase.hell) {
+        if (world.provider.canRespawnHere() && world.getBiomeGenForCoords(bedPartPos) != BiomeGenBase.hell) {
 
             if (Bed.isOccupied(TE)) {
 
@@ -124,9 +123,9 @@ public class BlockCarpentersBed extends BlockCoverable {
 
                     if (entityPlayer2.isPlayerSleeping()) {
 
-                        ChunkCoordinates chunkCoordinates = entityPlayer2.playerLocation;
+                        BlockPos chunkCoordinates = entityPlayer2.playerLocation;
 
-                        if (chunkCoordinates.posX == x && chunkCoordinates.posY == y && chunkCoordinates.posZ == z) {
+                        if (chunkCoordinates.getX() == x && chunkCoordinates.getY() == y && chunkCoordinates.getZ() == z) {
                             entityPlayer1 = entityPlayer2;
                         }
 
@@ -139,15 +138,15 @@ public class BlockCarpentersBed extends BlockCoverable {
                     return;
                 }
 
-                setBedOccupied(world, x, y, z, entityPlayer, false);
+                setBedOccupied(world, bedPartPos, entityPlayer, false);
 
             }
 
-            EnumStatus enumstatus = entityPlayer.sleepInBedAt(x, y, z);
+            EnumStatus enumstatus = entityPlayer.trySleep(bedPartPos);
 
             if (enumstatus == EnumStatus.OK) {
 
-                setBedOccupied(world, x, y, z, entityPlayer, true);
+                setBedOccupied(world, bedPartPos, entityPlayer, true);
 
             } else {
 
@@ -161,7 +160,7 @@ public class BlockCarpentersBed extends BlockCoverable {
 
         } else {
 
-            destroyBlock(world, x, y, z, false);
+            destroyBlock(world, bedPartPos, false);
             world.newExplosion((Entity)null, x + 0.5F, y + 0.5F, z + 0.5F, 5.0F, true, true);
 
         }
@@ -172,25 +171,25 @@ public class BlockCarpentersBed extends BlockCoverable {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState blockstate, Block block)
     {
         if (!world.isRemote) {
-            TEBase TE = getTileEntity(world, x, y, z);
+            TEBase TE = getTileEntity(world, pos);
             if (TE != null) {
                 if (Bed.getOppositeTE(TE) == null) {
-                    destroyBlock(world, x, y, z, false);
+                    destroyBlock(world, pos, false);
                 }
             }
         }
 
-        super.onNeighborBlockChange(world, x, y, z, block);
+        super.onNeighborBlockChange(world, pos, blockstate, block);
     }
 
     @Override
     /**
      * Returns the items to drop on destruction.
      */
-    public Item getItemDropped(int par1, Random random, int par2)
+    public Item getItemDropped(IBlockState state, Random random, int par2)
     {
         return ItemRegistry.itemCarpentersBed;
     }
@@ -206,11 +205,11 @@ public class BlockCarpentersBed extends BlockCoverable {
      * @param player The player or camera entity, null in some cases.
      * @param occupied True if we are occupying the bed, or false if they are stopping use of the bed
      */
-    public void setBedOccupied(IBlockAccess blockAccess, int x, int y, int z, EntityPlayer player, boolean occupied)
+    public void setBedOccupied(IBlockAccess blockAccess, BlockPos pos, EntityPlayer player, boolean occupied)
     {
-        TEBase TE = getTileEntity(blockAccess, x, y, z);
+        TEBase TE = getTileEntity(blockAccess, pos);
 
-        if (TE != null && !TE.getWorldObj().isRemote) {
+        if (TE != null && !TE.getWorld().isRemote) {
 
             Bed.setOccupied(TE, occupied);
 
@@ -234,20 +233,20 @@ public class BlockCarpentersBed extends BlockCoverable {
      * @param z Z Position
      * @return Bed direction
      */
-    public int getBedDirection(IBlockAccess blockAccess, int x, int y, int z)
+    public EnumFacing getBedDirection(IBlockAccess blockAccess, BlockPos pos)
     {
-        TEBase TE = getTileEntity(blockAccess, x, y, z);
+        TEBase TE = getTileEntity(blockAccess, pos);
 
         switch (Bed.getDirection(TE))
         {
             case NORTH:
-                return 0;
+                return EnumFacing.getFront(0);
             case SOUTH:
-                return 2;
+                return EnumFacing.getFront(2);
             case WEST:
-                return 3;
+                return EnumFacing.getFront(3);
             default:
-                return 1;
+                return EnumFacing.getFront(1);
         }
     }
 
@@ -256,7 +255,7 @@ public class BlockCarpentersBed extends BlockCoverable {
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World world, int x, int y, int z)
+    public Item getItem(World world, BlockPos pos)
     {
         return ItemRegistry.itemCarpentersBed;
     }
@@ -271,24 +270,24 @@ public class BlockCarpentersBed extends BlockCoverable {
     }
 
     @Override
-    public ForgeDirection[] getValidRotations(World worldObj, int x, int y,int z)
+    public EnumFacing[] getValidRotations(World worldObj, BlockPos pos)
     {
-        ForgeDirection[] axises = {ForgeDirection.UP, ForgeDirection.DOWN};
+        EnumFacing[] axises = {EnumFacing.UP, EnumFacing.DOWN};
         return axises;
     }
 
     @Override
-    public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis)
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
     {
         // to correctly support archimedes' ships mod:
         // if Axis is DOWN, block rotates to the left, north -> west -> south -> east
         // if Axis is UP, block rotates to the right:  north -> east -> south -> west
 
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
         if (tile != null && tile instanceof TEBase)
         {
             TEBase cbTile = (TEBase)tile;
-            ForgeDirection direction = Bed.getDirection(cbTile);
+            EnumFacing direction = Bed.getDirection(cbTile);
             switch (axis)
             {
                 case UP:

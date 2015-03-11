@@ -15,7 +15,7 @@ public class PacketActivateBlock extends TilePacket {
 
     public PacketActivateBlock() {}
 
-    public PacketActivateBlock(int x, int y, int z, int side)
+    public PacketActivateBlock(BlockPos pos, int side)
     {
         super(x, y, z);
         this.side = side;

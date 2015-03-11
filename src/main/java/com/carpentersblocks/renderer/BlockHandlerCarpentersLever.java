@@ -16,7 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersLever extends BlockHandlerBase {
@@ -46,7 +46,7 @@ public class BlockHandlerCarpentersLever extends BlockHandlerBase {
     /**
      * Renders block
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
         renderLever(getCoverForRendering(), x, y, z);
@@ -56,7 +56,7 @@ public class BlockHandlerCarpentersLever extends BlockHandlerBase {
     /**
      * Renders lever.
      */
-    private void renderLever(ItemStack itemStack, int x, int y, int z)
+    private void renderLever(ItemStack itemStack, BlockPos pos)
     {
         /* Set block bounds and render lever base. */
 
@@ -74,14 +74,14 @@ public class BlockHandlerCarpentersLever extends BlockHandlerBase {
     /**
      * Renders the lever handle.
      */
-    private void renderLeverHandle(int x, int y, int z)
+    private void renderLeverHandle(BlockPos pos)
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(Blocks.dirt.getMixedBrightnessForBlock(renderBlocks.blockAccess, x, y, z));
         tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
         Lever data = new Lever();
-        ForgeDirection dir = data.getDirection(TE);
+        EnumFacing dir = data.getDirection(TE);
         boolean toggleState = data.getState(TE) == data.STATE_ON;
         boolean rotateLever = data.getAxis(TE) == Axis.X;
 
@@ -117,7 +117,7 @@ public class BlockHandlerCarpentersLever extends BlockHandlerBase {
 
             if (dir.ordinal() < 2) {
 
-                if (dir.equals(ForgeDirection.DOWN)) {
+                if (dir.equals(EnumFacing.DOWN)) {
                     vector[vecCount].rotateAroundZ((float)Math.PI);
                 }
 
@@ -125,7 +125,7 @@ public class BlockHandlerCarpentersLever extends BlockHandlerBase {
                     vector[vecCount].rotateAroundY((float)Math.PI / 2F);
                 }
 
-                if (dir.equals(ForgeDirection.UP)) {
+                if (dir.equals(EnumFacing.UP)) {
                     vector[vecCount].xCoord += x + 0.5D;
                     vector[vecCount].yCoord += y + 0.125F;
                     vector[vecCount].zCoord += z + 0.5D;

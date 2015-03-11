@@ -14,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
@@ -87,7 +88,7 @@ public class BlockCarpentersDaylightSensor extends BlockSided {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
+    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
         TEBase TE = getTileEntity(blockAccess, x, y, z);
 
@@ -112,12 +113,10 @@ public class BlockCarpentersDaylightSensor extends BlockSided {
      * Calculates and saves the current light level at this space.
      *
      * @param  world the {@link World}
-     * @param  x the x coordinate
-     * @param  y the y coordinate
-     * @param  z the z coordinate
+     * @param  pos the Block Position
      * @return nothing
      */
-    public void updateLightLevel(World world, int x, int y, int z)
+    public void updateLightLevel(World world, BlockPos pos)
     {
         if (!world.provider.hasNoSky) {
 
@@ -190,7 +189,7 @@ public class BlockCarpentersDaylightSensor extends BlockSided {
      * @param  angle the angle of the sun in radians
      * @return the output strength from 0 to 15
      */
-    public int getCelestialRedstoneOutput(World world, int x, int y, int z, int skylight, float angle)
+    public int getCelestialRedstoneOutput(World world, BlockPos pos, int skylight, float angle)
     {
         if (!world.provider.hasNoSky) {
 
@@ -220,7 +219,7 @@ public class BlockCarpentersDaylightSensor extends BlockSided {
      * @return whether side is supported
      */
     @Override
-    public boolean canAttachToSide(int side)
+    public boolean canAttachToSide(EnumFacing side)
     {
         return side != 0;
     }

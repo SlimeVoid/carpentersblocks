@@ -34,7 +34,7 @@ public class ItemCarpentersDoor extends ItemBlock {
      * Callback for item usage. If the item does something special on right clicking, it will have one of these. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, BlockPos pos, int side, float hitX, float hitY, float hitZ)
     {
         if (side == 1) {
 

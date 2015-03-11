@@ -7,13 +7,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 @SideOnly(Side.CLIENT)
 public class BlockHandlerCarpentersGate extends BlockHandlerBase implements ISimpleBlockRenderingHandler {
 
     private boolean[] gate;
-    private ForgeDirection dir;
+    private EnumFacing dir;
     private boolean isOpen;
     private int type;
 
@@ -35,7 +35,7 @@ public class BlockHandlerCarpentersGate extends BlockHandlerBase implements ISim
     /**
      * Renders gate
      */
-    protected void renderCarpentersBlock(int x, int y, int z)
+    protected void renderCarpentersBlock(BlockPos pos)
     {
         renderBlocks.renderAllFaces = true;
 
@@ -63,7 +63,7 @@ public class BlockHandlerCarpentersGate extends BlockHandlerBase implements ISim
     /**
      * Sets up commonly used fields.
      */
-    private void setParams(int x, int y, int z)
+    private void setParams(BlockPos pos)
     {
         type = Gate.getType(TE);
         isOpen = Gate.getState(TE) == Gate.STATE_OPEN;
@@ -74,16 +74,16 @@ public class BlockHandlerCarpentersGate extends BlockHandlerBase implements ISim
         };
 
         if (Gate.getFacing(TE) == Gate.FACING_ON_Z) {
-            dir = Gate.getDirOpen(TE) == Gate.DIR_NEG ? ForgeDirection.NORTH : ForgeDirection.SOUTH;
+            dir = Gate.getDirOpen(TE) == Gate.DIR_NEG ? EnumFacing.NORTH : EnumFacing.SOUTH;
         } else {
-            dir = Gate.getDirOpen(TE) == Gate.DIR_NEG ? ForgeDirection.EAST : ForgeDirection.WEST;
+            dir = Gate.getDirOpen(TE) == Gate.DIR_NEG ? EnumFacing.EAST : EnumFacing.WEST;
         }
     }
 
     /**
      * Renders vanilla gate at given coordinates.
      */
-    private void renderTypeVanilla(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeVanilla(ItemStack itemStack, BlockPos pos)
     {
         double yMin, yMax;
         double yOffset = type * 0.0625D;
@@ -159,7 +159,7 @@ public class BlockHandlerCarpentersGate extends BlockHandlerBase implements ISim
     /**
      * Renders picket gate at given coordinates.
      */
-    private void renderTypePicket(ItemStack itemStack, int x, int y, int z)
+    private void renderTypePicket(ItemStack itemStack, BlockPos pos)
     {
         double yMin, yMax;
 
@@ -225,7 +225,7 @@ public class BlockHandlerCarpentersGate extends BlockHandlerBase implements ISim
     /**
      * Renders shadowbox gate at given coordinates.
      */
-    private void renderTypeShadowbox(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeShadowbox(ItemStack itemStack, BlockPos pos)
     {
         if (isOpen) {
 
@@ -263,7 +263,7 @@ public class BlockHandlerCarpentersGate extends BlockHandlerBase implements ISim
     /**
      * Renders wall gate at given coordinates.
      */
-    private void renderTypeWall(ItemStack itemStack, int x, int y, int z)
+    private void renderTypeWall(ItemStack itemStack, BlockPos pos)
     {
         double yMax = gate[YP] ? 1.0D : 0.8125D;
 
