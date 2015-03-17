@@ -3,14 +3,13 @@ package com.carpentersblocks.network;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 
 import java.io.IOException;
 
 public class TilePacket implements ICarpentersPacket {
 
-    protected int x;
-    protected int y;
-    protected int z;
+    protected BlockPos pos;
 
     public TilePacket() {}
 
@@ -19,25 +18,21 @@ public class TilePacket implements ICarpentersPacket {
      */
     public TilePacket(BlockPos pos)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.pos = pos;
     }
 
     @Override
     public void processData(EntityPlayer entityPlayer, ByteBufInputStream bbis) throws IOException
     {
-        x = bbis.readInt();
-        y = bbis.readInt();
-        z = bbis.readInt();
+        this.pos = new BlockPos(bbis.readInt(), bbis.readInt(), bbis.readInt());
     }
 
     @Override
     public void appendData(ByteBuf buffer) throws IOException
     {
-        buffer.writeInt(x);
-        buffer.writeInt(y);
-        buffer.writeInt(z);
+        buffer.writeInt(this.pos.getX());
+        buffer.writeInt(this.pos.getY());
+        buffer.writeInt(this.pos.getZ());
     }
 
 }

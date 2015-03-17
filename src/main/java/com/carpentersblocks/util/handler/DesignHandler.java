@@ -7,13 +7,11 @@ import com.carpentersblocks.util.registry.BlockRegistry;
 import com.carpentersblocks.util.registry.FeatureRegistry;
 import com.carpentersblocks.util.registry.IconRegistry;
 import com.carpentersblocks.util.registry.ItemRegistry;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 
@@ -103,34 +101,35 @@ public class DesignHandler {
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public static void registerIcons(IIconRegister iconRegister)
-    {
-        if (BlockRegistry.enableBed) {
-            for (String iconName : listBed) {
-                IIcon[] icons = new IIcon[8];
-                for (int count = 0; count < 8; ++count) {
-                    icons[count] = iconRegister.registerIcon(CarpentersBlocksCachedResources.INSTANCE.getModId() + ":" + PATH_BED + "cache/" + iconName + "_" + count);
-                }
-                IconRegistry.icon_design_bed.add(icons);
-            }
-        }
-        if (FeatureRegistry.enableChiselDesigns) {
-            for (String iconName : listChisel) {
-                IconRegistry.icon_design_chisel.add(iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + PATH_CHISEL + iconName));
-            }
-        }
-        if (BlockRegistry.enableFlowerPot) {
-            for (String iconName : listFlowerPot) {
-                IconRegistry.icon_design_flower_pot.add(iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + PATH_FLOWER_POT + iconName));
-            }
-        }
-        if (ItemRegistry.enableTile) {
-            for (String iconName : listTile) {
-                IconRegistry.icon_design_tile.add(iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + PATH_TILE + iconName));
-            }
-        }
-    }
+//    TODO:: Icon Mapping
+//    @SideOnly(Side.CLIENT)
+//    public static void registerIcons(IIconRegister iconRegister)
+//    {
+//        if (BlockRegistry.enableBed) {
+//            for (String iconName : listBed) {
+//                IIcon[] icons = new IIcon[8];
+//                for (int count = 0; count < 8; ++count) {
+//                    icons[count] = iconRegister.registerIcon(CarpentersBlocksCachedResources.INSTANCE.getModId() + ":" + PATH_BED + "cache/" + iconName + "_" + count);
+//                }
+//                IconRegistry.icon_design_bed.add(icons);
+//            }
+//        }
+//        if (FeatureRegistry.enableChiselDesigns) {
+//            for (String iconName : listChisel) {
+//                IconRegistry.icon_design_chisel.add(iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + PATH_CHISEL + iconName));
+//            }
+//        }
+//        if (BlockRegistry.enableFlowerPot) {
+//            for (String iconName : listFlowerPot) {
+//                IconRegistry.icon_design_flower_pot.add(iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + PATH_FLOWER_POT + iconName));
+//            }
+//        }
+//        if (ItemRegistry.enableTile) {
+//            for (String iconName : listTile) {
+//                IconRegistry.icon_design_tile.add(iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + PATH_TILE + iconName));
+//            }
+//        }
+//    }
 
     public static ArrayList<String> getListForType(String type)
     {

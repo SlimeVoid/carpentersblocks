@@ -3,6 +3,7 @@ package com.carpentersblocks.util.flowerpot;
 import com.carpentersblocks.tileentity.TEBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -122,11 +123,11 @@ public class FlowerPotHandler {
      */
     public static Profile getPlantProfile(ItemStack itemStack)
     {
-        Block block = FlowerPotProperties.toBlock(itemStack);
+        IBlockState state = FlowerPotProperties.toBlockState(itemStack);
 
         String name = itemStack.getUnlocalizedName();
 
-        Material material = block.getMaterial();
+        Material material = state.getBlock().getMaterial();
 
         if (plantProfile.containsKey(name)) {
             return plantProfile.get(name);

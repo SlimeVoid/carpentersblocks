@@ -4,17 +4,17 @@ import com.carpentersblocks.CarpentersBlocks;
 import com.carpentersblocks.block.*;
 import com.carpentersblocks.renderer.*;
 import com.carpentersblocks.util.BlockProperties;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockRegistry {
@@ -156,77 +156,79 @@ public class BlockRegistry {
 
             /* Carpenter's Block is always enabled because recipes rely on it. */
 
-            carpentersBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
-            RenderingRegistry.registerBlockHandler(carpentersBlockRenderID, new BlockHandlerCarpentersBlock());
+            //  TODO:: Block Model Register
 
-            if (enableBarrier) {
-                carpentersBarrierRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersBarrierRenderID, new BlockHandlerCarpentersBarrier());
-            }
-            if (enableButton) {
-                carpentersButtonRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersButtonRenderID, new BlockHandlerCarpentersButton());
-            }
-            if (enableDaylightSensor) {
-                carpentersDaylightSensorRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersDaylightSensorRenderID, new BlockHandlerCarpentersDaylightSensor());
-            }
-            if (enableGarageDoor) {
-                carpentersGarageDoorRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersGarageDoorRenderID, new BlockHandlerCarpentersGarageDoor());
-            }
-            if (enableGate) {
-                carpentersGateRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersGateRenderID, new BlockHandlerCarpentersGate());
-            }
-            if (enableLever) {
-                carpentersLeverRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersLeverRenderID, new BlockHandlerCarpentersLever());
-            }
-            if (enablePressurePlate) {
-                carpentersPressurePlateRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersPressurePlateRenderID, new BlockHandlerCarpentersPressurePlate());
-            }
-            if (enableSlope) {
-                carpentersSlopeRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersSlopeRenderID, new BlockHandlerCarpentersSlope());
-            }
-            if (enableStairs) {
-                carpentersStairsRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersStairsRenderID, new BlockHandlerCarpentersStairs());
-            }
-            if (enableHatch) {
-                carpentersHatchRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersHatchRenderID, new BlockHandlerCarpentersHatch());
-            }
-            if (enableDoor) {
-                carpentersDoorRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersDoorRenderID, new BlockHandlerCarpentersDoor());
-            }
-            if (enableBed) {
-                carpentersBedRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersBedRenderID, new BlockHandlerCarpentersBed());
-            }
-            if (enableLadder) {
-                carpentersLadderRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersLadderRenderID, new BlockHandlerCarpentersLadder());
-            }
-            if (enableCollapsibleBlock) {
-                carpentersCollapsibleBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersCollapsibleBlockRenderID, new BlockHandlerCarpentersCollapsibleBlock());
-            }
-            if (enableTorch) {
-                carpentersTorchRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersTorchRenderID, new BlockHandlerCarpentersTorch());
-            }
-            if (enableSafe) {
-                carpentersSafeRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersSafeRenderID, new BlockHandlerCarpentersSafe());
-            }
-            if (enableFlowerPot) {
-                carpentersFlowerPotRenderID = RenderingRegistry.getNextAvailableRenderId();
-                RenderingRegistry.registerBlockHandler(carpentersFlowerPotRenderID, new BlockHandlerCarpentersFlowerPot());
-            }
+            //carpentersBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
+            //RenderingRegistry.registerBlockHandler(carpentersBlockRenderID, new BlockHandlerCarpentersBlock());
+
+//            if (enableBarrier) {
+//                carpentersBarrierRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersBarrierRenderID, new BlockHandlerCarpentersBarrier());
+//            }
+//            if (enableButton) {
+//                carpentersButtonRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersButtonRenderID, new BlockHandlerCarpentersButton());
+//            }
+//            if (enableDaylightSensor) {
+//                carpentersDaylightSensorRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersDaylightSensorRenderID, new BlockHandlerCarpentersDaylightSensor());
+//            }
+//            if (enableGarageDoor) {
+//                carpentersGarageDoorRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersGarageDoorRenderID, new BlockHandlerCarpentersGarageDoor());
+//            }
+//            if (enableGate) {
+//                carpentersGateRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersGateRenderID, new BlockHandlerCarpentersGate());
+//            }
+//            if (enableLever) {
+//                carpentersLeverRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersLeverRenderID, new BlockHandlerCarpentersLever());
+//            }
+//            if (enablePressurePlate) {
+//                carpentersPressurePlateRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersPressurePlateRenderID, new BlockHandlerCarpentersPressurePlate());
+//            }
+//            if (enableSlope) {
+//                carpentersSlopeRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersSlopeRenderID, new BlockHandlerCarpentersSlope());
+//            }
+//            if (enableStairs) {
+//                carpentersStairsRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersStairsRenderID, new BlockHandlerCarpentersStairs());
+//            }
+//            if (enableHatch) {
+//                carpentersHatchRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersHatchRenderID, new BlockHandlerCarpentersHatch());
+//            }
+//            if (enableDoor) {
+//                carpentersDoorRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersDoorRenderID, new BlockHandlerCarpentersDoor());
+//            }
+//            if (enableBed) {
+//                carpentersBedRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersBedRenderID, new BlockHandlerCarpentersBed());
+//            }
+//            if (enableLadder) {
+//                carpentersLadderRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersLadderRenderID, new BlockHandlerCarpentersLadder());
+//            }
+//            if (enableCollapsibleBlock) {
+//                carpentersCollapsibleBlockRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersCollapsibleBlockRenderID, new BlockHandlerCarpentersCollapsibleBlock());
+//            }
+//            if (enableTorch) {
+//                carpentersTorchRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersTorchRenderID, new BlockHandlerCarpentersTorch());
+//            }
+//            if (enableSafe) {
+//                carpentersSafeRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersSafeRenderID, new BlockHandlerCarpentersSafe());
+//            }
+//            if (enableFlowerPot) {
+//                carpentersFlowerPotRenderID = RenderingRegistry.getNextAvailableRenderId();
+//                RenderingRegistry.registerBlockHandler(carpentersFlowerPotRenderID, new BlockHandlerCarpentersFlowerPot());
+//            }
 
         }
 
@@ -238,193 +240,193 @@ public class BlockRegistry {
         /* Carpenter's Block is always enabled because recipes rely on it. */
 
         blockCarpentersBlock = new BlockCarpentersBlock(Material.wood)
-            .setBlockName("blockCarpentersBlock")
+            .setUnlocalizedName("blockCarpentersBlock")
             .setHardness(0.2F)
             .setStepSound(BlockProperties.stepSound)
             .setCreativeTab(CarpentersBlocks.creativeTab);
         GameRegistry.registerBlock(blockCarpentersBlock, "blockCarpentersBlock");
         Blocks.fire.setFireInfo(blockCarpentersBlock, 5, 20);
 
-        if (enableBarrier) {
-            blockCarpentersBarrier = new BlockCarpentersBarrier(Material.wood)
-                .setBlockName("blockCarpentersBarrier")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersBarrier, "blockCarpentersBarrier");
-            Blocks.fire.setFireInfo(blockCarpentersBarrier, 5, 20);
-        }
-
-        if (enableBed) {
-            blockCarpentersBed = new BlockCarpentersBed(Material.wood)
-                .setBlockName("blockCarpentersBed")
-                .setHardness(0.4F)
-                .setStepSound(BlockProperties.stepSound);
-
-            /*
-             * This must be set to assign burn properties to block.
-             * A side-effect of this is that mods like NEI will enable
-             * users to place the block itself, which will result in a crash.
-             */
-            GameRegistry.registerBlock(blockCarpentersBed, "blockCarpentersBed");
-            Blocks.fire.setFireInfo(blockCarpentersBed, 5, 20);
-        }
-
-        if (enableButton) {
-            blockCarpentersButton = new BlockCarpentersButton(Material.circuits)
-                .setBlockName("blockCarpentersButton")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersButton, ItemBlockSided.class, "blockCarpentersButton");
-            Blocks.fire.setFireInfo(blockCarpentersButton, 5, 20);
-        }
-
-        if (enableCollapsibleBlock) {
-            blockCarpentersCollapsibleBlock = new BlockCarpentersCollapsibleBlock(Material.wood)
-                .setBlockName("blockCarpentersCollapsibleBlock")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersCollapsibleBlock, "blockCarpentersCollapsibleBlock");
-            Blocks.fire.setFireInfo(blockCarpentersCollapsibleBlock, 5, 20);
-        }
-
-        if (enableDaylightSensor) {
-            blockCarpentersDaylightSensor = new BlockCarpentersDaylightSensor(Material.wood)
-                .setBlockName("blockCarpentersDaylightSensor")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersDaylightSensor, ItemBlockSided.class, "blockCarpentersDaylightSensor");
-            Blocks.fire.setFireInfo(blockCarpentersDaylightSensor, 5, 20);
-        }
-
-        if (enableDoor) {
-            blockCarpentersDoor = new BlockCarpentersDoor(Material.wood)
-                .setBlockName("blockCarpentersDoor")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound);
-
-            /*
-             * This must be set to assign burn properties to block.
-             * A side-effect of this is that mods like NEI will enable
-             * users to place the block itself, which will result in a crash.
-             */
-            GameRegistry.registerBlock(blockCarpentersDoor, "blockCarpentersDoor");
-            Blocks.fire.setFireInfo(blockCarpentersDoor, 5, 20);
-        }
-
-        if (enableFlowerPot) {
-            blockCarpentersFlowerPot = new BlockCarpentersFlowerPot(Material.circuits)
-                .setBlockName("blockCarpentersFlowerPot")
-                .setHardness(0.5F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersFlowerPot, "blockCarpentersFlowerPot");
-            Blocks.fire.setFireInfo(blockCarpentersFlowerPot, 5, 20);
-        }
-
-        if (enableGarageDoor) {
-            blockCarpentersGarageDoor = new BlockCarpentersGarageDoor(Material.wood)
-                .setBlockName("blockCarpentersGarageDoor")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersGarageDoor, "blockCarpentersGarageDoor");
-            Blocks.fire.setFireInfo(blockCarpentersGarageDoor, 5, 20);
-        }
-
-        if (enableGate) {
-            blockCarpentersGate = new BlockCarpentersGate(Material.wood)
-                .setBlockName("blockCarpentersGate")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersGate, "blockCarpentersGate");
-            Blocks.fire.setFireInfo(blockCarpentersGate, 5, 20);
-        }
-
-        if (enableHatch) {
-            blockCarpentersHatch = new BlockCarpentersHatch(Material.wood)
-                .setBlockName("blockCarpentersHatch")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersHatch, "blockCarpentersHatch");
-            Blocks.fire.setFireInfo(blockCarpentersHatch, 5, 20);
-        }
-
-        if (enableLadder) {
-            blockCarpentersLadder = new BlockCarpentersLadder(Material.wood)
-                .setBlockName("blockCarpentersLadder")
-                .setHardness(0.2F)
-                .setStepSound(Blocks.ladder.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersLadder, "blockCarpentersLadder");
-            Blocks.fire.setFireInfo(blockCarpentersLadder, 5, 20);
-        }
-
-        if (enableLever) {
-            blockCarpentersLever = new BlockCarpentersLever(Material.circuits)
-                .setBlockName("blockCarpentersLever")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersLever, ItemBlockSided.class, "blockCarpentersLever");
-            Blocks.fire.setFireInfo(blockCarpentersLever, 5, 20);
-        }
-
-        if (enablePressurePlate) {
-            blockCarpentersPressurePlate = new BlockCarpentersPressurePlate(Material.circuits)
-                .setBlockName("blockCarpentersPressurePlate")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersPressurePlate, ItemBlockSided.class, "blockCarpentersPressurePlate");
-            Blocks.fire.setFireInfo(blockCarpentersPressurePlate, 5, 20);
-        }
-
-        if (enableSafe) {
-            blockCarpentersSafe = new BlockCarpentersSafe(Material.wood)
-                .setBlockName("blockCarpentersSafe")
-                .setHardness(2.5F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersSafe, "blockCarpentersSafe");
-            Blocks.fire.setFireInfo(blockCarpentersSafe, 5, 20);
-        }
-
-        if (enableSlope) {
-            blockCarpentersSlope = new BlockCarpentersSlope(Material.wood)
-                .setBlockName("blockCarpentersSlope")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersSlope, ItemBlockCarpentersSlope.class, "blockCarpentersSlope");
-            Blocks.fire.setFireInfo(blockCarpentersSlope, 5, 20);
-        }
-
-        if (enableStairs) {
-            blockCarpentersStairs = new BlockCarpentersStairs(Material.wood)
-                .setBlockName("blockCarpentersStairs")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab);
-            GameRegistry.registerBlock(blockCarpentersStairs, "blockCarpentersStairs");
-            Blocks.fire.setFireInfo(blockCarpentersStairs, 5, 20);
-        }
-
-        if (enableTorch) {
-            blockCarpentersTorch = new BlockCarpentersTorch(Material.circuits)
-                .setBlockName("blockCarpentersTorch")
-                .setHardness(0.2F)
-                .setStepSound(BlockProperties.stepSound)
-                .setCreativeTab(CarpentersBlocks.creativeTab)
-                .setTickRandomly(true);
-            GameRegistry.registerBlock(blockCarpentersTorch, ItemBlockSided.class, "blockCarpentersTorch");
-            Blocks.fire.setFireInfo(blockCarpentersTorch, 5, 20);
-        }
+//        if (enableBarrier) {
+//            blockCarpentersBarrier = new BlockCarpentersBarrier(Material.wood)
+//                .setBlockName("blockCarpentersBarrier")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersBarrier, "blockCarpentersBarrier");
+//            Blocks.fire.setFireInfo(blockCarpentersBarrier, 5, 20);
+//        }
+//
+//        if (enableBed) {
+//            blockCarpentersBed = new BlockCarpentersBed(Material.wood)
+//                .setBlockName("blockCarpentersBed")
+//                .setHardness(0.4F)
+//                .setStepSound(BlockProperties.stepSound);
+//
+//            /*
+//             * This must be set to assign burn properties to block.
+//             * A side-effect of this is that mods like NEI will enable
+//             * users to place the block itself, which will result in a crash.
+//             */
+//            GameRegistry.registerBlock(blockCarpentersBed, "blockCarpentersBed");
+//            Blocks.fire.setFireInfo(blockCarpentersBed, 5, 20);
+//        }
+//
+//        if (enableButton) {
+//            blockCarpentersButton = new BlockCarpentersButton(Material.circuits)
+//                .setBlockName("blockCarpentersButton")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersButton, ItemBlockSided.class, "blockCarpentersButton");
+//            Blocks.fire.setFireInfo(blockCarpentersButton, 5, 20);
+//        }
+//
+//        if (enableCollapsibleBlock) {
+//            blockCarpentersCollapsibleBlock = new BlockCarpentersCollapsibleBlock(Material.wood)
+//                .setBlockName("blockCarpentersCollapsibleBlock")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersCollapsibleBlock, "blockCarpentersCollapsibleBlock");
+//            Blocks.fire.setFireInfo(blockCarpentersCollapsibleBlock, 5, 20);
+//        }
+//
+//        if (enableDaylightSensor) {
+//            blockCarpentersDaylightSensor = new BlockCarpentersDaylightSensor(Material.wood)
+//                .setBlockName("blockCarpentersDaylightSensor")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersDaylightSensor, ItemBlockSided.class, "blockCarpentersDaylightSensor");
+//            Blocks.fire.setFireInfo(blockCarpentersDaylightSensor, 5, 20);
+//        }
+//
+//        if (enableDoor) {
+//            blockCarpentersDoor = new BlockCarpentersDoor(Material.wood)
+//                .setBlockName("blockCarpentersDoor")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound);
+//
+//            /*
+//             * This must be set to assign burn properties to block.
+//             * A side-effect of this is that mods like NEI will enable
+//             * users to place the block itself, which will result in a crash.
+//             */
+//            GameRegistry.registerBlock(blockCarpentersDoor, "blockCarpentersDoor");
+//            Blocks.fire.setFireInfo(blockCarpentersDoor, 5, 20);
+//        }
+//
+//        if (enableFlowerPot) {
+//            blockCarpentersFlowerPot = new BlockCarpentersFlowerPot(Material.circuits)
+//                .setBlockName("blockCarpentersFlowerPot")
+//                .setHardness(0.5F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersFlowerPot, "blockCarpentersFlowerPot");
+//            Blocks.fire.setFireInfo(blockCarpentersFlowerPot, 5, 20);
+//        }
+//
+//        if (enableGarageDoor) {
+//            blockCarpentersGarageDoor = new BlockCarpentersGarageDoor(Material.wood)
+//                .setBlockName("blockCarpentersGarageDoor")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersGarageDoor, "blockCarpentersGarageDoor");
+//            Blocks.fire.setFireInfo(blockCarpentersGarageDoor, 5, 20);
+//        }
+//
+//        if (enableGate) {
+//            blockCarpentersGate = new BlockCarpentersGate(Material.wood)
+//                .setBlockName("blockCarpentersGate")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersGate, "blockCarpentersGate");
+//            Blocks.fire.setFireInfo(blockCarpentersGate, 5, 20);
+//        }
+//
+//        if (enableHatch) {
+//            blockCarpentersHatch = new BlockCarpentersHatch(Material.wood)
+//                .setBlockName("blockCarpentersHatch")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersHatch, "blockCarpentersHatch");
+//            Blocks.fire.setFireInfo(blockCarpentersHatch, 5, 20);
+//        }
+//
+//        if (enableLadder) {
+//            blockCarpentersLadder = new BlockCarpentersLadder(Material.wood)
+//                .setBlockName("blockCarpentersLadder")
+//                .setHardness(0.2F)
+//                .setStepSound(Blocks.ladder.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersLadder, "blockCarpentersLadder");
+//            Blocks.fire.setFireInfo(blockCarpentersLadder, 5, 20);
+//        }
+//
+//        if (enableLever) {
+//            blockCarpentersLever = new BlockCarpentersLever(Material.circuits)
+//                .setBlockName("blockCarpentersLever")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersLever, ItemBlockSided.class, "blockCarpentersLever");
+//            Blocks.fire.setFireInfo(blockCarpentersLever, 5, 20);
+//        }
+//
+//        if (enablePressurePlate) {
+//            blockCarpentersPressurePlate = new BlockCarpentersPressurePlate(Material.circuits)
+//                .setBlockName("blockCarpentersPressurePlate")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersPressurePlate, ItemBlockSided.class, "blockCarpentersPressurePlate");
+//            Blocks.fire.setFireInfo(blockCarpentersPressurePlate, 5, 20);
+//        }
+//
+//        if (enableSafe) {
+//            blockCarpentersSafe = new BlockCarpentersSafe(Material.wood)
+//                .setBlockName("blockCarpentersSafe")
+//                .setHardness(2.5F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersSafe, "blockCarpentersSafe");
+//            Blocks.fire.setFireInfo(blockCarpentersSafe, 5, 20);
+//        }
+//
+//        if (enableSlope) {
+//            blockCarpentersSlope = new BlockCarpentersSlope(Material.wood)
+//                .setBlockName("blockCarpentersSlope")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersSlope, ItemBlockCarpentersSlope.class, "blockCarpentersSlope");
+//            Blocks.fire.setFireInfo(blockCarpentersSlope, 5, 20);
+//        }
+//
+//        if (enableStairs) {
+//            blockCarpentersStairs = new BlockCarpentersStairs(Material.wood)
+//                .setBlockName("blockCarpentersStairs")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab);
+//            GameRegistry.registerBlock(blockCarpentersStairs, "blockCarpentersStairs");
+//            Blocks.fire.setFireInfo(blockCarpentersStairs, 5, 20);
+//        }
+//
+//        if (enableTorch) {
+//            blockCarpentersTorch = new BlockCarpentersTorch(Material.circuits)
+//                .setBlockName("blockCarpentersTorch")
+//                .setHardness(0.2F)
+//                .setStepSound(BlockProperties.stepSound)
+//                .setCreativeTab(CarpentersBlocks.creativeTab)
+//                .setTickRandomly(true);
+//            GameRegistry.registerBlock(blockCarpentersTorch, ItemBlockSided.class, "blockCarpentersTorch");
+//            Blocks.fire.setFireInfo(blockCarpentersTorch, 5, 20);
+//        }
     }
 
     private static void registerRecipes()

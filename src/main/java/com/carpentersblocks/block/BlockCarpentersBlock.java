@@ -2,22 +2,24 @@ package com.carpentersblocks.block;
 
 import com.carpentersblocks.data.Slab;
 import com.carpentersblocks.tileentity.TEBase;
+import com.carpentersblocks.tileentity.TECB;
 import com.carpentersblocks.util.handler.EventHandler;
 import com.carpentersblocks.util.registry.BlockRegistry;
 import com.carpentersblocks.util.registry.IconRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -38,16 +40,16 @@ public class BlockCarpentersBlock extends BlockCoverable {
         super(material);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    /**
-     * Returns a base icon that doesn't rely on blockIcon, which
-     * is set prior to texture stitch events.
-     */
-    public IIcon getIcon()
-    {
-        return IconRegistry.icon_uncovered_quartered;
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    /**
+//     * Returns a base icon that doesn't rely on blockIcon, which
+//     * is set prior to texture stitch events.
+//     */
+//    public IIcon getIcon()
+//    {
+//        return IconRegistry.icon_uncovered_quartered;
+//    }
 
     @Override
     /**
@@ -75,7 +77,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
         int data = TE.getData();
 
         if (data == Slab.BLOCK_FULL) {
-            switch (EventHandler.eventFace)
+            switch (EventHandler.eventFace.getIndex())
             {
                 case 0:
                     data = Slab.SLAB_Y_POS;
@@ -111,7 +113,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
      */
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
     {
-        TEBase TE = getTileEntity(blockAccess, x, y, z);
+        TEBase TE = getTileEntity(blockAccess, pos);
 
         if (TE != null) {
             int data = TE.getData();
@@ -126,21 +128,21 @@ public class BlockCarpentersBlock extends BlockCoverable {
      * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
      * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
      */
-    public void addCollisionBoxesToList(World world, BlockPos pos, AxisAlignedBB axisAlignedBB, List list, Entity entity)
+    public void addCollisionBoxesToList(World world, BlockPos pos, IBlockState state, AxisAlignedBB axisAlignedBB, List list, Entity entity)
     {
-        setBlockBoundsBasedOnState(world, x, y, z);
-        super.addCollisionBoxesToList(world, x, y, z, axisAlignedBB, list, entity);
+        setBlockBoundsBasedOnState(world, pos);
+        super.addCollisionBoxesToList(world, pos, state, axisAlignedBB, list, entity);
     }
 
     @Override
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World world, BlockPos pos, EntityLivingBase entityLiving, ItemStack itemStack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entityLiving, ItemStack itemStack)
     {
-        super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
+        super.onBlockPlacedBy(world, pos, state, entityLiving, itemStack);
 
-        TEBase TE = getTileEntity(world, x, y, z);
+        TEBase TE = getTileEntity(world, pos);
 
         if (TE != null) {
 
@@ -150,7 +152,7 @@ public class BlockCarpentersBlock extends BlockCoverable {
 
                 /* Match block type with adjacent type if possible. */
 
-                TEBase[] TE_list = getAdjacentTileEntities(world, x, y, z);
+                TEBase[] TE_list = getAdjacentTileEntities(world, pos);
 
                 for (TEBase TE_current : TE_list) {
                     if (TE_current != null) {
@@ -172,11 +174,11 @@ public class BlockCarpentersBlock extends BlockCoverable {
      */
     public boolean isSideSolid(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        TEBase TE = getTileEntity(blockAccess, x, y, z);
+        TEBase TE = getTileEntity(blockAccess, pos);
 
         if (TE != null) {
 
-            if (isBlockSolid(blockAccess, x, y, z)) {
+            if (isBlockSolid(blockAccess, pos, side)) {
 
                 int data = TE.getData();
 
@@ -215,14 +217,14 @@ public class BlockCarpentersBlock extends BlockCoverable {
     @Override
     public boolean shouldCheckWeakPower(IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        TEBase TE = getTileEntity(blockAccess, x, y, z);
+        TEBase TE = getTileEntity(blockAccess, pos);
 
         if (TE != null) {
             int data = TE.getData();
             return data == Slab.BLOCK_FULL;
         }
 
-        return super.shouldCheckWeakPower(blockAccess, x, y, z, side);
+        return super.shouldCheckWeakPower(blockAccess, pos, side);
     }
 
     @Override
@@ -234,9 +236,9 @@ public class BlockCarpentersBlock extends BlockCoverable {
     {
         if (TE_adj.getBlockType() == this) {
 
-            setBlockBoundsBasedOnState(TE_src.getWorldObj(), TE_src.xCoord, TE_src.yCoord, TE_src.zCoord);
+            setBlockBoundsBasedOnState(TE_src.getWorld(), TE_src.getPos());
             double[] bnds_src = { getBlockBoundsMinX(), getBlockBoundsMinY(), getBlockBoundsMinZ(), getBlockBoundsMaxX(), getBlockBoundsMaxY(), getBlockBoundsMaxZ() };
-            setBlockBoundsBasedOnState(TE_adj.getWorldObj(), TE_adj.xCoord, TE_adj.yCoord, TE_adj.zCoord);
+            setBlockBoundsBasedOnState(TE_adj.getWorld(), TE_adj.getPos());
 
             switch (side_src) {
                 case DOWN:
@@ -261,10 +263,15 @@ public class BlockCarpentersBlock extends BlockCoverable {
     }
 
     @Override
+    public TileEntity createNewCarpentersTile(World world, int metadata) {
+        return new TECB();
+    }
+
+    @Override
     /**
      * Returns whether block can support cover on side.
      */
-    public boolean canCoverSide(TEBase TE, World world, BlockPos pos, EnumFacing side)
+    public boolean canCoverSide(TEBase TE, World world, BlockPos pos, int side)
     {
         return true;
     }

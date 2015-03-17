@@ -7,8 +7,6 @@ import com.carpentersblocks.util.handler.DyeHandler;
 import com.carpentersblocks.util.protection.PlayerPermissions;
 import com.carpentersblocks.util.registry.IconRegistry;
 import com.carpentersblocks.util.registry.ItemRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,6 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +58,9 @@ public class EntityCarpentersTile extends EntityBase {
     public EntityCarpentersTile(EntityPlayer entityPlayer, World world, BlockPos pos, EnumFacing dir, EnumFacing offset_side, boolean ignoreNeighbors)
     {
         super(world, entityPlayer.getUniqueID());
-        posX = x;
-        posY = y;
-        posZ = z;
+        posX = pos.getX();
+        posY = pos.getY();
+        posZ = pos.getZ();
         setDirection(dir);
         setBoundingBox();
 
@@ -69,41 +69,41 @@ public class EntityCarpentersTile extends EntityBase {
             List<EntityCarpentersTile> list = new ArrayList<EntityCarpentersTile>();
             double factor = 0.2D;
 
-            boundingBox.contract(0.1D, 0.1D, 0.1D);
+            this.setEntityBoundingBox(this.getBoundingBox().contract(0.1D, 0.1D, 0.1D));
 
             switch (offset_side) {
                 case DOWN:
-                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.offset(0.0D, -factor, 0.0D));
+                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().offset(0.0D, -factor, 0.0D));
                     break;
                 case UP:
-                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.offset(0.0D, factor, 0.0D));
+                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().offset(0.0D, factor, 0.0D));
                     break;
                 case NORTH:
-                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.offset(0.0D, 0.0D, -factor));
+                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().offset(0.0D, 0.0D, -factor));
                     break;
                 case SOUTH:
-                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.offset(0.0D, 0.0D, factor));
+                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().offset(0.0D, 0.0D, factor));
                     break;
                 case WEST:
-                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.offset(-factor, 0.0D, 0.0D));
+                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().offset(-factor, 0.0D, 0.0D));
                     break;
                 case EAST:
-                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.offset(factor, 0.0D, 0.0D));
+                    list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().offset(factor, 0.0D, 0.0D));
                     break;
                 default:
 
                     switch (dir) {
                         case DOWN:
                         case UP:
-                            list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.expand(factor, 0.0D, factor));
+                            list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().expand(factor, 0.0D, factor));
                             break;
                         case NORTH:
                         case SOUTH:
-                            list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.expand(factor, factor, 0.0D));
+                            list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().expand(factor, factor, 0.0D));
                             break;
                         case WEST:
                         case EAST:
-                            list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, boundingBox.expand(0.0D, factor, factor));
+                            list = world.getEntitiesWithinAABB(EntityCarpentersTile.class, this.getBoundingBox().expand(0.0D, factor, factor));
                             break;
                         default: {}
                     }
@@ -114,7 +114,7 @@ public class EntityCarpentersTile extends EntityBase {
             {
                 /* Skip checking diagonal tiles when tile is placed in center. */
 
-                if (offset_side.equals(EnumFacing.UNKNOWN))
+                if (!(offset_side.getAxis().isHorizontal() || offset_side.getAxis().isVertical()))
                 {
                     switch (dir) {
                         case DOWN:
@@ -181,7 +181,7 @@ public class EntityCarpentersTile extends EntityBase {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double posX, double posY, double posZ, float yaw, float pitch, int par9) { }
+    public void setPositionAndRotation2(double posX, double posY, double posZ, float yaw, float pitch, int rotationInc, boolean flag) { }
 
     /**
      * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
@@ -190,7 +190,7 @@ public class EntityCarpentersTile extends EntityBase {
     public void mountEntity(Entity entity) { }
 
     @Override
-    protected boolean func_145771_j(double x, double y, double z)
+    protected boolean pushOutOfBlocks(double x, double y, double z)
     {
         return false;
     }
@@ -202,12 +202,14 @@ public class EntityCarpentersTile extends EntityBase {
 
     public void playTileSound()
     {
-        BlockProperties.playBlockSound(worldObj, new ItemStack(Blocks.hardened_clay), (int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ), true);
+        BlockPos pos = new BlockPos((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ));
+        BlockProperties.playBlockSound(worldObj, new ItemStack(Blocks.hardened_clay), pos, true);
     }
 
     public void playDyeSound()
     {
-        BlockProperties.playBlockSound(worldObj, new ItemStack(Blocks.sand), (int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ), true);
+        BlockPos pos = new BlockPos((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ));
+        BlockProperties.playBlockSound(worldObj, new ItemStack(Blocks.sand), pos, true);
     }
 
     public double[] getBounds()
@@ -218,12 +220,12 @@ public class EntityCarpentersTile extends EntityBase {
     public void setBoundingBox()
     {
         double bounds[] = getBounds();
-        boundingBox.setBounds(posX + bounds[0], posY + bounds[1], posZ + bounds[2], posX + bounds[3], posY + bounds[4], posZ + bounds[5]);
+        this.setEntityBoundingBox(new AxisAlignedBB(posX + bounds[0], posY + bounds[1], posZ + bounds[2], posX + bounds[3], posY + bounds[4], posZ + bounds[5]));
     }
 
     public EnumFacing getDirection()
     {
-        return EnumFacing.getOrientation(getDataWatcher().getWatchableObjectInt(ID_DIRECTION));
+        return EnumFacing.getFront(getDataWatcher().getWatchableObjectInt(ID_DIRECTION));
     }
 
     public void setDirection(EnumFacing dir)
@@ -272,14 +274,14 @@ public class EntityCarpentersTile extends EntityBase {
         return getDataWatcher().getWatchableObjectString(ID_DESIGN);
     }
 
-    public IIcon getIcon()
-    {
-        if (hasDesign()) {
-            return IconRegistry.icon_design_tile.get(DesignHandler.listTile.indexOf(getDesign()));
-        } else {
-            return IconRegistry.icon_tile_blank;
-        }
-    }
+//    public IIcon getIcon()
+//    {
+//        if (hasDesign()) {
+//            return IconRegistry.icon_design_tile.get(DesignHandler.listTile.indexOf(getDesign()));
+//        } else {
+//            return IconRegistry.icon_tile_blank;
+//        }
+//    }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
@@ -397,11 +399,12 @@ public class EntityCarpentersTile extends EntityBase {
     {
         EnumFacing dir = getDirection();
 
-        int x_offset = MathHelper.floor_double(posX) - dir.offsetX;
-        int y_offset = MathHelper.floor_double(posY) - dir.offsetY;
-        int z_offset = MathHelper.floor_double(posZ) - dir.offsetZ;
+        int x_offset = MathHelper.floor_double(posX) - dir.getFrontOffsetX();
+        int y_offset = MathHelper.floor_double(posY) - dir.getFrontOffsetY();
+        int z_offset = MathHelper.floor_double(posZ) - dir.getFrontOffsetZ();
+        BlockPos pos = new BlockPos(x_offset, y_offset, z_offset);
 
-        return worldObj.getBlock(x_offset, y_offset, z_offset).isSideSolid(worldObj, x_offset, y_offset, z_offset, dir);
+        return worldObj.getBlockState(pos).getBlock().isSideSolid(worldObj, pos, dir);
     }
 
     /**
@@ -416,7 +419,9 @@ public class EntityCarpentersTile extends EntityBase {
 
             boolean dropItem = false;
 
-            if (entity instanceof EntityPlayer && PlayerPermissions.canPlayerEdit(this, MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ), (EntityPlayer) entity)) {
+            BlockPos pos = new BlockPos(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
+
+            if (entity instanceof EntityPlayer && PlayerPermissions.canPlayerEdit(this, pos, (EntityPlayer) entity)) {
 
                 EntityPlayer entityPlayer = (EntityPlayer) entity;
                 ItemStack itemStack = entityPlayer.getHeldItem();
@@ -462,11 +467,12 @@ public class EntityCarpentersTile extends EntityBase {
      */
     public boolean interactFirst(EntityPlayer entityPlayer)
     {
+        BlockPos pos = new BlockPos((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ));
         if (worldObj.isRemote) {
 
             return true;
 
-        } else if (PlayerPermissions.canPlayerEdit(this, (int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ), entityPlayer)) {
+        } else if (PlayerPermissions.canPlayerEdit(this, pos, entityPlayer)) {
 
             ItemStack itemStack = entityPlayer.getHeldItem();
 
@@ -556,7 +562,7 @@ public class EntityCarpentersTile extends EntityBase {
     @Override
     public AxisAlignedBB getBoundingBox()
     {
-        return boundingBox;
+        return super.getEntityBoundingBox();
     }
 
     @Override

@@ -1,11 +1,11 @@
 package com.carpentersblocks.util.handler;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
 
 public class ChatHandler {
 

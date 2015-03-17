@@ -11,12 +11,8 @@ import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.BlockProperties;
 import com.carpentersblocks.util.handler.OverlayHandler.Overlay;
 import com.carpentersblocks.util.registry.BlockRegistry;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.Entity;
@@ -26,17 +22,19 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.MouseEvent;
-import net.minecraftforge.client.event.sound.PlaySoundEvent17;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EventHandler {
 
@@ -45,7 +43,7 @@ public class EventHandler {
     public static float hitZ;
 
     /** Stores face for onBlockClicked(). */
-    public static int eventFace;
+    public static EnumFacing eventFace;
 
     /** Stores entity that hit block. */
     public static EntityPlayer eventEntityPlayer;
@@ -72,9 +70,9 @@ public class EventHandler {
      */
     public void onPlayerInteractEvent(PlayerInteractEvent event)
     {
-        Block block = event.entity.worldObj.getBlock(event.x, event.y, event.z);
+        IBlockState state = event.entity.worldObj.getBlockState(event.pos);
 
-        if (block instanceof BlockCoverable) {
+        if (state.getBlock() instanceof BlockCoverable) {
 
             eventFace = event.face;
             eventEntityPlayer = event.entityPlayer;
@@ -84,9 +82,9 @@ public class EventHandler {
             MovingObjectPosition object = getMovingObjectPositionFromPlayer(eventEntityPlayer.worldObj, eventEntityPlayer);
 
             if (object != null) {
-                hitX = (float)object.hitVec.xCoord - event.x;
-                hitY = (float)object.hitVec.yCoord - event.y;
-                hitZ = (float)object.hitVec.zCoord - event.z;
+                hitX = (float)object.hitVec.xCoord - event.pos.getX();
+                hitY = (float)object.hitVec.yCoord - event.pos.getY();
+                hitZ = (float)object.hitVec.zCoord - event.pos.getZ();
             } else {
                 hitX = hitY = hitZ = 1.0F;
             }
@@ -104,7 +102,7 @@ public class EventHandler {
                      */
 
                     if (toolEquipped && eventEntityPlayer.capabilities.isCreativeMode) {
-                        block.onBlockClicked(eventEntityPlayer.worldObj, event.x, event.y, event.z, eventEntityPlayer);
+                        state.getBlock().onBlockClicked(eventEntityPlayer.worldObj, event.pos, eventEntityPlayer);
                     }
 
                     break;
@@ -125,7 +123,7 @@ public class EventHandler {
                         if (!(itemStack != null && itemStack.getItem() instanceof ItemBlock && !BlockProperties.isOverlay(itemStack))) {
                             event.setCanceled(true); // Normally prevents server event, but sometimes it doesn't, so check below
                             if (event.entity.worldObj.isRemote) {
-                                PacketHandler.sendPacketToServer(new PacketActivateBlock(event.x, event.y, event.z, event.face));
+                                PacketHandler.sendPacketToServer(new PacketActivateBlock(event.pos, event.face));
                             }
                         }
                     }
@@ -151,7 +149,7 @@ public class EventHandler {
 
             if (entityPlayer.isSneaking()) {
                 ItemStack itemStack = entityPlayer.getHeldItem();
-                if (itemStack != null && itemStack.getItem() instanceof ItemBlock && BlockProperties.toBlock(itemStack).equals(BlockRegistry.blockCarpentersSlope)) {
+                if (itemStack != null && itemStack.getItem() instanceof ItemBlock && BlockProperties.toBlockState(itemStack).getBlock().equals(BlockRegistry.blockCarpentersSlope)) {
                     if (event.dwheel != 0) {
                         PacketHandler.sendPacketToServer(new PacketSlopeSelect(entityPlayer.inventory.currentItem, event.dwheel > 0));
                     }
@@ -185,7 +183,7 @@ public class EventHandler {
             reachDist = ((EntityPlayerMP)entityPlayer).theItemInWorldManager.getBlockReachDistance();
         }
 
-        Vec3 vec1 = Vec3.createVectorHelper(xPos, yPos, zPos);
+        Vec3 vec1 = new Vec3(xPos, yPos, zPos);
         Vec3 vec2 = vec1.addVector(xComp * reachDist, yComp * reachDist, zComp * reachDist);
 
         return world.rayTraceBlocks(vec1, vec2);
@@ -198,12 +196,13 @@ public class EventHandler {
         World world = entity.worldObj;
 
         int x = MathHelper.floor_double(entity.posX);
-        int y = MathHelper.floor_double(entity.posY - 0.20000000298023224D - entity.yOffset);
+        int y = MathHelper.floor_double(entity.posY - 0.20000000298023224D - entity.getYOffset());
         int z = MathHelper.floor_double(entity.posZ);
+        BlockPos pos = new BlockPos(x, y, z);
 
-        if (world.getBlock(x, y, z) instanceof BlockCoverable) {
+        if (world.getBlockState(pos).getBlock() instanceof BlockCoverable) {
 
-            TEBase TE = (TEBase) world.getTileEntity(x, y, z);
+            TEBase TE = (TEBase) world.getTileEntity(pos);
             int effectiveSide = TE.hasAttribute(TE.ATTR_COVER[1]) ? 1 : 6;
             ItemStack itemStack = BlockProperties.getCover(TE, effectiveSide);
 
@@ -222,10 +221,10 @@ public class EventHandler {
 
             /* Adjust block slipperiness according to cover. */
 
-            if (BlockProperties.toBlock(itemStack) instanceof BlockCoverable) {
+            if (BlockProperties.toBlockState(itemStack).getBlock() instanceof BlockCoverable) {
                 TE.getBlockType().slipperiness = Blocks.dirt.slipperiness;
             } else {
-                TE.getBlockType().slipperiness = BlockProperties.toBlock(itemStack).slipperiness;
+                TE.getBlockType().slipperiness = BlockProperties.toBlockState(itemStack).getBlock().slipperiness;
             }
 
         }
@@ -251,7 +250,7 @@ public class EventHandler {
     private TEBase getApproximateSoundOrigin(World world, BlockPos pos)
     {
         // Try origin first
-        TileEntity TE = world.getTileEntity(x, y, z);
+        TileEntity TE = world.getTileEntity(pos);
         if (TE != null && TE instanceof TEBase)
         {
             return (TEBase) TE;
@@ -259,7 +258,7 @@ public class EventHandler {
         else
         {
             // Try y-offset -1
-            TileEntity TE_YN = world.getTileEntity(x, y - 1, z);
+            TileEntity TE_YN = world.getTileEntity(pos.add(0, -1, 0));
             if (TE_YN != null && TE_YN instanceof TEBase)
             {
                 return (TEBase) TE_YN;
@@ -271,7 +270,7 @@ public class EventHandler {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onPlaySoundEvent(PlaySoundEvent17 event)
+    public void onPlaySoundEvent(PlaySoundEvent event)
     {
         if (event != null && event.name != null && event.name.contains(CarpentersBlocks.MODID))
         {
@@ -281,20 +280,21 @@ public class EventHandler {
                 int x = MathHelper.floor_double(event.sound.getXPosF());
                 int y = MathHelper.floor_double(event.sound.getYPosF());
                 int z = MathHelper.floor_double(event.sound.getZPosF());
+                BlockPos pos = new BlockPos(x, y, z);
 
                 // We'll set a default block type to be safe
-                Block block = Blocks.planks;
+                IBlockState state = Blocks.planks.getDefaultState();
 
                 // Grab approximate origin, and gather accurate block type
-                TEBase TE = getApproximateSoundOrigin(world, x, y, z);
+                TEBase TE = getApproximateSoundOrigin(world, pos);
                 if (TE != null && TE.hasAttribute(TE.ATTR_COVER[6])) {
-                    block = BlockProperties.toBlock(BlockProperties.getCoverSafe(TE, 6));
+                    state = BlockProperties.toBlockState(BlockProperties.getCoverSafe(TE, 6));
                 }
 
                 if (event.name.startsWith("step.")) {
-                    event.result = new PositionedSoundRecord(new ResourceLocation(block.stepSound.getStepResourcePath()), block.stepSound.getVolume() * 0.15F, block.stepSound.getPitch(), x + 0.5F, y + 0.5F, z + 0.5F);
+                    event.result = new PositionedSoundRecord(new ResourceLocation(state.getBlock().stepSound.soundName), state.getBlock().stepSound.getVolume() * 0.15F, state.getBlock().stepSound.frequency, x + 0.5F, y + 0.5F, z + 0.5F);
                 } else { // "dig." usually
-                    event.result = new PositionedSoundRecord(new ResourceLocation(block.stepSound.getBreakSound()), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F, x + 0.5F, y + 0.5F, z + 0.5F);
+                    event.result = new PositionedSoundRecord(new ResourceLocation(state.getBlock().stepSound.getBreakSound()), (state.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, state.getBlock().stepSound.frequency * 0.8F, x + 0.5F, y + 0.5F, z + 0.5F);
                 }
             }
         }
@@ -312,20 +312,21 @@ public class EventHandler {
         if (event != null && event.name != null && event.name.contains(CarpentersBlocks.MODID))
         {
             int x = MathHelper.floor_double(event.entity.posX);
-            int y = MathHelper.floor_double(event.entity.posY - 0.20000000298023224D - event.entity.yOffset);
+            int y = MathHelper.floor_double(event.entity.posY - 0.20000000298023224D - event.entity.getYOffset());
             int z = MathHelper.floor_double(event.entity.posZ);
+            BlockPos pos = new BlockPos(x, y, z);
 
             // Give SoundType a valid resource by default
-            event.name = Blocks.planks.stepSound.getStepResourcePath();
+            event.name = Blocks.planks.stepSound.soundName;
 
             // If covered, change resource to cover's SoundType
-            TEBase TE = (TEBase) event.entity.worldObj.getTileEntity(x, y, z);
+            TEBase TE = (TEBase) event.entity.worldObj.getTileEntity(pos);
             if (TE != null)
             {
-                Block cover = BlockProperties.toBlock(BlockProperties.getCoverSafe(TE, 6));
-                if (!(cover instanceof BlockCoverable))
+                IBlockState coverstate = BlockProperties.toBlockState(BlockProperties.getCoverSafe(TE, 6));
+                if (!(coverstate.getBlock() instanceof BlockCoverable))
                 {
-                    event.name = cover.stepSound.getStepResourcePath();
+                    event.name = coverstate.getBlock().stepSound.soundName;
                 }
             }
         }

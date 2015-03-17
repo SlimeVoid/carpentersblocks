@@ -337,7 +337,7 @@ public abstract class BlockCoverable extends BlockContainer {
             return;
         }
 
-        int effectiveSide = TE.hasAttribute(TE.ATTR_COVER[EventHandler.eventFace]) ? EventHandler.eventFace : 6;
+        int effectiveSide = TE.hasAttribute(TE.ATTR_COVER[EventHandler.eventFace.getIndex()]) ? EventHandler.eventFace.getIndex() : 6;
         Item item = itemStack.getItem();
 
         if (item instanceof ICarpentersHammer && ((ICarpentersHammer)item).canUseHammer(world, entityPlayer)) {
@@ -347,7 +347,7 @@ public abstract class BlockCoverable extends BlockContainer {
 
             if (!actionResult.altered) {
                 if (entityPlayer.isSneaking()) {
-                    popAttribute(TE, effectiveSide);
+                    popAttribute(TE, EnumFacing.getFront(effectiveSide));
                 } else {
                     onHammerLeftClick(TE, entityPlayer);
                 }
@@ -362,7 +362,7 @@ public abstract class BlockCoverable extends BlockContainer {
             if (entityPlayer.isSneaking() && TE.hasChiselDesign(effectiveSide)) {
                 TE.removeChiselDesign(effectiveSide);
             } else if (TE.hasAttribute(TE.ATTR_COVER[effectiveSide])) {
-                onChiselClick(TE, effectiveSide, true);
+                onChiselClick(TE, EnumFacing.getFront(effectiveSide), true);
             }
 
         }
@@ -374,8 +374,9 @@ public abstract class BlockCoverable extends BlockContainer {
      * @param TE
      * @param side
      */
-    private void popAttribute(TEBase TE, EnumFacing side)
+    private void popAttribute(TEBase TE, EnumFacing facing)
     {
+        int side = facing.getIndex();
         if (TE.hasAttribute(TE.ATTR_ILLUMINATOR)) {
             TE.createBlockDropEvent(TE.ATTR_ILLUMINATOR);
         } else if (TE.hasAttribute(TE.ATTR_OVERLAY[side])) {
@@ -437,7 +438,7 @@ public abstract class BlockCoverable extends BlockContainer {
                         } else if (ItemRegistry.enableChisel && itemStack.getItem() instanceof ICarpentersChisel && ((ICarpentersChisel)itemStack.getItem()).canUseChisel(world, entityPlayer)) {
 
                             if (TE.hasAttribute(TE.ATTR_COVER[effectiveSide])) {
-                                if (onChiselClick(TE, effectiveSide, false)) {
+                                if (onChiselClick(TE, EnumFacing.getFront(effectiveSide), false)) {
                                     actionResult.setAltered();
                                 }
                             }
@@ -529,7 +530,7 @@ public abstract class BlockCoverable extends BlockContainer {
      */
     public boolean onChiselClick(TEBase TE, EnumFacing side, boolean leftClick)
     {
-        String design = TE.getChiselDesign(side);
+        String design = TE.getChiselDesign(side.getIndex());
         String designAdj = "";
 
         if (design.equals("")) {
@@ -543,8 +544,8 @@ public abstract class BlockCoverable extends BlockContainer {
             for (TEBase TE_current : TE_list) {
                 if (TE_current != null) {
                     TE_current.getBlockType();
-                    if (TE_current.hasChiselDesign(side)) {
-                        design = TE_current.getChiselDesign(side);
+                    if (TE_current.hasChiselDesign(side.getIndex())) {
+                        design = TE_current.getChiselDesign(side.getIndex());
                         designAdj = design;
                     }
                 }
@@ -557,7 +558,7 @@ public abstract class BlockCoverable extends BlockContainer {
         }
 
         if (!design.equals("")) {
-            TE.setChiselDesign(side, design);
+            TE.setChiselDesign(side.getIndex(), design);
         }
 
         return true;
@@ -575,7 +576,7 @@ public abstract class BlockCoverable extends BlockContainer {
         if (!world.isRemote) {
             TEBase TE = getTileEntity(world, pos);
             if (TE != null) {
-                for (EnumFacing side = 0; side < 6; ++side) {
+                for (int side = 0; side < 6; ++side) {
                     if (TE.hasAttribute(TE.ATTR_COVER[side])) {
                         if (!canCoverSide(TE, world, pos, side)) {
                             TE.removeAttributes(side);
@@ -817,7 +818,7 @@ public abstract class BlockCoverable extends BlockContainer {
             if (FeatureRegistry.enableIllumination && TE.hasAttribute(TE.ATTR_ILLUMINATOR)) {
                 lightValue = 15;
             } else {
-                for (EnumFacing side = 0; side < 7; ++side) {
+                for (int side = 0; side < 7; ++side) {
                     if (TE.hasAttribute(TE.ATTR_COVER[side])) {
                         ItemStack itemStack = BlockProperties.getCover(TE, side);
                         int tempLight = getLightValue(TE, BlockProperties.toBlockState(itemStack).getBlock(), itemStack.getItemDamage());
@@ -1169,7 +1170,7 @@ public abstract class BlockCoverable extends BlockContainer {
 
             List<IBlockState> blocks = new ArrayList<IBlockState>();
 
-            for (EnumFacing side1 = 1; side1 < 7; side1 += 5) {
+            for (int side1 = 1; side1 < 7; side1 += 5) {
                 if (TE.hasAttribute(TE.ATTR_COVER[side1])) {
                     blocks.add(BlockProperties.toBlockState(BlockProperties.getCover(TE, side1)));
                 }
@@ -1480,7 +1481,7 @@ public abstract class BlockCoverable extends BlockContainer {
     /**
      * Returns whether side of block supports a cover.
      */
-    protected boolean canCoverSide(TEBase TE, World world, BlockPos pos, EnumFacing side)
+    protected boolean canCoverSide(TEBase TE, World world, BlockPos pos, int side)
     {
         return side == 6;
     }

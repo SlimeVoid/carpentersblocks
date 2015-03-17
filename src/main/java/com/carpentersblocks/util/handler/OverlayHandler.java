@@ -3,14 +3,12 @@ package com.carpentersblocks.util.handler;
 import com.carpentersblocks.util.BlockProperties;
 import com.carpentersblocks.util.registry.FeatureRegistry;
 import com.carpentersblocks.util.registry.IconRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,47 +100,48 @@ public class OverlayHandler {
         return object == null ? Overlay.NONE : (Overlay) object;
     }
 
-    @SideOnly(Side.CLIENT)
-    /**
-     * Returns icon for overlay side.
-     *
-     * Returns null if there is no icon to return.
-     */
-    public static IIcon getOverlayIcon(Overlay overlay, int side)
-    {
-        Block block = BlockProperties.toBlock(overlay.getItemStack());
-
-        switch (overlay) {
-            case GRASS:
-            case SNOW:
-            case HAY:
-            case MYCELIUM:
-                switch (side) {
-                    case 0:
-                        return null;
-                    case 1:
-                        return block.getBlockTextureFromSide(1);
-                    default:
-                        switch (overlay) {
-                            case GRASS:
-                                return RenderBlocks.fancyGrass ? BlockGrass.getIconSideOverlay() : IconRegistry.icon_overlay_fast_grass_side;
-                            case SNOW:
-                                return IconRegistry.icon_overlay_snow_side;
-                            case HAY:
-                                return IconRegistry.icon_overlay_hay_side;
-                            case MYCELIUM:
-                                return IconRegistry.icon_overlay_mycelium_side;
-                            default:
-                                return null;
-                        }
-                }
-            case WEB:
-            case VINE:
-                return block.getBlockTextureFromSide(side);
-            default: {
-                return null;
-            }
-        }
-    }
+//    TODO:: Icon Mapping
+//    @SideOnly(Side.CLIENT)
+//    /**
+//     * Returns icon for overlay side.
+//     *
+//     * Returns null if there is no icon to return.
+//     */
+//    public static IIcon getOverlayIcon(Overlay overlay, int side)
+//    {
+//        Block block = BlockProperties.toBlock(overlay.getItemStack());
+//
+//        switch (overlay) {
+//            case GRASS:
+//            case SNOW:
+//            case HAY:
+//            case MYCELIUM:
+//                switch (side) {
+//                    case 0:
+//                        return null;
+//                    case 1:
+//                        return block.getBlockTextureFromSide(1);
+//                    default:
+//                        switch (overlay) {
+//                            case GRASS:
+//                                return RenderBlocks.fancyGrass ? BlockGrass.getIconSideOverlay() : IconRegistry.icon_overlay_fast_grass_side;
+//                            case SNOW:
+//                                return IconRegistry.icon_overlay_snow_side;
+//                            case HAY:
+//                                return IconRegistry.icon_overlay_hay_side;
+//                            case MYCELIUM:
+//                                return IconRegistry.icon_overlay_mycelium_side;
+//                            default:
+//                                return null;
+//                        }
+//                }
+//            case WEB:
+//            case VINE:
+//                return block.getBlockTextureFromSide(side);
+//            default: {
+//                return null;
+//            }
+//        }
+//    }
 
 }
