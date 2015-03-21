@@ -185,7 +185,8 @@ public class BlockProperties {
 
             IBlockState block = toBlockState(itemStack);
 
-            return block.getBlock() instanceof BlockSlab ||
+            return block.getBlock().isSolidFullCube() ||
+                    block.getBlock() instanceof BlockSlab ||
                    block.getBlock() instanceof BlockPane ||
                    block.getBlock() instanceof BlockBreakable ||
                    FeatureRegistry.coverExceptions.contains(itemStack.getDisplayName()) ||

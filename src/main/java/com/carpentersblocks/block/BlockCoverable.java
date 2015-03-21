@@ -1031,14 +1031,14 @@ public abstract class BlockCoverable extends BlockContainer {
     /**
      * Spawns EntityItem in the world for the given ItemStack if the world is not remote.
      */
-    private void dropBlock(World world, BlockPos pos, IBlockState state, int fortune)
+    private void dropBlock(World world, BlockPos pos, IBlockState state, float chance, int fortune)
     {
         // Clear metadata for Carpenter's blocks
         if (state.getBlock() instanceof BlockCoverable) {
             state = state.getBlock().getDefaultState();
         }
 
-        super.dropBlockAsItem(world, pos, state, fortune);
+        super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
     }
 
     @Override
@@ -1055,7 +1055,7 @@ public abstract class BlockCoverable extends BlockContainer {
         if (enableDrops) {
             super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
         } else {
-            dropBlock(world, pos, state, fortune);
+            dropBlock(world, pos, state, chance, fortune);
         }
     }
 
@@ -1068,7 +1068,7 @@ public abstract class BlockCoverable extends BlockContainer {
         // Drop attributes
         enableDrops = true;
         for (ItemStack itemStack : getDrops(world, pos, METADATA_DROP_ATTR_ONLY, 0)) {
-            dropBlock(world, pos, state, 0);
+            dropBlock(world, pos, state, 1.0F, 0);
         }
         enableDrops = false;
 
