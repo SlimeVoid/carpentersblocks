@@ -670,7 +670,7 @@ public class BlockHandlerBase {
      * Returns a integer with hex for 0xrrggbb for block.  Color is most
      * commonly different for {@link Blocks#grass}
      * <p>
-     * If using our custom render helpers, be sure to use {@link #applyAnaglyph(float[])}.
+     * If using our custom render helper, be sure to use {@link #applyAnaglyph(float[])}.
      *
      * @param itemStack  the cover {@link ItemStack}
      * @param block  the {@link Block} inside the {@link ItemStack}

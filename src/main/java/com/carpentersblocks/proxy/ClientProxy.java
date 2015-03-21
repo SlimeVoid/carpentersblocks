@@ -31,7 +31,7 @@ public class ClientProxy extends CommonProxy {
 
         /* Register entity renderers */
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityCarpentersTile.class, new RenderCarpentersTile());
+        RenderingRegistry.registerEntityRenderingHandler(EntityCarpentersTile.class, new RenderCarpentersTile(FMLClientHandler.instance().getClient().getRenderManager()));
     }
 
 }

@@ -372,7 +372,7 @@ public abstract class BlockCoverable extends BlockContainer {
      * Pops attribute in hard-coded order.
      *
      * @param TE
-     * @param side
+     * @param facing
      */
     private void popAttribute(TEBase TE, EnumFacing facing)
     {
@@ -742,7 +742,8 @@ public abstract class BlockCoverable extends BlockContainer {
                     break;
             }
 
-            ParticleHelper.addHitEffect(TE, target, xOffset, yOffset, zOffset, itemStack, effectRenderer);
+            // TODO:: Particles
+            // ParticleHelper.addHitEffect(TE, target, xOffset, yOffset, zOffset, itemStack, effectRenderer);
 
             return true;
 
@@ -775,7 +776,8 @@ public abstract class BlockCoverable extends BlockContainer {
 
             if (entityPlayer != null) {
                 if (!suppressDestroyBlock(entityPlayer)) {
-                    ParticleHelper.addDestroyEffect(world, pos, BlockProperties.getCover(TE, 6), effectRenderer);
+                    // TODO:: Particles
+                    // ParticleHelper.addDestroyEffect(world, pos, BlockProperties.getCover(TE, 6), effectRenderer);
                 } else {
                     return true;
                 }
@@ -1285,7 +1287,7 @@ public abstract class BlockCoverable extends BlockContainer {
             }
         }
 
-        return super.colorMultiplier(blockAccess, pos);
+        return super.colorMultiplier(blockAccess, pos, renderPass);
     }
 
     @Override

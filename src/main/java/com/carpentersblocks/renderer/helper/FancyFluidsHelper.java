@@ -78,9 +78,10 @@ public class FancyFluidsHelper {
             {
                 if (!state.getBlock().hasTileEntity(state))
                 {
-                    LightingHelper lightingHelper = new LightingHelper(renderBlocks);
-                    lightingHelper.setupLightingYPos(itemStack, pos);
-                    lightingHelper.setupColor(pos, 1, 16777215, null);
+                    // TODO:: Lighting Helper
+                    //LightingHelper lightingHelper = new LightingHelper(renderBlocks);
+                    //lightingHelper.setupLightingYPos(itemStack, pos);
+                    //lightingHelper.setupColor(pos, 1, 16777215, null);
                     double fluidHeight = (state.getBlock() instanceof BlockLiquid ? 1.0D - 1.0F / 9.0F : 0.875F) - 0.0010000000474974513D;
                     //renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, fluidHeight, 1.0D);
                     //RenderHelper.renderFaceYPos(renderBlocks, pos, state.getBlock().getIcon(1, metadata));

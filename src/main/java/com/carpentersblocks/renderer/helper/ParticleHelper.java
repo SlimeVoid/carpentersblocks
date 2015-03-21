@@ -1,9 +1,9 @@
 package com.carpentersblocks.renderer.helper;
 
-import com.carpentersblocks.data.Torch;
+//import com.carpentersblocks.data.Torch;
 import com.carpentersblocks.renderer.entity.CarpentersDiggingFX;
 import com.carpentersblocks.tileentity.TEBase;
-import com.carpentersblocks.tileentity.TECarpentersTorch;
+//import com.carpentersblocks.tileentity.TECarpentersTorch;
 import com.carpentersblocks.util.BlockProperties;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.EffectRenderer;
@@ -23,11 +23,11 @@ public class ParticleHelper {
     /**
      * Spawns big smoke particle when torch lowers state.
      */
-    public static void spawnTorchBigSmoke(TECarpentersTorch TE)
-    {
-        double[] headCoords = new Torch().getHeadCoordinates(TE);
-        TE.getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, headCoords[0], headCoords[1], headCoords[2], 0.0D, 0.0D, 0.0D);
-    }
+//    public static void spawnTorchBigSmoke(TECarpentersTorch TE)
+//    {
+//        double[] headCoords = new Torch().getHeadCoordinates(TE);
+//        TE.getWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, headCoords[0], headCoords[1], headCoords[2], 0.0D, 0.0D, 0.0D);
+//    }
 
     /**
      * Spawns a particle at the base of an entity.
