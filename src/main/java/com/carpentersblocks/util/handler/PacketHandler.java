@@ -4,7 +4,7 @@ import com.carpentersblocks.CarpentersBlocks;
 import com.carpentersblocks.network.ICarpentersPacket;
 import com.carpentersblocks.network.PacketActivateBlock;
 import com.carpentersblocks.network.PacketEnrichPlant;
-import com.carpentersblocks.network.PacketSlopeSelect;
+//import com.carpentersblocks.network.PacketSlopeSelect;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -26,7 +26,7 @@ public class PacketHandler {
     static {
         packetCarrier = new ArrayList<Class>();
         packetCarrier.add(PacketEnrichPlant.class);
-        packetCarrier.add(PacketSlopeSelect.class);
+        //packetCarrier.add(PacketSlopeSelect.class);
         packetCarrier.add(PacketActivateBlock.class);
     }
 

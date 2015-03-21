@@ -44,9 +44,10 @@ public class CommonProxy {
         }
 
         /* Register tile entities */
+        // TODO:: Additional Carpenters Blocks
 
-        GameRegistry.registerTileEntity(                    TEBase.class,          "TileEntityCarpentersSlope"); // Compatibility mapping
-        GameRegistry.registerTileEntity(TEBase.class, "TileEntityCarpentersBed"); // Compatibility mapping
+        //GameRegistry.registerTileEntity(                    TEBase.class,          "TileEntityCarpentersSlope"); // Compatibility mapping
+        //GameRegistry.registerTileEntity(TEBase.class, "TileEntityCarpentersBed"); // Compatibility mapping
         GameRegistry.registerTileEntity(                    TEBase.class,          "TileEntityCarpentersBlock");
         //GameRegistry.registerTileEntity(TECarpentersDaylightSensor.class,            "TileEntityCarpentersExt"); // Compatibility mapping
         //GameRegistry.registerTileEntity(TECarpentersDaylightSensor.class, "TileEntityCarpentersDaylightSensor");

@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class PacketEnrichPlant extends TilePacket {
      */
     public PacketEnrichPlant(BlockPos pos, int hexColor)
     {
-        super(x, y, z);
+        super(pos);
         this.hexColor = hexColor;
     }
 
@@ -33,7 +34,7 @@ public class PacketEnrichPlant extends TilePacket {
         World world = entityPlayer.worldObj;
         hexColor = bbis.readInt();
 
-        TEBase TE = (TEBase) world.getTileEntity(x, y, z);
+        TEBase TE = (TEBase) world.getTileEntity(this.pos);
 
         if (TE != null) {
             if (hexColor != 16777215 && !TE.hasAttribute(TE.ATTR_FERTILIZER)) {

@@ -2,14 +2,14 @@ package com.carpentersblocks.item;
 
 import com.carpentersblocks.CarpentersBlocks;
 import com.carpentersblocks.entity.item.EntityCarpentersTile;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static net.minecraft.util.EnumFacing.*;
 
@@ -20,19 +20,19 @@ public class ItemCarpentersTile extends Item {
         setCreativeTab(CarpentersBlocks.creativeTab);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        itemIcon = iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + "tile");
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public void registerIcons(IIconRegister iconRegister)
+//    {
+//        itemIcon = iconRegister.registerIcon(CarpentersBlocks.MODID + ":" + "tile");
+//    }
 
     /**
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, BlockPos pos, int side, float hitX, float hitY, float hitZ)
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (world.isRemote) {
 
@@ -40,20 +40,20 @@ public class ItemCarpentersTile extends Item {
 
         } else {
 
-            EnumFacing dir = EnumFacing.getOrientation(side);
-            int x_offset = x + dir.offsetX;
-            int y_offset = y + dir.offsetY;
-            int z_offset = z + dir.offsetZ;
+            BlockPos offsetPos = pos.add(
+                    side.getFrontOffsetX(),
+                    side.getFrontOffsetY(),
+                    side.getFrontOffsetZ());
 
-            if (!entityPlayer.canPlayerEdit(x_offset, y_offset, z_offset, side, itemStack)) {
+            if (!entityPlayer.canPlayerEdit(offsetPos, side, itemStack)) {
 
                 return false;
 
             } else {
 
-                EnumFacing offset_side = getOffsetSide(EnumFacing.getOrientation(side), hitX, hitY, hitZ);
+                EnumFacing offset_side = getOffsetSide(side, hitX, hitY, hitZ);
 
-                EntityCarpentersTile entity = new EntityCarpentersTile(entityPlayer, world, x_offset, y_offset, z_offset, EnumFacing.getOrientation(side), offset_side, entityPlayer.isSneaking());
+                EntityCarpentersTile entity = new EntityCarpentersTile(entityPlayer, world, offsetPos, side, offset_side, entityPlayer.isSneaking());
 
                 if (entity != null && entity.onValidSurface()) {
                     world.spawnEntityInWorld(entity);
@@ -71,7 +71,7 @@ public class ItemCarpentersTile extends Item {
      */
     private EnumFacing getOffsetSide(EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        EnumFacing offset_side = UNKNOWN;
+        EnumFacing offset_side = NORTH;
 
         float ratio = 0.20F;
         float invert_ratio = 1.0F - ratio;

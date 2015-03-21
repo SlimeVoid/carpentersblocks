@@ -5,13 +5,12 @@ import com.carpentersblocks.api.ICarpentersChisel;
 import com.carpentersblocks.api.ICarpentersHammer;
 import com.carpentersblocks.block.BlockCoverable;
 import com.carpentersblocks.network.PacketActivateBlock;
-import com.carpentersblocks.network.PacketSlopeSelect;
+//import com.carpentersblocks.network.PacketSlopeSelect;
 import com.carpentersblocks.renderer.helper.ParticleHelper;
 import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.BlockProperties;
 import com.carpentersblocks.util.handler.OverlayHandler.Overlay;
 import com.carpentersblocks.util.registry.BlockRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -151,7 +150,7 @@ public class EventHandler {
                 ItemStack itemStack = entityPlayer.getHeldItem();
                 if (itemStack != null && itemStack.getItem() instanceof ItemBlock && BlockProperties.toBlockState(itemStack).getBlock().equals(BlockRegistry.blockCarpentersSlope)) {
                     if (event.dwheel != 0) {
-                        PacketHandler.sendPacketToServer(new PacketSlopeSelect(entityPlayer.inventory.currentItem, event.dwheel > 0));
+                        //PacketHandler.sendPacketToServer(new PacketSlopeSelect(entityPlayer.inventory.currentItem, event.dwheel > 0));
                     }
                     event.setCanceled(true);
                 }
@@ -242,9 +241,7 @@ public class EventHandler {
      * requiring a y offset of -1 to approximate the origin.
      *
      * @param  world the {@link World}
-     * @param  x the x coordinate
-     * @param  y the y coordinate
-     * @param  z the z coordinate
+     * @param  pos the {@link BlockPos}
      * @return an approximate {@link TEBase} used for producing a sound
      */
     private TEBase getApproximateSoundOrigin(World world, BlockPos pos)

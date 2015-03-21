@@ -6,10 +6,12 @@ import com.carpentersblocks.util.handler.ShadersHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IIcon;
 
 import static com.carpentersblocks.renderer.helper.VertexHelper.*;
@@ -17,7 +19,7 @@ import static com.carpentersblocks.renderer.helper.VertexHelper.*;
 @SideOnly(Side.CLIENT)
 public class LightingHelper {
 
-    public  RenderBlocks renderBlocks;
+    public  BlockRendererDispatcher renderBlocks;
     private boolean      hasLightnessOverride;
     private float        lightnessOverride;
     private boolean      hasBrightnessOverride;
@@ -39,7 +41,7 @@ public class LightingHelper {
      * @param  blockHandler the {@link BlockHandlerBase}
      * @return the {@link LightingHelper}
      */
-    public LightingHelper(RenderBlocks renderBlocks)
+    public LightingHelper(BlockRendererDispatcher renderBlocks)
     {
         this.renderBlocks = renderBlocks;
     }

@@ -2,6 +2,7 @@
 /*
 !.gitignore
 !build.gradle
+!gradle
 !LICENSE-carpentersblocks.txt
 !README.md
 !src/

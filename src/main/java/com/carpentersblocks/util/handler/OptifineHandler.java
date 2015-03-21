@@ -1,10 +1,11 @@
 package com.carpentersblocks.util.handler;
 
 import com.carpentersblocks.util.ModLogger;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Level;
 
 import java.lang.reflect.Method;
@@ -33,9 +34,9 @@ public class OptifineHandler {
 
     public static int getColorMultiplier(Block block, IBlockAccess blockAccess, BlockPos pos)
     {
-        int colorMultiplier = block.colorMultiplier(blockAccess, x, y, z);
+        int colorMultiplier = block.colorMultiplier(blockAccess, pos);
         try {
-            colorMultiplier = (Integer) getColorMultiplier.invoke(null, block, blockAccess, x, y, z);
+            colorMultiplier = (Integer) getColorMultiplier.invoke(null, block, blockAccess, pos);
         } catch (Exception e) {
             ModLogger.log(Level.WARN, "Block custom coloring failed, disabling Optifine integration: " + e.getMessage());
             enableOptifineIntegration = false;

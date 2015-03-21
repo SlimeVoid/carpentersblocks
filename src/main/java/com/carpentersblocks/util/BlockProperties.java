@@ -37,11 +37,10 @@ public class BlockProperties {
      * default blank icon.
      *
      * @param itemStack
-     * @param mask
      */
     public static void prepareItemStackForRendering(ItemStack itemStack)
     {
-        if (toBlock(itemStack) instanceof BlockCoverable) {
+        if (toBlockState(itemStack).getBlock() instanceof BlockCoverable) {
             itemStack.setItemDamage(itemStack.getItemDamage() | MASK_DEFAULT_ICON);
         }
     }
@@ -94,7 +93,7 @@ public class BlockProperties {
     {
         if (side == 1 && TE.hasAttribute(TE.ATTR_COVER[side])) {
 
-            Block block = toBlock(getCover(TE, side));
+            IBlockState block = toBlockState(getCover(TE, side));
 
             if (block.equals(Blocks.snow) || block.equals(Blocks.snow_layer)) {
                 return 0.125F;
@@ -112,10 +111,10 @@ public class BlockProperties {
      */
     public static boolean blockRotates(ItemStack itemStack)
     {
-        Block block = toBlock(itemStack);
+        IBlockState block = toBlockState(itemStack);
 
-        return block instanceof BlockQuartz ||
-               block instanceof BlockRotatedPillar;
+        return block.getBlock() instanceof BlockQuartz ||
+               block.getBlock() instanceof BlockRotatedPillar;
     }
 
     /**
@@ -129,7 +128,7 @@ public class BlockProperties {
             Block block;
 
             if (itemStack.getItem() instanceof ItemBlock) {
-                block = toBlock(itemStack);
+                block = toBlockState(itemStack).getBlock();
             } else {
                 block = Blocks.sand;
             }
@@ -154,14 +153,14 @@ public class BlockProperties {
     public static ItemStack getCover(TEBase TE, int side)
     {
         ItemStack itemStack = getCoverSafe(TE, side);
-        Block block = toBlock(itemStack);
+        IBlockState block = toBlockState(itemStack);
 
         // IWrappable blocks are assumed safe to return unaltered
-        if (block instanceof BlockCoverable || block instanceof IWrappableBlock) {
+        if (block.getBlock() instanceof BlockCoverable || block.getBlock() instanceof IWrappableBlock) {
             return itemStack;
         }
 
-        return block.hasTileEntity(itemStack.getItemDamage()) ? new ItemStack(Blocks.planks) : itemStack;
+        return block.getBlock().hasTileEntity(block) ? new ItemStack(Blocks.planks) : itemStack;
     }
 
     /**
@@ -184,12 +183,11 @@ public class BlockProperties {
     {
         if (itemStack.getItem() instanceof ItemBlock && !isOverlay(itemStack)) {
 
-            Block block = toBlock(itemStack);
+            IBlockState block = toBlockState(itemStack);
 
-            return block.renderAsNormalBlock() ||
-                   block instanceof BlockSlab ||
-                   block instanceof BlockPane ||
-                   block instanceof BlockBreakable ||
+            return block.getBlock() instanceof BlockSlab ||
+                   block.getBlock() instanceof BlockPane ||
+                   block.getBlock() instanceof BlockBreakable ||
                    FeatureRegistry.coverExceptions.contains(itemStack.getDisplayName()) ||
                    FeatureRegistry.coverExceptions.contains(ChatHandler.getDefaultTranslation(itemStack));
 

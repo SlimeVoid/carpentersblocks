@@ -12,22 +12,22 @@ public class DyeHandler {
     private final static Map<String, Integer> dyeMap;
     static {
         dyeMap = new HashMap<String, Integer>();
-        dyeMap.put("dyeBlack", ItemDye.field_150922_c[0]);
-        dyeMap.put("dyeRed", ItemDye.field_150922_c[1]);
-        dyeMap.put("dyeGreen", ItemDye.field_150922_c[2]);
-        dyeMap.put("dyeBrown", ItemDye.field_150922_c[3]);
-        dyeMap.put("dyeBlue", ItemDye.field_150922_c[4]);
-        dyeMap.put("dyePurple", ItemDye.field_150922_c[5]);
-        dyeMap.put("dyeCyan", ItemDye.field_150922_c[6]);
-        dyeMap.put("dyeLightGray", ItemDye.field_150922_c[7]);
-        dyeMap.put("dyeGray", ItemDye.field_150922_c[8]);
-        dyeMap.put("dyePink", ItemDye.field_150922_c[9]);
-        dyeMap.put("dyeLime", ItemDye.field_150922_c[10]);
-        dyeMap.put("dyeYellow", ItemDye.field_150922_c[11]);
-        dyeMap.put("dyeLightBlue", ItemDye.field_150922_c[12]);
-        dyeMap.put("dyeMagenta", ItemDye.field_150922_c[13]);
-        dyeMap.put("dyeOrange", ItemDye.field_150922_c[14]);
-        dyeMap.put("dyeWhite", ItemDye.field_150922_c[15]);
+        dyeMap.put("dyeBlack", ItemDye.dyeColors[0]);
+        dyeMap.put("dyeRed", ItemDye.dyeColors[1]);
+        dyeMap.put("dyeGreen", ItemDye.dyeColors[2]);
+        dyeMap.put("dyeBrown", ItemDye.dyeColors[3]);
+        dyeMap.put("dyeBlue", ItemDye.dyeColors[4]);
+        dyeMap.put("dyePurple", ItemDye.dyeColors[5]);
+        dyeMap.put("dyeCyan", ItemDye.dyeColors[6]);
+        dyeMap.put("dyeLightGray", ItemDye.dyeColors[7]);
+        dyeMap.put("dyeGray", ItemDye.dyeColors[8]);
+        dyeMap.put("dyePink", ItemDye.dyeColors[9]);
+        dyeMap.put("dyeLime", ItemDye.dyeColors[10]);
+        dyeMap.put("dyeYellow", ItemDye.dyeColors[11]);
+        dyeMap.put("dyeLightBlue", ItemDye.dyeColors[12]);
+        dyeMap.put("dyeMagenta", ItemDye.dyeColors[13]);
+        dyeMap.put("dyeOrange", ItemDye.dyeColors[14]);
+        dyeMap.put("dyeWhite", ItemDye.dyeColors[15]);
     }
 
     /**
@@ -40,8 +40,8 @@ public class DyeHandler {
     {
         int color = getColor(itemStack);
 
-        for (int idx = 0; idx < ItemDye.field_150922_c.length; ++idx) {
-            if (color == ItemDye.field_150922_c[idx]) {
+        for (int idx = 0; idx < ItemDye.dyeColors.length; ++idx) {
+            if (color == ItemDye.dyeColors[idx]) {
                 return 15 - idx;
             }
         }

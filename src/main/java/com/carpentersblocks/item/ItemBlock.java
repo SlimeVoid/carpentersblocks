@@ -1,9 +1,11 @@
 package com.carpentersblocks.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemBlock extends Item {
@@ -11,12 +13,12 @@ public class ItemBlock extends Item {
     /**
      * Places the block in the world and calls post-placement methods.
      */
-    protected boolean placeBlock(World world, Block block, EntityPlayer entityPlayer, ItemStack itemStack, BlockPos pos)
+    protected boolean placeBlock(World world, IBlockState state, EntityPlayer entityPlayer, ItemStack itemStack, BlockPos pos)
     {
-        if (world.setBlock(x, y, z, block, 0, 4)) {
+        if (world.setBlockState(pos, state, 4)) {
 
-            block.onBlockPlacedBy(world, x, y, z, entityPlayer, itemStack);
-            block.onPostBlockPlaced(world, x, y, z, 0);
+            state.getBlock().onBlockPlacedBy(world, pos, state, entityPlayer, itemStack);
+            //block.onPostBlockPlaced(world, x, y, z, 0);
 
             return true;
 

@@ -1,22 +1,24 @@
 package com.carpentersblocks.renderer.entity;
 
 import com.carpentersblocks.entity.item.EntityCarpentersTile;
-import com.carpentersblocks.renderer.helper.LightingHelper;
-import com.carpentersblocks.renderer.helper.RenderHelper;
 import com.carpentersblocks.util.handler.DyeHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderCarpentersTile extends Render {
+
+    protected RenderCarpentersTile(RenderManager renderManager) {
+        super(renderManager);
+    }
 
     /**
      * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
@@ -34,36 +36,36 @@ public class RenderCarpentersTile extends Render {
         GL11.glPopMatrix();
     }
 
-    private void render(EntityCarpentersTile entity, BlockPos pos)
+    private void render(EntityCarpentersTile entity, int x, int y, int z)
     {
-        RenderBlocks renderBlocks = RenderBlocks.getInstance();
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
+        //RenderBlocks renderBlocks = RenderBlocks.getInstance();
+        Tessellator tessellator = Tessellator.getInstance();
+        tessellator.getWorldRenderer().startDrawingQuads();
 
         double bounds[] = entity.getBounds();
-        renderBlocks.setRenderBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
+        //renderBlocks.setRenderBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
 
         float[] dyeColor = LightingHelper.getRGB(DyeHandler.getColor(entity.getDye()));
-        tessellator.setColorOpaque_F(dyeColor[0], dyeColor[1], dyeColor[2]);
+        tessellator.getWorldRenderer().setColorOpaque_F(dyeColor[0], dyeColor[1], dyeColor[2]);
 
-        IIcon icon = entity.getIcon();
+        //IIcon icon = entity.getIcon();
 
         RenderHelper.setTextureRotationOverride(entity.getRotation());
-        tessellator.setNormal(0.0F, -1.0F, 0.0F);
-        RenderHelper.renderFaceYNeg(renderBlocks, 0, 0, 0, icon);
-        tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        RenderHelper.renderFaceYPos(renderBlocks, 0, 0, 0, icon);
-        tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        RenderHelper.renderFaceZNeg(renderBlocks, 0, 0, 0, icon);
-        tessellator.setNormal(0.0F, 0.0F, 1.0F);
-        RenderHelper.renderFaceZPos(renderBlocks, 0, 0, 0, icon);
-        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-        RenderHelper.renderFaceXNeg(renderBlocks, 0, 0, 0, icon);
-        tessellator.setNormal(1.0F, 0.0F, 0.0F);
-        RenderHelper.renderFaceXPos(renderBlocks, 0, 0, 0, icon);
+        tessellator.getWorldRenderer().setNormal(0.0F, -1.0F, 0.0F);
+        //RenderHelper.renderFaceYNeg(renderBlocks, 0, 0, 0, icon);
+        tessellator.getWorldRenderer().setNormal(0.0F, 1.0F, 0.0F);
+        //RenderHelper.renderFaceYPos(renderBlocks, 0, 0, 0, icon);
+        tessellator.getWorldRenderer().setNormal(0.0F, 0.0F, -1.0F);
+        //RenderHelper.renderFaceZNeg(renderBlocks, 0, 0, 0, icon);
+        tessellator.getWorldRenderer().setNormal(0.0F, 0.0F, 1.0F);
+        //RenderHelper.renderFaceZPos(renderBlocks, 0, 0, 0, icon);
+        tessellator.getWorldRenderer().setNormal(-1.0F, 0.0F, 0.0F);
+        //RenderHelper.renderFaceXNeg(renderBlocks, 0, 0, 0, icon);
+        tessellator.getWorldRenderer().setNormal(1.0F, 0.0F, 0.0F);
+        //RenderHelper.renderFaceXPos(renderBlocks, 0, 0, 0, icon);
         RenderHelper.clearTextureRotationOverride();
 
-        tessellator.draw();
+        tessellator.getWorldRenderer().finishDrawing();
     }
 
     @Override

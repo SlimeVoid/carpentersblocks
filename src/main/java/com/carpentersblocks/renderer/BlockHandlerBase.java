@@ -33,7 +33,7 @@ import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class BlockHandlerBase implements ISimpleBlockRenderingHandler {
+public class BlockHandlerBase {
 
     public static final int PASS_OPAQUE = 0;
     public static final int PASS_ALPHA  = 1;

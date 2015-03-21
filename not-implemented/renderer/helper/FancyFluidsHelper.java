@@ -4,16 +4,18 @@ import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.BlockProperties;
 import com.carpentersblocks.util.ModLogger;
 import com.carpentersblocks.util.registry.FeatureRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Level;
 
 import static net.minecraft.util.EnumFacing.*;
@@ -59,31 +61,29 @@ public class FancyFluidsHelper {
      * Renders fancy fluid.
      *
      * @param  TE the {@link TEBase}
-     * @param  renderBlocks the {@link RenderBlocks}
-     * @param  x the x coordinate
-     * @param  y the y coordinate
-     * @param  z the z coordinate
+     * @param  renderBlocks the {@link BlockRendererDispatcher}
+     * @param  pos
      * @return true if fluid rendered in space
      */
-    public static boolean render(TEBase TE, RenderBlocks renderBlocks, BlockPos pos)
+    public static boolean render(TEBase TE, BlockRendererDispatcher renderBlocks, BlockPos pos)
     {
-        ItemStack itemStack = getFluidBlock(renderBlocks.blockAccess, x, y, z);
+        ItemStack itemStack = getFluidBlock(FMLClientHandler.instance().getWorldClient(), pos);
 
         if (itemStack != null) {
 
-            Block block = BlockProperties.toBlock(itemStack);
-            int metadata = itemStack.getItemDamage();
+            IBlockState state = BlockProperties.toBlockState(itemStack);
+            //int metadata = itemStack.getItemDamage();
 
-            if (block.getRenderBlockPass() == MinecraftForgeClient.getRenderPass())
+            if (state.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer()))
             {
-                if (!block.hasTileEntity(metadata) && metadata == 0)
+                if (!state.getBlock().hasTileEntity(state))
                 {
                     LightingHelper lightingHelper = new LightingHelper(renderBlocks);
-                    lightingHelper.setupLightingYPos(itemStack, x, y, z);
-                    lightingHelper.setupColor(x, y, z, 1, 16777215, null);
-                    double fluidHeight = (block instanceof BlockLiquid ? 1.0D - 1.0F / 9.0F : 0.875F) - 0.0010000000474974513D;
-                    renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, fluidHeight, 1.0D);
-                    RenderHelper.renderFaceYPos(renderBlocks, x, y, z, block.getIcon(1, metadata));
+                    lightingHelper.setupLightingYPos(itemStack, pos);
+                    lightingHelper.setupColor(pos, 1, 16777215, null);
+                    double fluidHeight = (state.getBlock() instanceof BlockLiquid ? 1.0D - 1.0F / 9.0F : 0.875F) - 0.0010000000474974513D;
+                    //renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, fluidHeight, 1.0D);
+                    //RenderHelper.renderFaceYPos(renderBlocks, pos, state.getBlock().getIcon(1, metadata));
                     return true;
                 }
             }
@@ -97,9 +97,7 @@ public class FancyFluidsHelper {
      * Gets nearby, routable fluid block.
      *
      * @param  blockAccess the {@link IBlockAccess}
-     * @param  x the x coordinate
-     * @param  y the y coordinate
-     * @param  z the z coordinate
+     * @param  pos
      * @return a nearby fluid {@link ItemStack}, or null if no routable fluid exists
      */
     public static ItemStack getFluidBlock(IBlockAccess blockAccess, BlockPos pos)
@@ -119,8 +117,8 @@ public class FancyFluidsHelper {
 
         for (int idx = 0; idx < offsetXZ.length; ++idx) {
 
-            Block block = blockAccess.getBlock(x + offsetXZ[idx][0], y, z + offsetXZ[idx][1]);
-            Class clazz = block.getClass();
+            IBlockState state = blockAccess.getBlockState(pos.add(offsetXZ[idx][0], 0, offsetXZ[idx][1]));
+            Class clazz = state.getBlock().getClass();
 
             boolean isLiquid = false;
             for (int idx1 = 0; idx1 < liquidClasses.length; ++idx1) {
@@ -132,15 +130,17 @@ public class FancyFluidsHelper {
 
             if (isLiquid) {
                 if (idx < 4) {
-                    if (!blockAccess.isSideSolid(x, y, z, route[idx][0][0], false)) {
-                        return new ItemStack(block, blockAccess.getBlockMetadata(x + offsetXZ[idx][0], y, z + offsetXZ[idx][1]));
+                    if (!blockAccess.isSideSolid(pos, route[idx][0][0], false)) {
+                        IBlockState stateSide = blockAccess.getBlockState(pos.add(offsetXZ[idx][0], 0, offsetXZ[idx][1]));
+                        return new ItemStack(state.getBlock(), stateSide.getBlock().getMetaFromState(stateSide));
                     }
                 } else {
                     for (int routeIdx = 0; routeIdx < 2; ++routeIdx) {
-                        if (!blockAccess.isSideSolid(x, y, z, route[idx][routeIdx][0], false)) {
-                            int[] bridgeXZ = { x + route[idx][routeIdx][0].offsetX, z + route[idx][routeIdx][0].offsetZ };
-                            if (!blockAccess.isSideSolid(bridgeXZ[0], y, bridgeXZ[1], route[idx][routeIdx][1], false) && !blockAccess.isSideSolid(bridgeXZ[0], y, bridgeXZ[1], route[idx][routeIdx][2], false)) {
-                                return new ItemStack(block, blockAccess.getBlockMetadata(x + offsetXZ[idx][0], y, z + offsetXZ[idx][1]));
+                        if (!blockAccess.isSideSolid(pos, route[idx][routeIdx][0], false)) {
+                            int[] bridgeXZ = { pos.getX() + route[idx][routeIdx][0].getFrontOffsetX(), pos.getZ() + route[idx][routeIdx][0].getFrontOffsetZ() };
+                            if (!blockAccess.isSideSolid(new BlockPos(bridgeXZ[0], pos.getY(), bridgeXZ[1]), route[idx][routeIdx][1], false) && !blockAccess.isSideSolid(new BlockPos(bridgeXZ[0], pos.getY(), bridgeXZ[1]), route[idx][routeIdx][2], false)) {
+                                IBlockState stateSide = blockAccess.getBlockState(pos.add(offsetXZ[idx][0], 0, offsetXZ[idx][1]));
+                                return new ItemStack(state.getBlock(), stateSide.getBlock().getMetaFromState(stateSide));
                             }
                         }
                     }

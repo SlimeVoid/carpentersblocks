@@ -102,10 +102,10 @@ public class Hinge {
     public static void setState(TEBase TE, int state, boolean playSound)
     {
         int temp = (TE.getData() & ~0x40) | (state << 6);
-        World world = TE.getWorldObj();
+        World world = TE.getWorld();
 
         if (!world.isRemote && playSound) {
-            world.playAuxSFXAtEntity((EntityPlayer)null, 1003, TE.xCoord, TE.yCoord, TE.zCoord, 0);
+            world.playAuxSFXAtEntity((EntityPlayer)null, 1003, TE.getPos(), 0);
         }
 
         TE.setData(temp);
