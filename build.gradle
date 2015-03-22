@@ -32,7 +32,7 @@ minecraft {
     if  (file('../run').exists()) {
         runDir = "../run"
     } else {
-        runDir = "assets"
+        runDir = "run"
     }
 }
 
